@@ -1,0 +1,17 @@
+{
+  "groups": {
+    "active_window_status": { "fg": "material-darker:blue",   "bg": "material-darker:base02", "attrs": [] },
+    "window_status":        { "fg": "material-darker:base1",  "bg": "material-darker:base02", "attrs": [] },
+    "activity_status":      { "fg": "material-darker:yellow", "bg": "material-darker:base02", "attrs": [] },
+    "bell_status":          { "fg": "material-darker:red",    "bg": "material-darker:base02", "attrs": [] },
+    "window":               { "fg": "material-darker:base1",  "bg": "material-darker:base02", "attrs": [] },
+    "window:divider":       { "fg": "material-darker:base01", "bg": "material-darker:base02", "attrs": [] },
+    "window:current":       { "fg": "material-darker:base3",  "bg": "material-darker:base01", "attrs": [] },
+    "window_name":          { "fg": "material-darker:base3",  "bg": "material-darker:base01", "attrs": ["bold"] },
+    "session":              { "fg": "material-darker:base3",  "bg": "material-darker:base01", "attrs": [] },
+    "session:prefix":       { "fg": "material-darker:base01", "bg": "material-darker:base3",  "attrs": [] }
+  },
+  "__vim__": {
+    "modeline": "/* vim: set ts=2 sw=2 et: */"
+  }
+}

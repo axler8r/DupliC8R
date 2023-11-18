@@ -1,0 +1,16 @@
+{
+  "name": "Material Darker for shell",
+  "groups": {
+    "mode": { "fg": "material-darker:base3", "bg": "material-darker:green", "attrs": ["bold"] }
+  },
+  "mode_translations": {
+    "vicmd": {
+      "groups": {
+        "mode": { "fg": "material-darker:base3", "bg": "material-darker:blue", "attrs": ["bold"] }
+      }
+    }
+  },
+  "__vim__": {
+    "modeline": "/* vim: set ts=2 sw=2 et: */"
+  }
+}

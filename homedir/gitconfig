@@ -1,0 +1,47 @@
+[user]
+    name = AxlER8R
+    email = axl@axler8r.io
+    signingkey = 1B5C4A4F10A770E3
+[init]
+    defaultBranch = stable
+[core]
+    editor = nvim
+    eol = lf
+    excludesfile = ~/.gitignore
+    pager = bat
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[merge]
+    tool = nvim
+    guitool = meld
+[alias]
+    ffs = flow feature start
+    fff = flow feature finish
+    frs = flow release start
+    frf = flow release finish
+[branch]
+    autosetuprebase = never
+[push]
+    default = simple
+[gc]
+    autoDetach = false
+[pull]
+    rebase = false
+[filter "lfs"]
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
+[commit]
+    template = ~/.gitcommit
+[credential]
+	helper = /usr/local/share/gcm-core/git-credential-manager-core
+	credentialStore = secretservice
+[credential "https://dev.azure.com"]
+    useHttpPath = true
+[smartgit "gui"]
+    signOff = false
+[gitflow "branch"]
+	master = stable
+    develop = development
+

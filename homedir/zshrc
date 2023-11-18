@@ -1,0 +1,86 @@
+# COMPLETIONS
+zstyle ':completion:*' completer _complete _ignored
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
+zstyle :compinstall filename '/home/axl/.zshrc'i
+autoload -Uz compinit
+compinit
+
+
+# FEATURES
+# edit command line with vim
+# see also: /usr/share/zsh/functions/Zle/edit-command-line
+#           man 1 zshbuiltins
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+autoload -Uz zmv
+
+
+# OPTIONS
+setopt append_history
+setopt auto_cd
+setopt auto_list
+setopt auto_menu
+setopt bang_hist
+setopt complete_in_word
+setopt correct
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_find_no_dups
+setopt hist_ignore_space
+setopt multi_os
+setopt no_beep
+setopt pushd_ignore_dups
+setopt pushd_silent
+setopt pushd_to_home
+setopt share_history
+setopt short_loops
+bindkey -v
+
+
+# ENVIRONMENT VARIABLES AND EXPORTS
+HISTFILE=${HOME}/.zsh_history
+HISTSIZE=49999
+SAVEHIST=49949
+export SAVEHIST
+export GPG_TTY=$(tty)
+[[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
+
+
+# DEFAULTS
+
+
+# APPLICATIONS
+[[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
+[[ -f $HOME/.opt/fzf/fzf.zsh ]] && source $HOME/.opt/fzf/fzf.zsh
+[[ -f $HOME/.opt/z/z.sh ]] && source $HOME/.opt/z/z.sh
+[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
+
+
+# COMPLETIONS
+
+
+# ASDF
+if [[ "$(type -w asdf)" == "asdf: function" ]] {
+    # ENVIRONMENT VARIABLES AND EXPORTS
+    [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
+
+    # DEFAULTS
+    [[ -x $(asdf which nvim) ]] && EDITOR=$(asdf which nvim)
+    [[ -x $(asdf which nvim) ]] && VISUAL=$(asdf which nvim)
+
+    # COMPLETIONS
+    # [[ -x $(asdf which poetry) ]] && poetry completions zsh > ${ASDF_DIR}/completions/_poetry
+    # [[ -x $(asdf which gh) ]] // gh completion --shell zsh > ${ASDF_DIR}/completions/_gh
+    # [[ -x $(asdf which pdm) ]] // pdm completion zsh > ${ASDF_DIR}/completions/_pdm
+}
+
+
+# CONFIGURATIONS
+[[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
+[[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
+[[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
+
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

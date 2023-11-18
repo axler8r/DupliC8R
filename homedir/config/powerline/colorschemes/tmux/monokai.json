@@ -1,0 +1,17 @@
+{
+  "groups": {
+    "active_window_status": { "fg": "monokai:blue",   "bg": "monokai:base02", "attrs": [] },
+    "window_status":        { "fg": "monokai:base1",  "bg": "monokai:base02", "attrs": [] },
+    "activity_status":      { "fg": "monokai:yellow", "bg": "monokai:base02", "attrs": [] },
+    "bell_status":          { "fg": "monokai:red",    "bg": "monokai:base02", "attrs": [] },
+    "window":               { "fg": "monokai:base1",  "bg": "monokai:base02", "attrs": [] },
+    "window:divider":       { "fg": "monokai:base01", "bg": "monokai:base02", "attrs": [] },
+    "window:current":       { "fg": "monokai:base3",  "bg": "monokai:base01", "attrs": [] },
+    "window_name":          { "fg": "monokai:base3",  "bg": "monokai:base01", "attrs": ["bold"] },
+    "session":              { "fg": "monokai:base3",  "bg": "monokai:base01", "attrs": [] },
+    "session:prefix":       { "fg": "monokai:base01", "bg": "monokai:base3",  "attrs": [] }
+  },
+  "__vim__": {
+    "modeline": "/* vim: set ts=2 sw=2 et: */"
+  }
+}

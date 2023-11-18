@@ -1,0 +1,16 @@
+{
+  "name": "Monokai for shell",
+  "groups": {
+    "mode": { "fg": "monokai:base3", "bg": "monokai:green", "attrs": ["bold"] }
+  },
+  "mode_translations": {
+    "vicmd": {
+      "groups": {
+        "mode": { "fg": "monokai:base3", "bg": "monokai:blue", "attrs": ["bold"] }
+      }
+    }
+  },
+  "__vim__": {
+    "modeline": "/* vim: set ts=2 sw=2 et: */"
+  }
+}

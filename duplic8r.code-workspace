@@ -1,0 +1,30 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "files.associations": {
+            "ctags": "properties",
+            "dircolors": "dircolors",
+            "gitcommit": "properties",
+            "gitconfig": "properties",
+            "gitignore": "properties",
+            "taskrc": "properties",
+            "tigrc": "shellscript",
+            "tmux": "shellscript",
+            "xcompose": "xcompose",
+            "zshenv": "shellscript",
+            "zshrc": "shellscript",
+            "zprofile": "shellscript",
+            "zshalias": "shellscript",
+            "zshfunction": "shellscript",
+            "zshprompt": "shellscript"
+        },
+        "material-icon-theme.files.associations": {
+            "dircolors": "settings",
+            "xcompose": "settings"
+        }
+    }
+}

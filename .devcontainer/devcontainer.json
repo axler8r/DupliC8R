@@ -1,0 +1,14 @@
+{
+	"name": "Duplicater",
+	"image": "mcr.microsoft.com/devcontainers/base:jammy",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"github.copilot",
+				"vscode.vim",
+				"duniul.dircolors",
+				"rubenverg.xcompose"
+			]
+		}
+	}
+}

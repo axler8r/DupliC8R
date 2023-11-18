@@ -1,0 +1,15 @@
+{
+	"default_module": "powerline.segments.shell",
+	"segments": {
+		"left": [
+			{
+				"function": "continuation"
+			}
+		],
+		"right": [
+		]
+	},
+  "__vim__": {
+    "modeline": "/* vim: set ts=2 sw=2 et: */"
+  }
+}
