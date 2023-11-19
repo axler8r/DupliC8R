@@ -12,6 +12,9 @@
 ## Install
 Install required system packages.
 
+> [!IMPORTANT]
+> Both the automatic and manual install methods require `curl` to be installed.
+
 ```bash
 apt update \
 && apt upgrade --yes --no-install-recommends \
@@ -36,16 +39,23 @@ curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/ins
 ### Manual Install
 Follow these stpes to install `duplic8r` manually.
 
-+ [Install Required System Packages](#_install-required-system-packages)
-+ [Install Required Python Packages](#_install-required-python-packages)
-+ [Clone Repository](#_clone-repository)
-+ [Link the configuration files](#_link-the-configuration-files)
-+ [Conrigure tmux Plugin Manager](#_conrigure-tmux-plugin-manager)
-+ [Clone ASDF Repository](#_clone-asdf-repository)
-+ [Install ASDF Plugins](#_install-asdf-plugins)
-+ [Install Vim Plug](#_install-vim-plug)
-+ [Make ZSH the Default Shell](#_make-zsh-the-default-shell)
-+ [Use ZSH](#_use-zsh)
+- [`duplic8r` - My Personal Dotfiles, and a Little More](#duplic8r---my-personal-dotfiles-and-a-little-more)
+  - [Table of Contents](#table-of-contents)
+  - [Install](#install)
+    - [Unattended Install](#unattended-install)
+    - [Manual Install](#manual-install)
+      - [Install Required System Packages](#install-required-system-packages)
+      - [Install Required Python Packages](#install-required-python-packages)
+      - [Clone Repository](#clone-repository)
+      - [Link the configuration files](#link-the-configuration-files)
+      - [Conrigure tmux Plugin Manager](#conrigure-tmux-plugin-manager)
+      - [Clone ASDF Repository](#clone-asdf-repository)
+      - [Install ASDF Plugins](#install-asdf-plugins)
+      - [Install Vim Plug](#install-vim-plug)
+      - [Make ZSH the Default Shell](#make-zsh-the-default-shell)
+      - [Use ZSH](#use-zsh)
+  - [Contribute](#contribute)
+  - [License](#license)
 
 
 #### Install Required System Packages
@@ -54,6 +64,7 @@ APT_PACKAGES=(
    devilspie2
    git
    git-flow
+   less
    python3
    python3-pip
    taskwarrior
@@ -165,14 +176,20 @@ done
 
 #### Install Vim Plug
 ```bash
-curl --fail --location --output "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+FLAGS=(
+    --create-dirs
+    --fail
+    --location
+    --output
+)
+curl ${FLAGS[@]} "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
 
 #### Make ZSH the Default Shell
 ```bash
-chsh -s $(which zsh) ${USER}
+chsh --shell $(which zsh) ${USER}
 ```
 
 
