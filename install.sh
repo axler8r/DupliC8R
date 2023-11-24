@@ -1,6 +1,15 @@
 set -e
 
 
+local DUPLIC8R_PATH="~/.duplic8r/homedir"
+local CONFIG_PATH="~/.config"
+
+
+create_symlink() {
+  ln --symbolic $1 $2
+}
+
+
 install_system_requirements() {
     local FLAGS=(
         --no-install-recommends
@@ -41,31 +50,33 @@ install_python_requirements() {
 
 
 install_duplic8r() {
-    git clone https://github.com/axler8r/duplic8r.git ~/.duplic8r
 
-    ln --symbolic ~/.duplic8r/homedir/XCompose ~/.XCompose
-    ln --symbolic ~/.duplic8r/homedir/ctags ~/.ctags
-    ln --symbolic ~/.duplic8r/homedir/dircolors ~/.dircolors
-    ln --symbolic ~/.duplic8r/homedir/gitcommit ~/.gitcommit
-    ln --symbolic ~/.duplic8r/homedir/gitconfig ~/.gitconfig
-    ln --symbolic ~/.duplic8r/homedir/gitignore ~/.gitignore
-    ln --symbolic ~/.duplic8r/homedir/taskrc ~/.taskrc
-    ln --symbolic ~/.duplic8r/homedir/tigrc ~/.tigrc
-    ln --symbolic ~/.duplic8r/homedir/tmux ~/.tmux.conf
-    ln --symbolic ~/.duplic8r/homedir/tmux_extend.zsh ~/.tmux_extend.zsh
-    ln --symbolic ~/.duplic8r/homedir/zshalias ~/.zshalias
-    ln --symbolic ~/.duplic8r/homedir/zshenv ~/.zshenv
-    ln --symbolic ~/.duplic8r/homedir/zshfunction ~/.zshfunction
-    ln --symbolic ~/.duplic8r/homedir/zshprompt ~/.zshprompt
-    ln --symbolic ~/.duplic8r/homedir/zshrc ~/.zshrc
-    ln --symbolic ~/.duplic8r/homedir/config/bat ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/devilspie2 ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/julia ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/kitty ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/nvim ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/powerline ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/powershell ~/.config
-    ln --symbolic ~/.duplic8r/homedir/config/taskwarrior ~/.config
+install_duplic8r() {
+    git clone https://github.com/axler8r/duplic8r.git $DUPLIC8R_PATH
+
+    create_symlink $DUPLIC8R_PATH/XCompose ~/.XCompose
+    create_symlink $DUPLIC8R_PATH/ctags ~/.ctags
+    create_symlink $DUPLIC8R_PATH/dircolors ~/.dircolors
+    create_symlink $DUPLIC8R_PATH/gitcommit ~/.gitcommit
+    create_symlink $DUPLIC8R_PATH/gitconfig ~/.gitconfig
+    create_symlink $DUPLIC8R_PATH/gitignore ~/.gitignore
+    create_symlink $DUPLIC8R_PATH/taskrc ~/.taskrc
+    create_symlink $DUPLIC8R_PATH/tigrc ~/.tigrc
+    create_symlink $DUPLIC8R_PATH/tmux ~/.tmux.conf
+    create_symlink $DUPLIC8R_PATH/tmux_extend.zsh ~/.tmux_extend.zsh
+    create_symlink $DUPLIC8R_PATH/zshalias ~/.zshalias
+    create_symlink $DUPLIC8R_PATH/zshenv ~/.zshenv
+    create_symlink $DUPLIC8R_PATH/zshfunction ~/.zshfunction
+    create_symlink $DUPLIC8R_PATH/zshprompt ~/.zshprompt
+    create_symlink $DUPLIC8R_PATH/zshrc ~/.zshrc
+    create_symlink $CONFIG_PATH/bat $CONFIG_PATH
+    create_symlink $CONFIG_PATH/devilspie2 $CONFIG_PATH
+    create_symlink $CONFIG_PATH/julia $CONFIG_PATH
+    create_symlink $CONFIG_PATH/kitty $CONFIG_PATH
+    create_symlink $CONFIG_PATH/nvim $CONFIG_PATH
+    create_symlink $CONFIG_PATH/powerline $CONFIG_PATH
+    create_symlink $CONFIG_PATH/powershell $CONFIG_PATH
+    create_symlink $CONFIG_PATH/taskwarrior $CONFIG_PATH
 }
 
 
