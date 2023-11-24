@@ -49,7 +49,47 @@ install_python_requirements() {
 }
 
 
-install_duplic8r() {
+backup_existing_config() {
+    local TIMESTAMP=$(date +%Y%m%d%H%M%S)
+    local FILES=(
+        ~/.XCompose
+        ~/.ctags
+        ~/.dircolors
+        ~/.gitcommit
+        ~/.gitconfig
+        ~/.gitignore
+        ~/.taskrc
+        ~/.tigrc
+        ~/.tmux.conf
+        ~/.tmux_extend.zsh
+        ~/.zshalias
+        ~/.zshenv
+        ~/.zshfunction
+        ~/.zshprompt
+        ~/.zshrc
+    )
+    for file in ${FILES[@]}; do
+        if [ -f $file ]; then
+            mv $file $file.$TIMESTAMP
+        fi
+    done
+
+    local DIRECTORIES=(
+        ~/.config/bat
+        ~/.config/devilspie2
+        ~/.config/julia
+        ~/.config/kitty
+        ~/.config/nvim
+        ~/.config/powerline
+        ~/.config/powershell
+        ~/.config/taskwarrior
+    )
+    for dir in ${DIRECTORIES[@]}; do
+        if [ -d $dir ]; then
+            mv $dir $dir.$TIMESTAMP
+        fi
+    done
+}
 
 install_duplic8r() {
     git clone https://github.com/axler8r/duplic8r.git $DUPLIC8R_PATH
@@ -142,6 +182,7 @@ install() {
         sudo install_system_requirements
     fi
     install_python_requirements
+    backup_existing_config
     install_duplic8r
     configure_tmux_plugin_manager
     install_vim_plug
