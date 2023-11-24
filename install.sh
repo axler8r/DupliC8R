@@ -1,3 +1,6 @@
+set -e
+
+
 install_system_requirements() {
     local FLAGS=(
         --no-install-recommends
