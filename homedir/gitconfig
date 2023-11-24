@@ -44,4 +44,6 @@
 [gitflow "branch"]
 	master = stable
     develop = development
+[gitflow "prefix"]
+    versiontag = v
 
