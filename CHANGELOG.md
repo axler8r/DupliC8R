@@ -3,15 +3,14 @@
 ## [UNRELEASED]
 
 ### New & Updated Documentation
-+ Update reademe
++ Update README.md
 
 ### New & Updated Features
-+ Add git cliff configuration
-+ Add git cliff configuration
-+ Add tmux split window alias
-+ Add exit on error to install script
++ New git cliff configuration
++ New tmux split window alias
++ New exit on error to install script
 + Parameterise paths and files
-+ Backup existing configuration
++ New Visual Studio Code settings file
 
 
 ## 3.0.0
