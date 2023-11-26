@@ -1,10 +1,6 @@
 set -e
 
 
-local DUPLIC8R_PATH="~/.duplic8r/homedir"
-local CONFIG_PATH="~/.config"
-
-
 create_symlink() {
   ln --symbolic $1 $2
 }
@@ -21,11 +17,14 @@ install_system_requirements() {
         devilspie2
         git
         git-flow
+        tig
+        htop
         less
+        lsof
         python3
         python3-pip
+        strace
         taskwarrior
-        tig
         tmux
         tmux-plugin-manager
         tree
@@ -52,21 +51,21 @@ install_python_requirements() {
 backup_existing_config() {
     local TIMESTAMP=$(date +%Y%m%d%H%M%S)
     local FILES=(
-        ~/.XCompose
-        ~/.ctags
-        ~/.dircolors
-        ~/.gitcommit
-        ~/.gitconfig
-        ~/.gitignore
-        ~/.taskrc
-        ~/.tigrc
-        ~/.tmux.conf
-        ~/.tmux_extend.zsh
-        ~/.zshalias
-        ~/.zshenv
-        ~/.zshfunction
-        ~/.zshprompt
-        ~/.zshrc
+        $HOME/.XCompose
+        $HOME/.ctags
+        $HOME/.dircolors
+        $HOME/.gitcommit
+        $HOME/.gitconfig
+        $HOME/.gitignore
+        $HOME/.taskrc
+        $HOME/.tigrc
+        $HOME/.tmux.conf
+        $HOME/.tmux_extend.zsh
+        $HOME/.zshalias
+        $HOME/.zshenv
+        $HOME/.zshfunction
+        $HOME/.zshprompt
+        $HOME/.zshrc
     )
     for file in ${FILES[@]}; do
         if [ -f $file ]; then
@@ -75,14 +74,14 @@ backup_existing_config() {
     done
 
     local DIRECTORIES=(
-        ~/.config/bat
-        ~/.config/devilspie2
-        ~/.config/julia
-        ~/.config/kitty
-        ~/.config/nvim
-        ~/.config/powerline
-        ~/.config/powershell
-        ~/.config/taskwarrior
+        $HOME/.config/bat
+        $HOME/.config/devilspie2
+        $HOME/.config/julia
+        $HOME/.config/kitty
+        $HOME/.config/nvim
+        $HOME/.config/powerline
+        $HOME/.config/powershell
+        $HOME/.config/taskwarrior
     )
     for dir in ${DIRECTORIES[@]}; do
         if [ -d $dir ]; then
@@ -92,37 +91,48 @@ backup_existing_config() {
 }
 
 install_duplic8r() {
-    git clone https://github.com/axler8r/duplic8r.git $DUPLIC8R_PATH
+    local DUPLIC8R_HOME="$HOME/.duplic8r"
+    local DUPLIC8R_SOURCE="$DUPLIC8R_HOME/homedir"
+    local DUPLIC8R_TARGET="$HOME/.config"
 
-    create_symlink $DUPLIC8R_PATH/XCompose ~/.XCompose
-    create_symlink $DUPLIC8R_PATH/ctags ~/.ctags
-    create_symlink $DUPLIC8R_PATH/dircolors ~/.dircolors
-    create_symlink $DUPLIC8R_PATH/gitcommit ~/.gitcommit
-    create_symlink $DUPLIC8R_PATH/gitconfig ~/.gitconfig
-    create_symlink $DUPLIC8R_PATH/gitignore ~/.gitignore
-    create_symlink $DUPLIC8R_PATH/taskrc ~/.taskrc
-    create_symlink $DUPLIC8R_PATH/tigrc ~/.tigrc
-    create_symlink $DUPLIC8R_PATH/tmux ~/.tmux.conf
-    create_symlink $DUPLIC8R_PATH/tmux_extend.zsh ~/.tmux_extend.zsh
-    create_symlink $DUPLIC8R_PATH/zshalias ~/.zshalias
-    create_symlink $DUPLIC8R_PATH/zshenv ~/.zshenv
-    create_symlink $DUPLIC8R_PATH/zshfunction ~/.zshfunction
-    create_symlink $DUPLIC8R_PATH/zshprompt ~/.zshprompt
-    create_symlink $DUPLIC8R_PATH/zshrc ~/.zshrc
-    create_symlink $CONFIG_PATH/bat $CONFIG_PATH
-    create_symlink $CONFIG_PATH/devilspie2 $CONFIG_PATH
-    create_symlink $CONFIG_PATH/julia $CONFIG_PATH
-    create_symlink $CONFIG_PATH/kitty $CONFIG_PATH
-    create_symlink $CONFIG_PATH/nvim $CONFIG_PATH
-    create_symlink $CONFIG_PATH/powerline $CONFIG_PATH
-    create_symlink $CONFIG_PATH/powershell $CONFIG_PATH
-    create_symlink $CONFIG_PATH/taskwarrior $CONFIG_PATH
+    git clone https://github.com/axler8r/duplic8r.git $DUPLIC8R_HOME
+
+    if [ ! -d $DUPLIC8R_TARGET ]; then
+        mkdir --parents $DUPLIC8R_TARGET
+    fi
+
+    ln --symbolic $DUPLIC8R_SOURCE/XCompose $HOME/.XCompose
+    ln --symbolic $DUPLIC8R_SOURCE/ctags $HOME/.ctags
+    ln --symbolic $DUPLIC8R_SOURCE/dircolors $HOME/.dircolors
+    ln --symbolic $DUPLIC8R_SOURCE/gitcommit $HOME/.gitcommit
+    ln --symbolic $DUPLIC8R_SOURCE/gitconfig $HOME/.gitconfig
+    ln --symbolic $DUPLIC8R_SOURCE/gitignore $HOME/.gitignore
+    ln --symbolic $DUPLIC8R_SOURCE/taskrc $HOME/.taskrc
+    ln --symbolic $DUPLIC8R_SOURCE/tigrc $HOME/.tigrc
+    ln --symbolic $DUPLIC8R_SOURCE/tmux $HOME/.tmux.conf
+    ln --symbolic $DUPLIC8R_SOURCE/tmux_extend.zsh $HOME/.tmux_extend.zsh
+    ln --symbolic $DUPLIC8R_SOURCE/zshalias $HOME/.zshalias
+    ln --symbolic $DUPLIC8R_SOURCE/zshenv $HOME/.zshenv
+    ln --symbolic $DUPLIC8R_SOURCE/zshfunction $HOME/.zshfunction
+    ln --symbolic $DUPLIC8R_SOURCE/zshprompt $HOME/.zshprompt
+    ln --symbolic $DUPLIC8R_SOURCE/zshrc $HOME/.zshrc
+
+    ln --symbolic $DUPLIC8R_SOURCE/config/bat $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/devilspie2 $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/julia $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/kitty $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/nvim $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/powerline $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/powershell $DUPLIC8R_TARGET
+    ln --symbolic $DUPLIC8R_SOURCE/config/taskwarrior $DUPLIC8R_TARGET
 }
 
 
 configure_tmux_plugin_manager() {
-    mkdir --parents ~/.tmux/plugins
-    ln --symbolic /usr/share/tmux-plugin-manager ~/.tmux/plugins/tpm
+    if [ ! -d $HOME/.tmux ]; then
+        mkdir --parents $HOME/.tmux/plugins
+    fi
+    ln --symbolic /usr/share/tmux-plugin-manager $HOME/.tmux/plugins/tpm
 }
 
 
@@ -139,8 +149,8 @@ install_vim_plug() {
 
 
 install_asdf() {
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.13.1
-    . ~/.asdf/asdf.sh
+    git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.13.1
+    . $HOME/.asdf/asdf.sh
 
     local ASDF_PLUGINS=(
         bat
@@ -151,13 +161,10 @@ install_asdf() {
         fd
         fzf
         github-cli
-        htop
         jq
         just
-        lsof
         neovim
         ripgrep
-        strace
         tokei
         yq
     )
@@ -192,3 +199,7 @@ install() {
 
 
 install
+
+
+unset DUPLIC8R_PATH
+unset DUPLIC8R_TARGET

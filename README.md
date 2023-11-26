@@ -45,17 +45,15 @@ Choose one of the following methods to install `duplic8r`.
  
 
 ```bash
+COMMANDS=(
+    'apt update'
+    '&& apt upgrade --yes --no-install-recommends'
+    '&& apt install --yes --no-install-recommends ca-certificates openssl curl'
+)
 if [ $(id --user) -eq 0 ]; then
-    apt update;
-    apt upgrade --yes --no-install-recommends;
-    apt install --yes --no-install-recommends ca-certificates openssl curl
+    echo ${COMMANDS[@]} | bash --
 else
-    echo "
-         apt update;
-         apt upgrade --yes --no-install-recommends;
-         apt install --yes --no-install-recommends ca-certificates openssl curl
-         "
-    | sudo --shell --
+    echo ${COMMANDS[@]} | sudo --shell --
 fi
 ```
 
