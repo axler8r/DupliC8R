@@ -11,9 +11,10 @@ installed as root as well.
 
 
 ## Table of Contents
+<!-- Insert updated table of contents -->
 - [About](#about)
 - [Install](#install)
-  - [Required system packages](#required-system-packages)
+  - [Requirements](#requirements)
   - [Unattended install](#unattended-install)
   - [Manual install](#manual-install)
     - [Install required system packages](#install-required-system-packages)
@@ -34,7 +35,7 @@ installed as root as well.
 Choose one of the following methods to install `duplic8r`.
 
 
-### Required system packages.
+### Requirements
 
 > [!IMPORTANT]
 > Unattended and manual install methods require `curl`.
@@ -51,10 +52,11 @@ COMMANDS=(
     '&& apt install --yes --no-install-recommends ca-certificates openssl curl'
 )
 if [ $(id --user) -eq 0 ]; then
-    echo ${COMMANDS[@]} | bash --
+    echo ${COMMANDS[@]} | bash /dev/stdin
 else
-    echo ${COMMANDS[@]} | sudo --shell --
+    echo ${COMMANDS[@]} | sudo --shell /dev/stdin
 fi
+unset COMMANDS
 ```
 
 
@@ -62,13 +64,13 @@ fi
 To install the **stable** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/install.sh | bash
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/install.sh | bash /dev/stdin  
 ```
 
 To install the **development** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/install.sh | bash
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/install.sh | bash /dev/stdin
 ```
 
 
@@ -98,6 +100,7 @@ APT_PACKAGES=(
     zsh-syntax-highlighting
 )
 apt install --no-install-recommends --yes ${APT_PACKAGES[@]}
+unset APT_PACKAGES
 ```
 
 
@@ -111,6 +114,7 @@ PYTHON_PACKAGES=(
 for package in $PYTHON_PACKAGES; do
     pip3 install --user $package
 done
+unset PYTHON_PACKAGES
 ```
 
 
@@ -162,6 +166,7 @@ for directory in ${DIRECTORIES[@]}; do
         mv $directory $directory.$BACKUP
     fi
 done
+unset BACKUP FILES DIRECTORIES
 ```
 
 
@@ -240,6 +245,7 @@ for plugin in ${ASDF_PLUGINS[@]}; do
     asdf install $plugin latest
     asdf global $plugin $(asdf latest $plugin)
 done
+unset ASDF_PLUGINS
 ```
 
 
@@ -253,6 +259,7 @@ FLAGS=(
 )
 curl ${FLAGS[@]} "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+unset FLAGS
 ```
 
 
