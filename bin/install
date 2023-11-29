@@ -209,7 +209,86 @@ install() {
 }
 
 
+SANDBOX=${HOME}/Downloads/Sandbox
 
 
-unset DUPLIC8R_PATH
-unset DUPLIC8R_TARGET
+create_sandbox() {
+    mkdir --parents ${SANDBOX}
+}
+
+
+delete_sandbox() {
+    rm --recursive --force ${SANDBOX}
+}
+
+
+install_fonts() {
+    mkdir ${HOME}/.fonts
+
+    cd ${SANDBOX}
+    wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+    unzip CascadiaCode-2111.01.zip
+    mv ttf/*.ttf ${HOME}/.fonts
+    rm -rf ${SANDBOX}/*
+
+    wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
+    unzip CascadiaCode.zip
+    mv CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf ${HOME}/.fonts
+    rm -rf ${SANDBOX}/*
+
+    fc-cache --force --verbose
+}
+
+
+install_numix_square_icons() {
+    sudo add-apt-repository ppa:numix/ppa
+    sudo apt update && sudo apt install numix-icon-theme-square
+}
+
+
+install_kitty() {
+    curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+
+    ln --symbolic --force \
+       ${HOME}/.local/kitty.app/bin/kitty \
+       ${HOME}/.local/kitty.app/bin/kitten \
+       ${HOME}/.local/bin/
+    cp ${HOME}/.local/kitty.app/share/applications/kitty.desktop \
+       ${HOME}/.local/share/applications/
+    cp ${HOME}/.local/kitty.app/share/applications/kitty-open.desktop \
+       ${HOME}/.local/share/applications/
+
+    sed --in-place \
+        "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
+        ${HOME}/.local/share/applications/kitty*.desktop
+    sed --in-place \
+        "s|Exec=kitty|Exec=/home/$USER/.local/kitty.app/bin/kitty|g" \
+        ${HOME}/.local/share/applications/kitty*.desktop
+}
+
+
+install_extras() {
+    create_sandbox
+    install_fonts
+    install_numix_square_icons
+    install_kitty
+    delete_sandbox
+}
+
+
+if [ $# -eq 0 ]; then
+    install
+    install_extras
+    exit 0
+elif [ $# -eq 1 ]; then
+    if [ $1 == "--minimal" ]; then
+        install
+        exit 0
+    else
+        echo "Usage: $0 [--minimal]"
+        exit 1
+    fi
+fi
+
+
+unset SANDBOX
