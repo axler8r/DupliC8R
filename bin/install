@@ -13,7 +13,8 @@ install_system_requirements() {
         --quiet
         --yes
     )
-    local APT_PACKAGES=(
+    local PACKAGES=(
+        curl
         devilspie2
         git
         git-flow
@@ -28,6 +29,7 @@ install_system_requirements() {
         tmux
         tmux-plugin-manager
         tree
+        universal-ctags
         unzip
         zip
         zsh
@@ -35,8 +37,16 @@ install_system_requirements() {
         zsh-doc
         zsh-syntax-highlighting
     )
-    apt update && apt upgrade ${FLAGS[@]}
-    apt install ${FLAGS[@]} ${APT_PACKAGES[@]}
+    local COMMANDS=(
+      "apt update"
+      "&& apt upgrade ${FLAGS[@]}"
+      "&& apt install ${FLAGS[@]} ${PACKAGES[@]}"
+    )
+    if [ $(id --user) -eq 0 ]; then
+      echo ${COMMANDS[@]} | bash --
+    else
+      echo ${COMMANDS[@]} | sudo --shell --
+    fi
 }
 
 
