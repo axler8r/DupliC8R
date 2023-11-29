@@ -188,7 +188,12 @@ install_asdf() {
 
 
 set_default_shell() {
-    chsh --shell $(which zsh) ${USER}
+    local COMMAND=("chsh --shell $(which zsh) ${USER}")
+    if [ $(id --user) -eq 0 ]; then
+        echo ${COMMAND[@]} | bash --
+    else
+        echo ${COMMAND[@]} | sudo --shell --
+    fi
 }
 
 
