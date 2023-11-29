@@ -198,11 +198,7 @@ set_default_shell() {
 
 
 install() {
-    if [ $(id --user) -eq 0 ]; then
-        install_system_requirements
-    else
-        sudo install_system_requirements
-    fi
+    install_system_requirements
     install_python_requirements
     backup_existing_config
     install_duplic8r
@@ -213,7 +209,6 @@ install() {
 }
 
 
-install
 
 
 unset DUPLIC8R_PATH
