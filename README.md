@@ -1,74 +1,106 @@
 # `duplic8r` - My Personal Dotfiles, and a Little More
 [![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)
 
+
+## About
+`duplic8r` is a collection of my personal dotfiles and a little more. It is
+designed to be installed on a fresh, Ubuntu-based distribution. It has an
+unattended intall script, but can be installed manually as well. It is intened
+to be installed as a regular user in a single user environment, but can be
+installed as root as well.
+
+
 ## Table of Contents
-+ [Install](#_install)
-    + [Automatic Install](#_automatic-install)
-    + [Manual Install](#_manual-install)
-+ [Contribute](#_contribute)
-+ [License](#_license)
+<!-- Insert updated table of contents -->
+- [About](#about)
+- [Install](#install)
+  - [Requirements](#requirements)
+  - [Unattended install](#unattended-install)
+  - [Manual install](#manual-install)
+    - [Install required system packages](#install-required-system-packages)
+    - [Install required python packages](#install-required-python-packages)
+    - [Clone repository](#clone-repository)
+    - [Link the configuration files](#link-the-configuration-files)
+    - [Conrigure tmux Plugin Manager](#conrigure-tmux-plugin-manager)
+    - [Clone ASDF repository](#clone-asdf-repository)
+    - [Install ASDF plugins](#install-asdf-plugins)
+    - [Install Vim Plug](#install-vim-plug)
+    - [Make ZSH the default shell](#make-zsh-the-default-shell)
+    - [Use ZSH](#use-zsh)
+- [Contribute](#contribute)
+- [License](#license)
 
 
 ## Install
-Install required system packages.
+Choose one of the following methods to install `duplic8r`.
+
+
+### Requirements
+
+> [!IMPORTANT]
+> Unattended and manual install methods require `curl`.
+
+> [!NOTE]
+> `curl` depends on `ca-certificates` and `openssl` which may be missing from
+> your initial setup. Install it before running the install script.
+ 
 
 ```bash
-apt update \
-&& apt upgrade --yes --no-install-recommends \
-&& apt install --yes --no-install-recommends curl
+COMMANDS=(
+    'apt update'
+    '&& apt upgrade --yes --no-install-recommends'
+    '&& apt install --yes --no-install-recommends ca-certificates openssl curl'
+)
+if [ $(id --user) -eq 0 ]; then
+    echo ${COMMANDS[@]} | bash /dev/stdin
+else
+    echo ${COMMANDS[@]} | sudo --shell /dev/stdin
+fi
+unset COMMANDS
 ```
 
 
 ### Unattended Install
-To install the _stable_ version of `duplic8r`, run the following command.
+To install the **stable** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/install.sh | bash
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/install.sh | bash /dev/stdin  
 ```
 
-To install the _development_ version of `duplic8r`, run the following command.
+To install the **development** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/install.sh | bash
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/install.sh | bash /dev/stdin
 ```
 
 
 ### Manual Install
 Follow these stpes to install `duplic8r` manually.
 
-+ [Install Required System Packages](#_install-required-system-packages)
-+ [Install Required Python Packages](#_install-required-python-packages)
-+ [Clone Repository](#_clone-repository)
-+ [Link the configuration files](#_link-the-configuration-files)
-+ [Conrigure tmux Plugin Manager](#_conrigure-tmux-plugin-manager)
-+ [Clone ASDF Repository](#_clone-asdf-repository)
-+ [Install ASDF Plugins](#_install-asdf-plugins)
-+ [Install Vim Plug](#_install-vim-plug)
-+ [Make ZSH the Default Shell](#_make-zsh-the-default-shell)
-+ [Use ZSH](#_use-zsh)
-
 
 #### Install Required System Packages
 ```bash
 APT_PACKAGES=(
-   devilspie2
-   git
-   git-flow
-   python3
-   python3-pip
-   taskwarrior
-   tig
-   tmux
-   tmux-plugin-manager
-   tree
-   unzip
-   zip
-   zsh
-   zsh-autosuggestions
-   zsh-doc
-   zsh-syntax-highlighting
+    devilspie2
+    git
+    git-flow
+    less
+    python3
+    python3-pip
+    taskwarrior
+    tig
+    tmux
+    tmux-plugin-manager
+    tree
+    unzip
+    zip
+    zsh
+    zsh-autosuggestions
+    zsh-doc
+    zsh-syntax-highlighting
 )
 apt install --no-install-recommends --yes ${APT_PACKAGES[@]}
+unset APT_PACKAGES
 ```
 
 
@@ -76,12 +108,13 @@ apt install --no-install-recommends --yes ${APT_PACKAGES[@]}
 ```bash
 pip3 install --upgrade pip
 PYTHON_PACKAGES=(
-   powerline-status
-   powerline-gitstatus
+    powerline-status
+    powerline-gitstatus
 )
 for package in $PYTHON_PACKAGES; do
-   pip3 install --user $package
+    pip3 install --user $package
 done
+unset PYTHON_PACKAGES
 ```
 
 
@@ -91,8 +124,59 @@ git clone https://github.com/axler8r/duplic8r.git ~/.duplic8r
 ```
 
 
+#### Back Up Existing Configuration Files
+```bash
+BACKUP=$(date +%Y%m%d%H%M%S)
+FILES=(
+    ~/.XCompose
+    ~/.ctags
+    ~/.dircolors
+    ~/.gitcommit
+    ~/.gitconfig
+    ~/.gitignore
+    ~/.taskrc
+    ~/.tigrc
+    ~/.tmux.conf
+    ~/.tmux_extend.zsh
+    ~/.zshalias
+    ~/.zshenv
+    ~/.zshfunction
+    ~/.zshprompt
+    ~/.zshrc
+)
+for file in ${FILES[@]}; do
+    if [ -f $file ]; then
+        mv $file $file.$BACKUP
+    fi
+done
+
+DIRECTORIES=(
+    ~/.config/bat
+    ~/.config/devilspie2
+    ~/.config/git-cliff
+    ~/.config/julia
+    ~/.config/kitty
+    ~/.config/nvim
+    ~/.config/powerline
+    ~/.config/powershell
+    ~/.config/taskwarrior
+)
+for directory in ${DIRECTORIES[@]}; do
+    if [ -d $directory ]; then
+        mv $directory $directory.$BACKUP
+    fi
+done
+unset BACKUP FILES DIRECTORIES
+```
+
+
+
 #### Link the configuration files
 ```bash
+if [ ! -d .config ]; then
+    mkdir --parents ~/.config
+fi
+
 ln -s ~/.duplic8r/homedir/XCompose ~/.XCompose
 ln -s ~/.duplic8r/homedir/ctags ~/.ctags
 ln -s ~/.duplic8r/homedir/dircolors ~/.dircolors
@@ -110,6 +194,7 @@ ln -s ~/.duplic8r/homedir/zshprompt ~/.zshprompt
 ln -s ~/.duplic8r/homedir/zshrc ~/.zshrc
 ln -s ~/.duplic8r/homedir/config/bat ~/.config
 ln -s ~/.duplic8r/homedir/config/devilspie2 ~/.config
+ln -s ~/.duplic8r/homedir/config/git-cliff ~/.config
 ln -s ~/.duplic8r/homedir/config/julia ~/.config
 ln -s ~/.duplic8r/homedir/config/kitty ~/.config
 ln -s ~/.duplic8r/homedir/config/nvim ~/.config
@@ -160,19 +245,27 @@ for plugin in ${ASDF_PLUGINS[@]}; do
     asdf install $plugin latest
     asdf global $plugin $(asdf latest $plugin)
 done
+unset ASDF_PLUGINS
 ```
 
 
 #### Install Vim Plug
 ```bash
-curl --fail --location --output "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+FLAGS=(
+    --create-dirs
+    --fail
+    --location
+    --output
+)
+curl ${FLAGS[@]} "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+unset FLAGS
 ```
 
 
 #### Make ZSH the Default Shell
 ```bash
-chsh -s $(which zsh) ${USER}
+chsh --shell $(which zsh) ${USER}
 ```
 
 

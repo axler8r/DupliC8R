@@ -180,6 +180,7 @@ if [[ -x $(which docker) ]] {
     alias start-dockerzshubuntu=' docker start zsh-ubuntu '
     alias stop-dockerzshubuntu=' docker stop zsh-ubuntu '
     alias connect-dockerzshubuntu=' docker exec --interactive --tty zsh-ubuntu zsh '
+    alias connect-dockerzshubuntubash=' docker exec --interactive --tty zsh-ubuntu bash '
     alias remove-dockerzshubuntu=' docker rm zsh-ubuntu && docker volume rm ZSHUbuntu '
 
     # Azure CLI in Docker
@@ -305,9 +306,17 @@ if [[ -x $(which git) ]] {
 }
 
 if [[ -x $(which kitty) ]] {
-    alias open-kitty=" kitty --title=kiTTY --detach "
-    alias open-kittysolarizeddark=" kitty --title=kiTTY --detach --override include=${HOME}/.config/kitty/Solarized_Dark.conf "
-    alias open-kittysolarizedlight=" kitty --title=kiTTY --detach --override include=${HOME}/.config/kitty/Solarized_Light.conf "
+    local __AX_KITTY=(
+        '--title=kiTTY'
+        '--detach'
+    )
+    local __AX_SOLARIZED=(
+        '--override'
+        'include=${HOME}/.config/kitty/Solarized'
+    )
+    alias open-kitty=" kitty ${__AX_KITTY} "
+    alias open-kittysolarizeddark=" kitty ${__AX_KITTY} ${__AX_SOLARIZED}_Dark.conf "
+    alias open-kittysolarizedlight=" kitty ${__AX_KITTY} ${__AX_SOLARIZED}_Light.conf "
 }
 
 if [[ -x $(which lynx) ]] {
@@ -326,6 +335,10 @@ if [[ -x $(which powerline-daemon) ]] {
         POWERLINE_K8S_SHOW=1 POWERLINE_K8S_SHOW_NS=1 powerline-daemon --replace
     }
     alias show-powerlinek8s=' __ax_powerline_show_k8s '
+}
+
+if [[ -x $(which tmux) ]] {
+    alias split-tmuxwindow=' tmux split-window '
 }
 
 if [[ -x $(which zfs) ]] {
