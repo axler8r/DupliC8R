@@ -1,16 +1,36 @@
 # Changelog
 
-## [UNRELEASED]
+
+## 3.1.0
+**2023-12-01**
 
 ### New & Updated Documentation
 + Update README.md
++ Update CHANGELOG.md
++ Add documentation (doc) directory
+    + Add post install instructions
 
 ### New & Updated Features
-+ New git cliff configuration
-+ New tmux split window alias
-+ New exit on error to install script
-+ Parameterise paths and files
-+ New Visual Studio Code settings file
++ Add extended installation functions
+    + Add minimal install option
+    + Add `kitty` install function
+    + Add `docker` engine install function
+    + Add GNU `parallel` install function
+    + Add font install function
+        + Cascadia Code
+        + Cascadia Code Nerf Font
+    + Add Numix Square Icons install function
+    + Backup existing configuration
++ Refine shell installation function
++ Add tmux split window alias
++ Add git cliff configuration
++ Add vscode configuration
+
+### Refactor
++ Move install script to bin
+
+### Meta
++ Add git ignore file
 
 
 ## 3.0.0
@@ -54,4 +74,3 @@
     + Bash
     + Fish
     + Zsh
-
