@@ -271,6 +271,14 @@ install_kitty() {
 }
 
 
+install_docker_engine() {
+    curl --location https://get.docker.com | bash /dev/stdin
+    if [ $(id --user) -ne 0 ]; then
+        echo "usermod --append --groups docker ${USER}" | sudo --shell --
+    fi
+}
+
+
 install_parallel() {
     cd ${SANDBOX}
     wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
@@ -291,7 +299,7 @@ install_extras() {
     install_fonts
     install_numix_square_icons
     install_kitty
-    # install_docker_engine
+    install_docker_engine
     install_parallel
     delete_sandbox
 }
