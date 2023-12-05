@@ -64,13 +64,13 @@ unset COMMANDS
 To install the **stable** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/install.sh | bash /dev/stdin  
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install | bash /dev/stdin  
 ```
 
 To install the **development** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/install.sh | bash /dev/stdin
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin/install | bash /dev/stdin
 ```
 
 
