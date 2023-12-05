@@ -1,11 +1,6 @@
 set -e
 
 
-create_symlink() {
-  ln --symbolic $1 $2
-}
-
-
 install_system_requirements() {
     local FLAGS=(
         --no-install-recommends
