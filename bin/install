@@ -1,7 +1,26 @@
 set -e
 
 
+SANDBOX=${HOME}/Downloads/Sandbox
+LOGDIR=/tmp/duplic8r
+if [ -d "${LOGDIR}" ]; then
+    rm -rf "${LOGDIR}"
+fi
+mkdir "${LOGDIR}"
+exec > >(tee -i "${LOGDIR}/"install.log)
+exec 2>&1
+
+
+_info() {
+    local MESSAGE=${1}
+    echo "------------------------------------------------------------"
+    echo "${MESSAGE}"
+}
+
+
 install_system_requirements() {
+    _info "Installing system requirements"
+
     local FLAGS=(
         --no-install-recommends
         --no-show-upgraded
@@ -50,6 +69,8 @@ install_system_requirements() {
 
 
 install_python_requirements() {
+    _info "Installing python requirements"
+
     pip3 install --upgrade pip
     for package in powerline-status powerline-gitstatus; do
         pip3 install --user $package
@@ -58,6 +79,8 @@ install_python_requirements() {
 
 
 backup_existing_config() {
+    _info "Backing up existing configuration"
+
     local TIMESTAMP=$(date +%Y%m%d%H%M%S)
     local FILES=(
         ${HOME}/.XCompose
@@ -100,6 +123,8 @@ backup_existing_config() {
 }
 
 install_duplic8r() {
+    _info "Installing duplic8r"
+
     local DUPLIC8R_HOME="${HOME}/.duplic8r"
     local DUPLIC8R_SOURCE="${DUPLIC8R_HOME}/homedir"
     local DUPLIC8R_TARGET="${HOME}/.config"
@@ -137,6 +162,8 @@ install_duplic8r() {
 
 
 configure_tmux_plugin_manager() {
+    _info "Configuring tmux plugin manager"
+
     if [ ! -d ${HOME}/.tmux ]; then
         mkdir --parents ${HOME}/.tmux/plugins
     fi
@@ -145,6 +172,8 @@ configure_tmux_plugin_manager() {
 
 
 install_vim_plug() {
+    _info "Installing vim plug"
+
     local FLAGS=(
         --create-dirs
         --fail
@@ -157,6 +186,8 @@ install_vim_plug() {
 
 
 install_asdf() {
+    _info "Installing asdf"
+
     git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.13.1
     . ${HOME}/.asdf/asdf.sh
 
@@ -186,6 +217,8 @@ install_asdf() {
 
 
 set_default_shell() {
+    _info "Setting default shell"
+
     local COMMAND=("chsh --shell $(which zsh) ${USER}")
     if [ $(id --user) -eq 0 ]; then
         echo ${COMMAND[@]} | bash --
@@ -207,9 +240,6 @@ install() {
 }
 
 
-SANDBOX=${HOME}/Downloads/Sandbox
-
-
 create_sandbox() {
     mkdir --parents ${SANDBOX}
 }
@@ -221,6 +251,8 @@ delete_sandbox() {
 
 
 install_fonts() {
+    _info "Installing fonts"
+
     mkdir ${HOME}/.fonts
 
     cd ${SANDBOX}
@@ -239,12 +271,16 @@ install_fonts() {
 
 
 install_numix_square_icons() {
+    _info "Installing numix square icons"
+
     sudo add-apt-repository ppa:numix/ppa
     sudo apt update && sudo apt install numix-icon-theme-square
 }
 
 
 install_kitty() {
+    _info "Installing kitty"
+
     curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
     ln --symbolic --force \
@@ -266,6 +302,8 @@ install_kitty() {
 
 
 install_docker_engine() {
+    _info "Installing docker engine"
+
     curl --location https://get.docker.com | bash /dev/stdin
     if [ $(id --user) -ne 0 ]; then
         echo "usermod --append --groups docker ${USER}" | sudo --shell --
@@ -274,6 +312,8 @@ install_docker_engine() {
 
 
 install_parallel() {
+    _info "Installing parallel"
+
     cd ${SANDBOX}
     wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
     tar --extract --bzip2 --file parallel-latest.tar.bz2
@@ -300,11 +340,15 @@ install_extras() {
 
 
 if [ $# -eq 0 ]; then
+    _info "Installing duplic8r with extras"
+
     install
     install_extras
     exit 0
 elif [ $# -eq 1 ]; then
     if [ ${1} == "--minimal" ]; then
+        _info "Installing duplic8r"
+
         install
         exit 0
     else
@@ -315,3 +359,4 @@ fi
 
 
 unset SANDBOX
+unset LOGDIR
