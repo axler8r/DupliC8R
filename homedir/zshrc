@@ -63,7 +63,7 @@ export GPG_TTY=$(tty)
 # ASDF
 if [[ "$(type -w asdf)" == "asdf: function" ]] {
     # ENVIRONMENT VARIABLES AND EXPORTS
-    [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
+    # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
 
     # DEFAULTS
     [[ -x $(asdf which nvim) ]] && EDITOR=$(asdf which nvim)
