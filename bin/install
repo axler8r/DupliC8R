@@ -343,15 +343,11 @@ install_extras() {
 
 
 if [ $# -eq 0 ]; then
-    _info "Installing duplic8r with extras"
-
     install
     install_extras
     exit 0
 elif [ $# -eq 1 ]; then
     if [ ${1} == "--minimal" ]; then
-        _info "Installing duplic8r"
-
         install
         exit 0
     else
