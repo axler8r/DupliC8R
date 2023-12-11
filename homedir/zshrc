@@ -53,6 +53,7 @@ export GPG_TTY=$(tty)
 
 # APPLICATIONS
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
+[[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
 [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 

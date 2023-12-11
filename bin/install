@@ -331,6 +331,18 @@ install_parallel() {
 }
 
 
+install_z() {
+    _info "Installing z"
+
+    local BIN_DIR=${HOME}/.local/bin
+
+    cd ${SANDBOX}
+    wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
+    mv z.sh ${BIN_DIR}/z.sh
+    chmod +x ${BIN_DIR}/z.sh
+}
+
+
 install_extras() {
     create_sandbox
     install_fonts
@@ -338,6 +350,7 @@ install_extras() {
     install_kitty
     install_docker_engine
     install_parallel
+    install_z
     delete_sandbox
 }
 
