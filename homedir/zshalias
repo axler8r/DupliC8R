@@ -316,7 +316,9 @@ if [[ -x $(which kitty) ]] {
     )
     alias open-kitty=" kitty ${__AX_KITTY} "
     alias open-kittysolarizeddark=" kitty ${__AX_KITTY} ${__AX_SOLARIZED}_Dark.conf "
+    alias okd=" open-kittysolarizeddark "
     alias open-kittysolarizedlight=" kitty ${__AX_KITTY} ${__AX_SOLARIZED}_Light.conf "
+    alias okl=" open-kittysolarizedlight "
 }
 
 if [[ -x $(which lynx) ]] {

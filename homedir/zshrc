@@ -53,8 +53,7 @@ export GPG_TTY=$(tty)
 
 # APPLICATIONS
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
-[[ -f $HOME/.opt/fzf/fzf.zsh ]] && source $HOME/.opt/fzf/fzf.zsh
-[[ -f $HOME/.opt/z/z.sh ]] && source $HOME/.opt/z/z.sh
+[[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
 [[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 
@@ -64,7 +63,7 @@ export GPG_TTY=$(tty)
 # ASDF
 if [[ "$(type -w asdf)" == "asdf: function" ]] {
     # ENVIRONMENT VARIABLES AND EXPORTS
-    [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
+    # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
 
     # DEFAULTS
     [[ -x $(asdf which nvim) ]] && EDITOR=$(asdf which nvim)

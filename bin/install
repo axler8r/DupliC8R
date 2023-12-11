@@ -1,12 +1,26 @@
 set -e
 
 
-create_symlink() {
-  ln --symbolic $1 $2
+SANDBOX=${HOME}/Downloads/Sandbox
+LOGDIR=/tmp/duplic8r
+if [ -d "${LOGDIR}" ]; then
+    rm -rf "${LOGDIR}"
+fi
+mkdir "${LOGDIR}"
+exec > >(tee -i "${LOGDIR}/"install.log)
+exec 2>&1
+
+
+_info() {
+    local MESSAGE=${1}
+    echo "${MESSAGE}"
+    echo "------------------------------------------------------------"
 }
 
 
 install_system_requirements() {
+    _info "Installing system requirements"
+
     local FLAGS=(
         --no-install-recommends
         --no-show-upgraded
@@ -55,6 +69,8 @@ install_system_requirements() {
 
 
 install_python_requirements() {
+    _info "Installing python requirements"
+
     pip3 install --upgrade pip
     for package in powerline-status powerline-gitstatus; do
         pip3 install --user $package
@@ -63,108 +79,120 @@ install_python_requirements() {
 
 
 backup_existing_config() {
+    _info "Backing up existing configuration"
+
     local TIMESTAMP=$(date +%Y%m%d%H%M%S)
     local FILES=(
-        $HOME/.XCompose
-        $HOME/.ctags
-        $HOME/.dircolors
-        $HOME/.gitcommit
-        $HOME/.gitconfig
-        $HOME/.gitignore
-        $HOME/.taskrc
-        $HOME/.tigrc
-        $HOME/.tmux.conf
-        $HOME/.tmux_extend.zsh
-        $HOME/.zshalias
-        $HOME/.zshenv
-        $HOME/.zshfunction
-        $HOME/.zshprompt
-        $HOME/.zshrc
+        ${HOME}/.XCompose
+        ${HOME}/.ctags
+        ${HOME}/.dircolors
+        ${HOME}/.gitcommit
+        ${HOME}/.gitconfig
+        ${HOME}/.gitignore
+        ${HOME}/.taskrc
+        ${HOME}/.tigrc
+        ${HOME}/.tmux.conf
+        ${HOME}/.tmux_extend.zsh
+        ${HOME}/.zshalias
+        ${HOME}/.zshenv
+        ${HOME}/.zshfunction
+        ${HOME}/.zshprompt
+        ${HOME}/.zshrc
+        ${HOME}/.config/Code/User/settings.json
     )
     for file in ${FILES[@]}; do
         if [ -f $file ]; then
-            mv $file $file.$TIMESTAMP
+            mv $file $file.${TIMESTAMP}
         fi
     done
 
     local DIRECTORIES=(
-        $HOME/.config/bat
-        $HOME/.config/devilspie2
-        $HOME/.config/julia
-        $HOME/.config/kitty
-        $HOME/.config/nvim
-        $HOME/.config/powerline
-        $HOME/.config/powershell
-        $HOME/.config/taskwarrior
+        ${HOME}/.config/bat
+        ${HOME}/.config/devilspie2
+        ${HOME}/.config/julia
+        ${HOME}/.config/kitty
+        ${HOME}/.config/nvim
+        ${HOME}/.config/powerline
+        ${HOME}/.config/powershell
+        ${HOME}/.config/taskwarrior
     )
     for dir in ${DIRECTORIES[@]}; do
         if [ -d $dir ]; then
-            mv $dir $dir.$TIMESTAMP
+            mv $dir $dir.${TIMESTAMP}
         fi
     done
 }
 
 install_duplic8r() {
-    local DUPLIC8R_HOME="$HOME/.duplic8r"
-    local DUPLIC8R_SOURCE="$DUPLIC8R_HOME/homedir"
-    local DUPLIC8R_TARGET="$HOME/.config"
+    _info "Installing duplic8r"
 
-    git clone https://github.com/axler8r/duplic8r.git $DUPLIC8R_HOME
+    local DUPLIC8R_HOME="${HOME}/.duplic8r"
+    local DUPLIC8R_SOURCE="${DUPLIC8R_HOME}/homedir"
+    local DUPLIC8R_TARGET="${HOME}/.config"
 
-    if [ ! -d $DUPLIC8R_TARGET ]; then
-        mkdir --parents $DUPLIC8R_TARGET
+    git clone https://github.com/axler8r/duplic8r.git ${DUPLIC8R_HOME}
+
+    if [ ! -d ${DUPLIC8R_TARGET} ]; then
+        mkdir --parents ${DUPLIC8R_TARGET}
     fi
 
-    ln --symbolic $DUPLIC8R_SOURCE/XCompose $HOME/.XCompose
-    ln --symbolic $DUPLIC8R_SOURCE/ctags $HOME/.ctags
-    ln --symbolic $DUPLIC8R_SOURCE/dircolors $HOME/.dircolors
-    ln --symbolic $DUPLIC8R_SOURCE/gitcommit $HOME/.gitcommit
-    ln --symbolic $DUPLIC8R_SOURCE/gitconfig $HOME/.gitconfig
-    ln --symbolic $DUPLIC8R_SOURCE/gitignore $HOME/.gitignore
-    ln --symbolic $DUPLIC8R_SOURCE/taskrc $HOME/.taskrc
-    ln --symbolic $DUPLIC8R_SOURCE/tigrc $HOME/.tigrc
-    ln --symbolic $DUPLIC8R_SOURCE/tmux $HOME/.tmux.conf
-    ln --symbolic $DUPLIC8R_SOURCE/tmux_extend.zsh $HOME/.tmux_extend.zsh
-    ln --symbolic $DUPLIC8R_SOURCE/zshalias $HOME/.zshalias
-    ln --symbolic $DUPLIC8R_SOURCE/zshenv $HOME/.zshenv
-    ln --symbolic $DUPLIC8R_SOURCE/zshfunction $HOME/.zshfunction
-    ln --symbolic $DUPLIC8R_SOURCE/zshprompt $HOME/.zshprompt
-    ln --symbolic $DUPLIC8R_SOURCE/zshrc $HOME/.zshrc
-
-    ln --symbolic $DUPLIC8R_SOURCE/config/bat $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/devilspie2 $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/julia $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/kitty $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/nvim $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/powerline $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/powershell $DUPLIC8R_TARGET
-    ln --symbolic $DUPLIC8R_SOURCE/config/taskwarrior $DUPLIC8R_TARGET
+    ln --symbolic ${DUPLIC8R_SOURCE}/XCompose           ${HOME}/.XCompose
+    ln --symbolic ${DUPLIC8R_SOURCE}/ctags              ${HOME}/.ctags
+    ln --symbolic ${DUPLIC8R_SOURCE}/dircolors          ${HOME}/.dircolors
+    ln --symbolic ${DUPLIC8R_SOURCE}/gitcommit          ${HOME}/.gitcommit
+    ln --symbolic ${DUPLIC8R_SOURCE}/gitconfig          ${HOME}/.gitconfig
+    ln --symbolic ${DUPLIC8R_SOURCE}/gitignore          ${HOME}/.gitignore
+    ln --symbolic ${DUPLIC8R_SOURCE}/taskrc             ${HOME}/.taskrc
+    ln --symbolic ${DUPLIC8R_SOURCE}/tigrc              ${HOME}/.tigrc
+    ln --symbolic ${DUPLIC8R_SOURCE}/tmux               ${HOME}/.tmux.conf
+    ln --symbolic ${DUPLIC8R_SOURCE}/tmux_extend.zsh    ${HOME}/.tmux_extend.zsh
+    ln --symbolic ${DUPLIC8R_SOURCE}/zshalias           ${HOME}/.zshalias
+    ln --symbolic ${DUPLIC8R_SOURCE}/zshenv             ${HOME}/.zshenv
+    ln --symbolic ${DUPLIC8R_SOURCE}/zshfunction        ${HOME}/.zshfunction
+    ln --symbolic ${DUPLIC8R_SOURCE}/zshprompt          ${HOME}/.zshprompt
+    ln --symbolic ${DUPLIC8R_SOURCE}/zshrc              ${HOME}/.zshrc
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/bat         ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/devilspie2  ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/julia       ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/kitty       ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/nvim        ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/powerline   ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/powershell  ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/taskwarrior ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/Code/User/settings.json \
+                  ${HOME}/.config/Code/User/settings.json
 }
 
 
 configure_tmux_plugin_manager() {
-    if [ ! -d $HOME/.tmux ]; then
-        mkdir --parents $HOME/.tmux/plugins
+    _info "Configuring tmux plugin manager"
+
+    if [ ! -d ${HOME}/.tmux ]; then
+        mkdir --parents ${HOME}/.tmux/plugins
     fi
-    ln --symbolic /usr/share/tmux-plugin-manager $HOME/.tmux/plugins/tpm
+    ln --symbolic /usr/share/tmux-plugin-manager ${HOME}/.tmux/plugins/tpm
 }
 
 
 install_vim_plug() {
+    _info "Installing vim plug"
+
     local FLAGS=(
         --create-dirs
         --fail
         --location
         --output
     )
-    curl ${FLAGS[@]} "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim \
+    curl ${FLAGS[@]} "${XDG_DATA_HOME:-$HOME}/.local/share}"/nvim/site/autoload/plug.vim \
         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 }
 
 
 install_asdf() {
-    git clone https://github.com/asdf-vm/asdf.git $HOME/.asdf --branch v0.13.1
-    . $HOME/.asdf/asdf.sh
+    _info "Installing asdf"
+
+    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.13.1
+    . ${HOME}/.asdf/asdf.sh
 
     local ASDF_PLUGINS=(
         bat
@@ -192,6 +220,8 @@ install_asdf() {
 
 
 set_default_shell() {
+    _info "Setting default shell"
+
     local COMMAND=("chsh --shell $(which zsh) ${USER}")
     if [ $(id --user) -eq 0 ]; then
         echo ${COMMAND[@]} | bash --
@@ -213,9 +243,6 @@ install() {
 }
 
 
-SANDBOX=${HOME}/Downloads/Sandbox
-
-
 create_sandbox() {
     mkdir --parents ${SANDBOX}
 }
@@ -227,6 +254,8 @@ delete_sandbox() {
 
 
 install_fonts() {
+    _info "Installing fonts"
+
     mkdir ${HOME}/.fonts
 
     cd ${SANDBOX}
@@ -245,12 +274,16 @@ install_fonts() {
 
 
 install_numix_square_icons() {
+    _info "Installing numix square icons"
+
     sudo add-apt-repository ppa:numix/ppa
     sudo apt update && sudo apt install numix-icon-theme-square
 }
 
 
 install_kitty() {
+    _info "Installing kitty"
+
     curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
     ln --symbolic --force \
@@ -266,12 +299,14 @@ install_kitty() {
         "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
         ${HOME}/.local/share/applications/kitty*.desktop
     sed --in-place \
-        "s|Exec=kitty|Exec=/home/$USER/.local/kitty.app/bin/kitty|g" \
+        "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g" \
         ${HOME}/.local/share/applications/kitty*.desktop
 }
 
 
 install_docker_engine() {
+    _info "Installing docker engine"
+
     curl --location https://get.docker.com | bash /dev/stdin
     if [ $(id --user) -ne 0 ]; then
         echo "usermod --append --groups docker ${USER}" | sudo --shell --
@@ -280,6 +315,8 @@ install_docker_engine() {
 
 
 install_parallel() {
+    _info "Installing parallel"
+
     cd ${SANDBOX}
     wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
     tar --extract --bzip2 --file parallel-latest.tar.bz2
@@ -294,6 +331,18 @@ install_parallel() {
 }
 
 
+install_z() {
+    _info "Installing z"
+
+    local BIN_DIR=${HOME}/.local/bin
+
+    cd ${SANDBOX}
+    wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
+    mv z.sh ${BIN_DIR}/z.sh
+    chmod +x ${BIN_DIR}/z.sh
+}
+
+
 install_extras() {
     create_sandbox
     install_fonts
@@ -301,6 +350,7 @@ install_extras() {
     install_kitty
     install_docker_engine
     install_parallel
+    install_z
     delete_sandbox
 }
 
@@ -310,14 +360,15 @@ if [ $# -eq 0 ]; then
     install_extras
     exit 0
 elif [ $# -eq 1 ]; then
-    if [ $1 == "--minimal" ]; then
+    if [ ${1} == "--minimal" ]; then
         install
         exit 0
     else
-        echo "Usage: $0 [--minimal]"
+        echo "Usage: ${0} [--minimal]"
         exit 1
     fi
 fi
 
 
 unset SANDBOX
+unset LOGDIR

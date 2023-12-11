@@ -1,76 +1,85 @@
 # Changelog
 
 
+## 3.2.0
+**2023-12-11**
+
+### New & Updated Documentation
++ Update install script path
+
+### New & Updated Features
++ New vscode settings file
++ New open kitty terminal aliases
++ New z-move-around functionality
++ New install script logging
+
+### Deprecated & Retired Features
++ Deprecate java path check
++ Retire symlink function
++ Retire redundant logging messages
++ Retire redundant shell configurations
+
+### Stylistic & Idiomatic Updates
++ Standardise changelog item descriptions
++ Standardise variable expansion
+
+
 ## 3.1.0
 **2023-12-01**
 
 ### New & Updated Documentation
++ New documentation (doc) directory
+    + New post install instructions
 + Update README.md
 + Update CHANGELOG.md
-+ Add documentation (doc) directory
-    + Add post install instructions
 
 ### New & Updated Features
-+ Add extended installation functions
-    + Add minimal install option
-    + Add `kitty` install function
-    + Add `docker` engine install function
-    + Add GNU `parallel` install function
-    + Add font install function
-        + Cascadia Code
-        + Cascadia Code Nerf Font
-    + Add Numix Square Icons install function
-    + Backup existing configuration
-+ Refine shell installation function
-+ Add tmux split window alias
-+ Add git cliff configuration
-+ Add vscode configuration
++ New extended installation functions
+    + New minimal install option
+    + New `kitty` install function
+    + New `docker` engine install function
+    + New GNU `parallel` install function
+    + New font install function
+    + New Numix Square Icons install function
+    + New backup existing configuration function
++ New tmux split window alias
++ New git cliff configuration
++ New vscode configuration
++ Update shell installation function
 
 ### Refactor
-+ Move install script to bin
++ Move install script to bin directory
 
 ### Meta
-+ Add git ignore file
++ New `.gitignore` file
 
 
 ## 3.0.0
 **2023-11-18**
 ### New & Updated Features
-+ Installation script
-+ zsh
-+ ASDF
-+ NeoVim
-+ tmux
++ New installation script
++ New `zsh` configuration files
++ Update `nvim` configuration file
++ Update `tmux` configuraiton file
 
 
 ## 2.x
-**2021-08-09** — **2023-06-13**
+**©2017 to ©2021**
 ### New & Updated Features
-+ zsh
-+ kiTTY
-+ NeoVim
-+ Vim Plug
-+ PowerShell
-+ Kubernetes
-+ Docker
-+ ASDF
++ New `zsh`
++ New `kitty`
++ New `nvim`
++ New `nvim` plugin manager
++ New PowerShell (`pwsh`)
++ New `docker`
++ New `asdf`
 
 
 ## 1.x
-**2014-05-25** — **2027-07-13**
+**©2014 to ©2017**
 ### New & Updated Features
-+ Powerline
-    + Fish
-    + Bash
-    + Vim
-    + Tmux
-+ Spacemacs
-+ Git
-+ Color Themes
-    + Solarized
-    + Monokai
-    + dircolors
-+ Shells
-    + Bash
-    + Fish
-    + Zsh
++ New Powerline for `fish`, `bash`, `vim` and `tmux`
++ New Spacemacs
++ New Git
++ New Solarized Color Theme
+

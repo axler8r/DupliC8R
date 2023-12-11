@@ -11,6 +11,7 @@
             "gitcommit": "properties",
             "gitconfig": "properties",
             "gitignore": "properties",
+            "install": "shellscript",
             "taskrc": "properties",
             "tigrc": "shellscript",
             "tmux": "shellscript",
