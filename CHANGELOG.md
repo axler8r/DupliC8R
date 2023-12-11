@@ -1,6 +1,29 @@
 # Changelog
 
 
+## 3.2.0
+**2023-12-11**
+
+### New & Updated Documentation
++ Update install script path
+
+### New & Updated Features
++ New vscode settings file
++ New open kitty terminal aliases
++ New z-move-around functionality
++ New install script logging
+
+### Deprecated & Retired Features
++ Deprecate java path check
++ Retire symlink function
++ Retire redundant logging messages
++ Retire redundant shell configurations
+
+### Stylistic & Idiomatic Updates
++ Standardise changelog item descriptions
++ Standardise variable expansion
+
+
 ## 3.1.0
 **2023-12-01**
 
@@ -59,3 +82,4 @@
 + New Spacemacs
 + New Git
 + New Solarized Color Theme
+
