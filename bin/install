@@ -98,6 +98,7 @@ backup_existing_config() {
         ${HOME}/.zshfunction
         ${HOME}/.zshprompt
         ${HOME}/.zshrc
+        ${HOME}/.config/Code/User/settings.json
     )
     for file in ${FILES[@]}; do
         if [ -f $file ]; then
@@ -158,6 +159,8 @@ install_duplic8r() {
     ln --symbolic ${DUPLIC8R_SOURCE}/config/powerline   ${DUPLIC8R_TARGET}
     ln --symbolic ${DUPLIC8R_SOURCE}/config/powershell  ${DUPLIC8R_TARGET}
     ln --symbolic ${DUPLIC8R_SOURCE}/config/taskwarrior ${DUPLIC8R_TARGET}
+    ln --symbolic ${DUPLIC8R_SOURCE}/config/Code/User/settings.json \
+                  ${HOME}/.config/Code/User/settings.json
 }
 
 
