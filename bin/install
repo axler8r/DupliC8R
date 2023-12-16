@@ -13,6 +13,7 @@ exec 2>&1
 
 _info() {
     local MESSAGE=${1}
+    echo
     echo "${MESSAGE}"
     echo "------------------------------------------------------------"
 }
@@ -71,7 +72,7 @@ install_system_requirements() {
 install_python_requirements() {
     _info "Installing python requirements"
 
-    pip3 install --upgrade pip
+    pip3 install --user --upgrade pip
     for package in powerline-status powerline-gitstatus; do
         pip3 install --user $package
     done
@@ -130,7 +131,12 @@ install_duplic8r() {
     local DUPLIC8R_SOURCE="${DUPLIC8R_HOME}/homedir"
     local DUPLIC8R_TARGET="${HOME}/.config"
 
-    git clone https://github.com/axler8r/duplic8r.git ${DUPLIC8R_HOME}
+    if [ -d ${DUPLIC8R_HOME} ]; then
+        cd ${DUPLIC8R_HOME}
+        git pull
+    else
+        git clone https://github.com/axler8r/duplic8r.git ${DUPLIC8R_HOME}
+    fi
 
     if [ ! -d ${DUPLIC8R_TARGET} ]; then
         mkdir --parents ${DUPLIC8R_TARGET}
@@ -159,18 +165,29 @@ install_duplic8r() {
     ln --symbolic ${DUPLIC8R_SOURCE}/config/powerline   ${DUPLIC8R_TARGET}
     ln --symbolic ${DUPLIC8R_SOURCE}/config/powershell  ${DUPLIC8R_TARGET}
     ln --symbolic ${DUPLIC8R_SOURCE}/config/taskwarrior ${DUPLIC8R_TARGET}
+
+    if [ ! -d ${DUPLIC8R_TARGET}/Code/User ]; then
+        mkdir --parents ${DUPLIC8R_TARGET}/Code/User
+    fi
     ln --symbolic ${DUPLIC8R_SOURCE}/config/Code/User/settings.json \
-                  ${HOME}/.config/Code/User/settings.json
+                  ${DUPLIC8R_TARGET}/Code/User/settings.json
 }
 
 
 configure_tmux_plugin_manager() {
     _info "Configuring tmux plugin manager"
 
+    local TMUX_PLUGINS_HOME="${HOME}/.tmux/plugins"
+
     if [ ! -d ${HOME}/.tmux ]; then
-        mkdir --parents ${HOME}/.tmux/plugins
+        mkdir --parents ${TMUX_PLUGINS_HOME}
     fi
-    ln --symbolic /usr/share/tmux-plugin-manager ${HOME}/.tmux/plugins/tpm
+
+    if [ -d /usr/share/tmux-plugin-manager ]; then
+        if [ ! -L ${TMUX_PLUGINS_HOME}/tpm ]; then
+            ln --symbolic /usr/share/tmux-plugin-manager ${TMUX_PLUGINS_HOME}/tpm
+        fi
+    fi
 }
 
 
@@ -183,16 +200,16 @@ install_vim_plug() {
         --location
         --output
     )
-    curl ${FLAGS[@]} "${XDG_DATA_HOME:-$HOME}/.local/share}"/nvim/site/autoload/plug.vim \
-        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+    if [ ! -f ${HOME}/.local/share/nvim/site/autoload/plug.vim ]; then
+        curl ${FLAGS[@]} ${HOME}/.local/share/nvim/site/autoload/plug.vim \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    fi
 }
 
 
 install_asdf() {
     _info "Installing asdf"
-
-    git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.13.1
-    . ${HOME}/.asdf/asdf.sh
 
     local ASDF_PLUGINS=(
         bat
@@ -210,12 +227,18 @@ install_asdf() {
         tokei
         yq
     )
-    for plugin in ${ASDF_PLUGINS[@]}; do
-        echo "Installing $plugin"
-        asdf plugin add $plugin
-        asdf install $plugin latest
-        asdf global $plugin $(asdf latest $plugin)
-    done
+
+    if [ ! -d ${HOME}/.asdf ]; then
+        git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.13.1
+        . ${HOME}/.asdf/asdf.sh
+
+        for plugin in ${ASDF_PLUGINS[@]}; do
+            echo "Installing $plugin"
+            asdf plugin add $plugin
+            asdf install $plugin latest
+            asdf global $plugin $(asdf latest $plugin)
+        done
+    fi
 }
 
 
@@ -223,10 +246,13 @@ set_default_shell() {
     _info "Setting default shell"
 
     local COMMAND=("chsh --shell $(which zsh) ${USER}")
-    if [ $(id --user) -eq 0 ]; then
-        echo ${COMMAND[@]} | bash --
-    else
-        echo ${COMMAND[@]} | sudo --shell --
+
+    if [ ! "${SHELL}" == "$(which zsh)" ]; then
+        if [ $(id --user) -eq 0 ]; then
+            echo ${COMMAND[@]} | bash --
+        else
+            echo ${COMMAND[@]} | sudo --shell --
+        fi
     fi
 }
 
@@ -256,17 +282,26 @@ delete_sandbox() {
 install_fonts() {
     _info "Installing fonts"
 
-    mkdir ${HOME}/.fonts
+    if [ ! -d ${HOME}/.fonts ]; then
+        mkdir ${HOME}/.fonts
+    fi
 
     cd ${SANDBOX}
-    wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
-    unzip CascadiaCode-2111.01.zip
-    mv ttf/*.ttf ${HOME}/.fonts
-    rm -rf ${SANDBOX}/*
 
-    wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
-    unzip CascadiaCode.zip
-    mv CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf ${HOME}/.fonts
+    if [ -f ${HOME}/.fonts/CascadiaCode*.ttf ]; then
+        wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+        unzip CascadiaCode-2111.01.zip
+        rm ${HOME}/.fonts/CascadiaCode*.ttf
+        mv ttf/CascadiaCode*.ttf ${HOME}/.fonts
+    fi
+
+    if [ -f ${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf ]; then
+        wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
+        unzip CascadiaCode.zip
+        rm ${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf
+        mv CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf ${HOME}/.fonts
+    fi
+
     rm -rf ${SANDBOX}/*
 
     fc-cache --force --verbose
@@ -307,9 +342,11 @@ install_kitty() {
 install_docker_engine() {
     _info "Installing docker engine"
 
-    curl --location https://get.docker.com | bash /dev/stdin
-    if [ $(id --user) -ne 0 ]; then
-        echo "usermod --append --groups docker ${USER}" | sudo --shell --
+    if [ ! -x $(which docker) ]; then
+        curl --location https://get.docker.com | bash /dev/stdin
+        if [ $(id --user) -ne 0 ]; then
+            echo "usermod --append --groups docker ${USER}" | sudo --shell --
+        fi
     fi
 }
 
@@ -317,17 +354,20 @@ install_docker_engine() {
 install_parallel() {
     _info "Installing parallel"
 
-    cd ${SANDBOX}
-    wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
-    tar --extract --bzip2 --file parallel-latest.tar.bz2
-    rm parallel-latest.tar.bz2
-    cd parallel*
-    ./configure --prefix=${HOME}/.local
-    make
-    make install
+    if [ ! -x $(which parallel) ]; then
+        cd ${SANDBOX}
 
-    cd ${HOME}
-    rm -rf ${SANDBOX}/*
+        wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
+        tar --extract --bzip2 --file parallel-latest.tar.bz2
+        rm parallel-latest.tar.bz2
+        cd parallel*
+        ./configure --prefix=${HOME}/.local
+        make
+        make install
+
+        cd ${HOME}
+        rm -rf ${SANDBOX}/*
+    fi
 }
 
 
@@ -336,10 +376,16 @@ install_z() {
 
     local BIN_DIR=${HOME}/.local/bin
 
-    cd ${SANDBOX}
-    wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
-    mv z.sh ${BIN_DIR}/z.sh
-    chmod +x ${BIN_DIR}/z.sh
+    if [ ! -x ${BIN_DIR}/z.sh ]; then
+        cd ${SANDBOX}
+
+        wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
+        mv z.sh ${BIN_DIR}/z.sh
+        chmod +x ${BIN_DIR}/z.sh
+
+        cd ${HOME}
+        rm -rf ${SANDBOX}/*
+    fi
 }
 
 
