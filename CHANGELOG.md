@@ -1,11 +1,15 @@
 # Changelog
 
 
+## 3.2.1
+**2023-12-16**
+
+### New & Updated Features
++ Update install script
+
+
 ## 3.2.0
 **2023-12-11**
-
-### New & Updated Documentation
-+ Update install script path
 
 ### New & Updated Features
 + New vscode settings file
@@ -23,15 +27,12 @@
 + Standardise changelog item descriptions
 + Standardise variable expansion
 
+### New & Updated Documentation
++ Update install script path
+
 
 ## 3.1.0
 **2023-12-01**
-
-### New & Updated Documentation
-+ New documentation (doc) directory
-    + New post install instructions
-+ Update README.md
-+ Update CHANGELOG.md
 
 ### New & Updated Features
 + New extended installation functions
@@ -47,10 +48,16 @@
 + New vscode configuration
 + Update shell installation function
 
-### Refactor
+### New & Updated Documentation
++ New documentation (doc) directory
+    + New post install instructions
++ Update README.md
++ Update CHANGELOG.md
+
+### Refactorings
 + Move install script to bin directory
 
-### Meta
+### Meta Files
 + New `.gitignore` file
 
 
