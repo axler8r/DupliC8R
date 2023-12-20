@@ -279,6 +279,19 @@ destroy_sandbox() {
 }
 
 
+install_ctrlR() {
+    _info "Installing ctrl+r"
+
+    if [ ! -d ${HOME}/.zsh-hsmw ]; then
+        git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
+                  ${HOME}/.zsh-hsmw
+    else
+        cd ${HOME}/.zsh-hsmw
+        git pull
+    fi
+}
+
+
 install_fonts() {
     _info "Installing fonts"
 
@@ -391,6 +404,7 @@ install_z() {
 
 install_extras() {
     create_sandbox
+    install_ctrlR
     install_fonts
     install_numix_square_icons
     install_kitty
