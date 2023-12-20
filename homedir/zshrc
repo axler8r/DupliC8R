@@ -48,7 +48,20 @@ export GPG_TTY=$(tty)
 [[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
 
 
-# DEFAULTS
+# ZSH CONFIGURATIONS
+# Ignored commands
+zshaddhistory() {
+    [[ ${1} != 'bat '* ]]
+    [[ ${1} != 'cat '* ]]
+    [[ ${1} != 'cd '* ]]
+    [[ ${1} != 'exit'* ]]
+    [[ ${1} != 'history'* ]]
+    [[ ${1} != 'htop'* ]]
+    # [[ ${1} != 'ls'* ]]
+    [[ ${1} != 'locate '* ]]
+    [[ ${1} != 'man '* ]]
+    [[ ${1} != 'updatedb'* ]]
+}
 
 
 # APPLICATIONS
