@@ -274,7 +274,7 @@ create_sandbox() {
 }
 
 
-delete_sandbox() {
+destroy_sandbox() {
     rm --recursive --force ${SANDBOX}
 }
 
@@ -397,7 +397,7 @@ install_extras() {
     install_docker_engine
     install_parallel
     install_z
-    delete_sandbox
+    destroy_sandbox
 }
 
 
