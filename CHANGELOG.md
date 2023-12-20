@@ -1,6 +1,22 @@
 # Changelog
 
 
+## 3.2.2
+**2023-12-20**
+
+### New & Updated Features
++ New ctrl+r install function
++ New remove history function
++ New zsh completion configuration
++ Update zsh command ignore configuration
++ Update taskwarrior theme
++ Update taskwarrior configuration
++ Update font install function
+
+### Stylistic & Idiomatic Updates
++ Apply naming convention
+
+
 ## 3.2.1
 **2023-12-16**
 
@@ -14,7 +30,7 @@
 ### New & Updated Features
 + New vscode settings file
 + New open kitty terminal aliases
-+ New z-move-around functionality
++ New z-jump-around functionality
 + New install script logging
 
 ### Deprecated & Retired Features
