@@ -12,7 +12,9 @@ data.location=~/.task
 calendar.holidays=full
 include /usr/share/taskwarrior/holidays.en-NZ.rc
 
-# Color theme (uncomment one to use)
-include /home/axl/.config/taskwarrior/solarized.theme
-
 news.version=2.6.0
+
+# User configuration
+include /home/axl/.config/taskwarrior/solarized.theme
+weekstart=Monday
+
