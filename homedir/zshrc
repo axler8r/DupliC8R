@@ -48,7 +48,20 @@ export GPG_TTY=$(tty)
 [[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
 
 
-# DEFAULTS
+# ZSH CONFIGURATIONS
+# Ignored commands
+zshaddhistory() {
+    [[ ${1} != 'bat '* ]]
+    [[ ${1} != 'cat '* ]]
+    [[ ${1} != 'cd '* ]]
+    [[ ${1} != 'exit'* ]]
+    [[ ${1} != 'history'* ]]
+    [[ ${1} != 'htop'* ]]
+    # [[ ${1} != 'ls'* ]]
+    [[ ${1} != 'locate '* ]]
+    [[ ${1} != 'man '* ]]
+    [[ ${1} != 'updatedb'* ]]
+}
 
 
 # APPLICATIONS
@@ -58,6 +71,13 @@ export GPG_TTY=$(tty)
 
 
 # COMPLETIONS
+# [[ -x $(which poetry > /dev/null 2>&1) ]] && source <(poetry completions zsh)
+# [[ -x $(which gh > /dev/null 2>&1) ]] && source <(gh completion --shell zsh)
+# [[ -x $(which just > /dev/null 2>&1) ]] && source <(just --completions zsh)
+# [[ -x $(which fd > /dev/null 2>&1) ]] && source <(fd --gen-completions zsh)
+# [[ -x $(which rg > /dev/null 2>&1) ]] && source <(rg --generate complete-zsh)
+# [[ -x $(which yq > /dev/null 2>&1) ]] && source <(yq shell-completion zsh)
+[[ -x $(which parallel > /dev/null 2>&1) ]] && eval "$(parallel --shell-completion auto)"
 
 
 # ASDF
@@ -66,13 +86,18 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
     # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
 
     # DEFAULTS
-    [[ -x $(asdf which nvim) ]] && EDITOR=$(asdf which nvim)
-    [[ -x $(asdf which nvim) ]] && VISUAL=$(asdf which nvim)
+    [[ -x $(asdf which nvim 2> /dev/null) ]] {
+        EDITOR=$(asdf which nvim)
+        VISUAL=$(asdf which nvim)
+    }
 
     # COMPLETIONS
-    # [[ -x $(asdf which poetry) ]] && poetry completions zsh > ${ASDF_DIR}/completions/_poetry
-    # [[ -x $(asdf which gh) ]] // gh completion --shell zsh > ${ASDF_DIR}/completions/_gh
-    # [[ -x $(asdf which pdm) ]] // pdm completion zsh > ${ASDF_DIR}/completions/_pdm
+    # [[ -x $(asdf which poetry 2> /dev/null) ]] && poetry completions zsh > ${ASDF_DIR}/completions/_poetry
+    # [[ -x $(asdf which gh 2> /dev/null) ]] && gh completion --shell zsh > ${ASDF_DIR}/completions/_gh
+    # [[ -x $(asdf which just 2> /dev/null) ]] && just --completions zsh > ${ASDF_DIR}/completions/_just
+    # [[ -x $(asdf which fd 2> /dev/null) ]] && fd --gen-completions zsh > $ASDF_DIR/completions/_fd
+    # [[ -x $(asdf which rg 2> /dev/null) ]] && rg --generate complete-zsh > $ASDF_DIR/completions/_rg
+    # [[ -x $(asdf which yq 2> /dev/null) ]] && yq shell-completion zsh > $ASDF_DIR/completions/_yq
 }
 
 

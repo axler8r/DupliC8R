@@ -274,8 +274,21 @@ create_sandbox() {
 }
 
 
-delete_sandbox() {
+destroy_sandbox() {
     rm --recursive --force ${SANDBOX}
+}
+
+
+install_ctrlR() {
+    _info "Installing ctrl+r"
+
+    if [ ! -d ${HOME}/.zsh-hsmw ]; then
+        git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
+                  ${HOME}/.zsh-hsmw
+    else
+        cd ${HOME}/.zsh-hsmw
+        git pull
+    fi
 }
 
 
@@ -288,21 +301,17 @@ install_fonts() {
 
     cd ${SANDBOX}
 
-    if [ -f ${HOME}/.fonts/CascadiaCode*.ttf ]; then
-        wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
-        unzip CascadiaCode-2111.01.zip
-        rm ${HOME}/.fonts/CascadiaCode*.ttf
-        mv ttf/CascadiaCode*.ttf ${HOME}/.fonts
-    fi
+    wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+    unzip CascadiaCode-2111.01.zip
+    rm --force ${HOME}/.fonts/CascadiaCode*.ttf
+    mv --update ttf/CascadiaCode*.ttf ${HOME}/.fonts
+    rm --force --recursive ${SANDBOX}/*
 
-    if [ -f ${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf ]; then
-        wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
-        unzip CascadiaCode.zip
-        rm ${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf
-        mv CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf ${HOME}/.fonts
-    fi
-
-    rm -rf ${SANDBOX}/*
+    wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
+    unzip CascadiaCode.zip
+    rm --force ${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf
+    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf ${HOME}/.fonts
+    rm --force --recursive ${SANDBOX}/*
 
     fc-cache --force --verbose
 }
@@ -391,13 +400,14 @@ install_z() {
 
 install_extras() {
     create_sandbox
+    install_ctrlR
     install_fonts
     install_numix_square_icons
     install_kitty
     install_docker_engine
     install_parallel
     install_z
-    delete_sandbox
+    destroy_sandbox
 }
 
 

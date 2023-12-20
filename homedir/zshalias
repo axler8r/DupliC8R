@@ -252,13 +252,13 @@ if [[ -x $(which exa) ]] {
         '--links'
         '--modified'
     )
-    alias l='ls --git-ignore --oneline '
-    alias la='exa $__AX_COMMON $__AX_LONG $__AX_DETAIL '
-    alias ll='ls $__AX_LONG '
-    alias llm='ll --sort=modified '
-    alias ls='exa $__AX_COMMON $__AX_PARAMS '
-    alias lt='exa --tree $__AX_COMMON $__AX_PARAMS '
-    alias lx='la --extended '
+    alias l=' ls --git-ignore --oneline '
+    alias la=' exa $__AX_COMMON $__AX_LONG $__AX_DETAIL '
+    alias ll=' ls $__AX_LONG '
+    alias llm=' ll --sort=modified '
+    alias ls=' exa $__AX_COMMON $__AX_PARAMS '
+    alias lt=' exa --tree $__AX_COMMON $__AX_PARAMS '
+    alias lx=' la --extended '
 } else {
     [[ $(uname) == Darwin ]] && alias lsi='ls '
     [[ $(uname) == Linux ]] && alias lsi='ls --ignore=snap '
@@ -271,10 +271,10 @@ if [[ -x $(which exa) ]] {
         '--sort=extension'
     )
 
-    alias l='ls -1 '
-    alias la='ls -A '
-    alias ll='ls -l '
-    alias ls='lsi $__AX_COMMON '
+    alias l=' ls -1 '
+    alias la=' ls -A '
+    alias ll=' ls -l '
+    alias ls=' lsi $__AX_COMMON '
 }
 
 if [[ -x $(which git) ]] {

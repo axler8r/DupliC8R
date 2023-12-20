@@ -115,12 +115,13 @@ color.summary.bar=
 # color.summary.bar=color0 on color6
 
 # Command: calendar
-color.calendar.due=color0 on color9
+color.calendar.due=bold white on color9
 color.calendar.due.today=bold white on blue
 color.calendar.holiday=black on yellow
 color.calendar.overdue=bold white on magenta
-color.calendar.today=color0 on color4
-color.calendar.weekend=on color0
+color.calendar.scheduled=bold white on green
+color.calendar.today=bold white on cyan
+color.calendar.weekend=color15 on color12
 color.calendar.weeknumber=color4
 
 # Command: sync
