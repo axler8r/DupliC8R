@@ -19,6 +19,7 @@ _info() {
 }
 
 
+# Base installation ------------------------------------------------------------
 install_system_requirements() {
     _info "Installing system requirements"
 
@@ -72,56 +73,19 @@ install_system_requirements() {
 install_python_requirements() {
     _info "Installing python requirements"
 
-    pip3 install --user --upgrade pip
-    for package in powerline-status powerline-gitstatus; do
-        pip3 install --user $package
-    done
-}
-
-
-backup_existing_config() {
-    _info "Backing up existing configuration"
-
-    local TIMESTAMP=$(date +%Y%m%d%H%M%S)
-    local FILES=(
-        ${HOME}/.XCompose
-        ${HOME}/.ctags
-        ${HOME}/.dircolors
-        ${HOME}/.gitcommit
-        ${HOME}/.gitconfig
-        ${HOME}/.gitignore
-        ${HOME}/.taskrc
-        ${HOME}/.tigrc
-        ${HOME}/.tmux.conf
-        ${HOME}/.tmux_extend.zsh
-        ${HOME}/.zshalias
-        ${HOME}/.zshenv
-        ${HOME}/.zshfunction
-        ${HOME}/.zshprompt
-        ${HOME}/.zshrc
-        ${HOME}/.config/Code/User/settings.json
+    local FLAGS=(
+        --user
+        --upgrade
     )
-    for file in ${FILES[@]}; do
-        if [ -f $file ]; then
-            mv $file $file.${TIMESTAMP}
-        fi
-    done
-
-    local DIRECTORIES=(
-        ${HOME}/.config/bat
-        ${HOME}/.config/devilspie2
-        ${HOME}/.config/julia
-        ${HOME}/.config/kitty
-        ${HOME}/.config/nvim
-        ${HOME}/.config/powerline
-        ${HOME}/.config/powershell
-        ${HOME}/.config/taskwarrior
+    local PACKAGES=(
+        pip
+        cliff
+        kaggle
+        powerline-gitstatus
+        powerline-status
     )
-    for dir in ${DIRECTORIES[@]}; do
-        if [ -d $dir ]; then
-            mv $dir $dir.${TIMESTAMP}
-        fi
-    done
+
+    pip3 install "${FLAGS[@]}" "${PACKAGES[@]}"
 }
 
 install_duplic8r() {
