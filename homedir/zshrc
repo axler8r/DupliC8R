@@ -83,7 +83,7 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
     # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
 
     # DEFAULTS
-    [[ -x $(asdf which nvim 2> /dev/null) ]] {
+    if [[ -x $(asdf which nvim 2> /dev/null) ]] {
         EDITOR=$(asdf which nvim)
         VISUAL=$(asdf which nvim)
     }
