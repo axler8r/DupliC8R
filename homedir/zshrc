@@ -68,13 +68,13 @@ zshaddhistory() {
 
 
 # COMPLETIONS
-# [[ -x $(which poetry > /dev/null 2>&1) ]] && source <(poetry completions zsh)
-# [[ -x $(which gh > /dev/null 2>&1) ]] && source <(gh completion --shell zsh)
-# [[ -x $(which just > /dev/null 2>&1) ]] && source <(just --completions zsh)
-# [[ -x $(which fd > /dev/null 2>&1) ]] && source <(fd --gen-completions zsh)
-# [[ -x $(which rg > /dev/null 2>&1) ]] && source <(rg --generate complete-zsh)
-# [[ -x $(which yq > /dev/null 2>&1) ]] && source <(yq shell-completion zsh)
-[[ -x $(which parallel > /dev/null 2>&1) ]] && eval "$(parallel --shell-completion auto)"
+[[ -x $(which poetry 2> /dev/null) ]] && eval "$(poetry completions zsh)"
+[[ -x $(which gh 2> /dev/null1) ]] && eval "$(gh completion --shell zsh)"
+[[ -x $(which just 2> /dev/null) ]] && eval "$(just --completions zsh)"
+[[ -x $(which fd 2> /dev/null) ]] && eval "$(fd --gen-completions zsh)"
+[[ -x $(which rg 2> /dev/null) ]] && eval "$(rg --generate complete-zsh)"
+[[ -x $(which yq 2> /dev/null) ]] && eval "$(yq shell-completion zsh)"
+[[ -x $(which parallel 2> /dev/null) ]] && eval "$(parallel --shell-completion auto)"
 
 
 # ASDF
