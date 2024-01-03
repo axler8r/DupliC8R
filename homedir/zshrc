@@ -8,9 +8,6 @@ compinit
 
 
 # FEATURES
-# edit command line with vim
-# see also: /usr/share/zsh/functions/Zle/edit-command-line
-#           man 1 zshbuiltins
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
@@ -67,7 +64,6 @@ zshaddhistory() {
 # APPLICATIONS
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
 [[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
-[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 
 # COMPLETIONS
@@ -90,14 +86,6 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
         EDITOR=$(asdf which nvim)
         VISUAL=$(asdf which nvim)
     }
-
-    # COMPLETIONS
-    # [[ -x $(asdf which poetry 2> /dev/null) ]] && poetry completions zsh > ${ASDF_DIR}/completions/_poetry
-    # [[ -x $(asdf which gh 2> /dev/null) ]] && gh completion --shell zsh > ${ASDF_DIR}/completions/_gh
-    # [[ -x $(asdf which just 2> /dev/null) ]] && just --completions zsh > ${ASDF_DIR}/completions/_just
-    # [[ -x $(asdf which fd 2> /dev/null) ]] && fd --gen-completions zsh > $ASDF_DIR/completions/_fd
-    # [[ -x $(asdf which rg 2> /dev/null) ]] && rg --generate complete-zsh > $ASDF_DIR/completions/_rg
-    # [[ -x $(asdf which yq 2> /dev/null) ]] && yq shell-completion zsh > $ASDF_DIR/completions/_yq
 }
 
 
@@ -105,6 +93,3 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
