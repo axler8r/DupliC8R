@@ -88,6 +88,7 @@ install_python_requirements() {
     pip3 install "${FLAGS[@]}" "${PACKAGES[@]}"
 }
 
+
 install_duplic8r() {
     _info "Installing duplic8r"
 
@@ -221,18 +222,7 @@ set_default_shell() {
 }
 
 
-install() {
-    install_system_requirements
-    install_python_requirements
-    backup_existing_config
-    install_duplic8r
-    configure_tmux_plugin_manager
-    install_vim_plug
-    install_asdf
-    set_default_shell
-}
-
-
+# Extended installation --------------------------------------------------------
 create_sandbox() {
     mkdir --parents ${SANDBOX}
 }
@@ -362,7 +352,15 @@ install_z() {
 }
 
 
-install_extras() {
+install() {
+    install_system_requirements
+    install_python_requirements
+    install_duplic8r
+    configure_tmux_plugin_manager
+    install_vim_plug
+    install_asdf
+    set_default_shell
+
     create_sandbox
     install_ctrlR
     install_fonts
@@ -375,19 +373,7 @@ install_extras() {
 }
 
 
-if [ $# -eq 0 ]; then
-    install
-    install_extras
-    exit 0
-elif [ $# -eq 1 ]; then
-    if [ ${1} == "--minimal" ]; then
-        install
-        exit 0
-    else
-        echo "Usage: ${0} [--minimal]"
-        exit 1
-    fi
-fi
+install
 
 
 unset SANDBOX
