@@ -2,6 +2,9 @@ set -e
 
 
 SANDBOX=${HOME}/Downloads/Sandbox
+DEVELOPMENT=false
+if [ $# -eq 1 ] && [ "${1}" == "--development" ]; then
+    DEVELOPMENT=true
 fi
 
 
@@ -89,12 +92,16 @@ install_duplic8r() {
     local DUPLIC8R_HOME="${HOME}/.duplic8r"
     local DUPLIC8R_SOURCE="${DUPLIC8R_HOME}/homedir"
     local DUPLIC8R_TARGET="${HOME}/.config"
+    local BRANCH="stable"
+    if [ ${DEVELOPMENT} == true ]; then
+        BRANCH="development"
+    fi
 
-    if [ -d ${DUPLIC8R_HOME} ]; then
-        cd ${DUPLIC8R_HOME}
-        git pull
+    if [ -d "${DUPLIC8R_HOME}" ]; then
+        cd "${DUPLIC8R_HOME}"
+        git pull origin "${BRANCH}"
     else
-        git clone https://github.com/axler8r/duplic8r.git ${DUPLIC8R_HOME}
+        git clone --branch "${BRANCH}" "${REPO}" "${DUPLIC8R_HOME}"
     fi
 
     if [ ! -d ${DUPLIC8R_TARGET} ]; then
