@@ -2,13 +2,7 @@ set -e
 
 
 SANDBOX=${HOME}/Downloads/Sandbox
-LOGDIR=/tmp/duplic8r
-if [ -d "${LOGDIR}" ]; then
-    rm -rf "${LOGDIR}"
 fi
-mkdir "${LOGDIR}"
-# exec > >(tee -i "${LOGDIR}/"install.log)
-# exec 2>&1
 
 
 _info() {
@@ -377,4 +371,3 @@ install
 
 
 unset SANDBOX
-unset LOGDIR
