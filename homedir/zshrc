@@ -46,19 +46,20 @@ export GPG_TTY=$(tty)
 
 
 # ZSH CONFIGURATIONS
-# Ignored commands
-zshaddhistory() {
-    [[ ${1} != 'bat '* ]]
-    [[ ${1} != 'cat '* ]]
-    [[ ${1} != 'cd '* ]]
-    [[ ${1} != 'exit'* ]]
-    [[ ${1} != 'history'* ]]
-    [[ ${1} != 'htop'* ]]
-    [[ ${1} != 'ls '* ]]
-    [[ ${1} != 'locate '* ]]
-    [[ ${1} != 'man '* ]]
-    [[ ${1} != 'updatedb'* ]]
-}
+# TODO: FIX! Doesn't work!
+# zshaddhistory() {
+#     # Dont add these commands to history
+#     [[ ${1} != 'bat '* ]]
+#     [[ ${1} != 'cat '* ]]
+#     [[ ${1} != 'cd '* ]]
+#     [[ ${1} != 'exit'* ]]
+#     [[ ${1} != 'history'* ]]
+#     [[ ${1} != 'htop'* ]]
+#     [[ ${1} != 'ls '* ]]
+#     [[ ${1} != 'locate '* ]]
+#     [[ ${1} != 'man '* ]]
+#     [[ ${1} != 'updatedb'* ]]
+# }
 
 
 # APPLICATIONS
