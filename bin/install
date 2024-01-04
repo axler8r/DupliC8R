@@ -207,7 +207,7 @@ install_asdf() {
         source "${HOME}/.asdf/asdf.sh"
 
         for plugin in "${ASDF_PLUGINS[@]}"; do
-            echo "Installing ${plugin }"
+            echo "Installing ${plugin}"
             asdf plugin add "${plugin}"
             asdf install "${plugin}" latest
             asdf global "${plugin}" "$(asdf latest "${plugin}")"
