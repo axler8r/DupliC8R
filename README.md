@@ -57,7 +57,19 @@ curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/inst
 To install the **development** version of `duplic8r`, run the following command.
 
 ```bash
-curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin/install | bash /dev/stdin
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install | bash -s /dev/stdin --development
+```
+
+### Run the Development Installer
+To run the **development** version of `install`, run the following command.
+> [!NOTE]
+> This will run the latest installer from the `development` branch.
+
+> [!WARNING]
+> The `development` version of the installer may not be stable.
+
+```bash
+curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin/install | bash -s /dev/stdin --development
 ```
 
 
