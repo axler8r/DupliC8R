@@ -198,6 +198,7 @@ install_asdf() {
         just
         neovim
         ripgrep
+        shellcheck
         tokei
         yq
     )
