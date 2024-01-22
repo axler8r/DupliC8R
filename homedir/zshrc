@@ -69,13 +69,14 @@ export GPG_TTY=$(tty)
 
 
 # COMPLETIONS
-[[ -x $(which poetry 2> /dev/null) ]] && eval "$(poetry completions zsh)"
-[[ -x $(which gh 2> /dev/null1) ]] && eval "$(gh completion --shell zsh)"
-[[ -x $(which just 2> /dev/null) ]] && eval "$(just --completions zsh)"
-[[ -x $(which fd 2> /dev/null) ]] && eval "$(fd --gen-completions zsh)"
-[[ -x $(which rg 2> /dev/null) ]] && eval "$(rg --generate complete-zsh)"
-[[ -x $(which yq 2> /dev/null) ]] && eval "$(yq shell-completion zsh)"
-[[ -x $(which parallel 2> /dev/null) ]] && eval "$(parallel --shell-completion auto)"
+# TODO: FIX! Doesn't work!
+# [[ -x $(which poetry 2> /dev/null) ]] && eval "$(poetry completions zsh)"
+# [[ -x $(which gh 2> /dev/null) ]] && eval "$(gh completion --shell zsh)"
+# [[ -x $(which just 2> /dev/null) ]] && eval "$(just --completions zsh)"
+# [[ -x $(which fd 2> /dev/null) ]] && eval "$(fd --gen-completions zsh)"
+# [[ -x $(which rg 2> /dev/null) ]] && eval "$(rg --generate complete-zsh)"
+# [[ -x $(which yq 2> /dev/null) ]] && eval "$(yq shell-completion zsh)"
+# [[ -x $(which parallel 2> /dev/null) ]] && eval "$(parallel --shell-completion auto)"
 
 
 # ASDF
