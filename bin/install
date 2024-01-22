@@ -305,10 +305,10 @@ install_kitty() {
 
     sed --in-place \
         "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
-        "${HOME}/.local/share/applications/kitty*.desktop"
+        "${HOME}"/.local/share/applications/kitty*.desktop
     sed --in-place \
         "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g" \
-        "${HOME}/.local/share/applications/kitty*.desktop"
+        "${HOME}"/.local/share/applications/kitty*.desktop
 }
 
 
