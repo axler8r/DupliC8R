@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+if [ -f /var/lib/snapd/desktop/applications/blender_blender.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/blender.svg|g' /var/lib/snapd/desktop/applications/blender_blender.desktop
+fi
+

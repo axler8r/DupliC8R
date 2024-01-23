@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+if [ -f /var/lib/snapd/desktop/applications/chromium_chromium.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/chromium.svg|g' /var/lib/snapd/desktop/applications/chromium_chromium.desktop
+fi

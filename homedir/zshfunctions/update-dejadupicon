@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+if [ -f /var/lib/snapd/desktop/applications/deja-dup_deja-dup.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/deja-dup.svg|g' /var/lib/snapd/desktop/applications/deja-dup_deja-dup.desktop
+fi

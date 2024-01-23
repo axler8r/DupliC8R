@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+if [ -f /var/lib/snapd/desktop/applications/typora_typora.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/typora.svg|g' /var/lib/snapd/desktop/applications/typora_typora.desktop
+fi
+

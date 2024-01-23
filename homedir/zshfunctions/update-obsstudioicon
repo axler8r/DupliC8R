@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+if [ -f /var/lib/snapd/desktop/applications/obs-studio_com.obsproject.Studio.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/obs.svg|g' /var/lib/snapd/desktop/applications/obs-studio_com.obsproject.Studio.desktop
+fi
