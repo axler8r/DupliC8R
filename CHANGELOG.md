@@ -1,6 +1,44 @@
 # Changelog
 
 
+## 3.3.0
+**2024-01-23**
+
+### Bug Fixes
++ Correct variable expansion error
++ Correct incorrect kiTTY desktop file paths
++ Correct missing utf-8 character
++ Deprecate current asdf commands completion
+
+### New & Updated Documentation
++ Simplify readme
++ Remove redundant documentation
++ Update install instructions
+
+### New & Updated Features
++ New `development` install option
++ New allignment option for `EasyAlign` shell continuation
++ New fzf completion functionality
++ New shellcheck functionality
++ New snap application icon update scripts
++ New tmux aliases
++ New zsh command ignore functionality
++ Update EDITOR and VISUAL variables
++ Update application completion functionality
++ Update install function
++ Update pip install function
++ Update taskwarrior color scheme
++ Update vscode user settings
+
+### Deprecated & Retired Features
++ Deprecate command ignore functionality
++ Retire install script logging
++ Retire unused functionality
+
+### Stylistic & Idiomatic Updates
++ Apply shellcheck recommendations
+
+
 ## 3.2.2
 **2023-12-20**
 
@@ -79,6 +117,7 @@
 
 ## 3.0.0
 **2023-11-18**
+
 ### New & Updated Features
 + New installation script
 + New `zsh` configuration files
@@ -88,6 +127,7 @@
 
 ## 2.x
 **©2017 to ©2021**
+
 ### New & Updated Features
 + New `zsh`
 + New `kitty`
@@ -100,6 +140,7 @@
 
 ## 1.x
 **©2014 to ©2017**
+
 ### New & Updated Features
 + New Powerline for `fish`, `bash`, `vim` and `tmux`
 + New Spacemacs
