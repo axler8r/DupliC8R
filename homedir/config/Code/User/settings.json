@@ -13,7 +13,7 @@
     "editor.cursorStyle": "block",
     "editor.fontFamily": "'Cascadia Code', 'Victor Mono', 'Cartograph CF', 'Consolas'",
     "editor.fontWeight": "500",
-    "editor.fontLigatures": true,
+    "editor.fontLigatures": "'calt', 'ss01', 'ss19",
     "editor.fontSize": 16,
     "editor.lineHeight": 17,
     "editor.lineNumbers": "relative",

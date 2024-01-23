@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+if [ -f /var/lib/snapd/desktop/applications/freecad_freecad.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/freecad.svg|g' /var/lib/snapd/desktop/applications/freecad_freecad.desktop
+fi

@@ -59,6 +59,13 @@ xmap ga <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
+
+" Align '\' characters at the end of the line
+let g:easy_align_delimiters = {
+  \ '\': {
+  \     'pattern': '\\$',
+  \ },
+  \ }
 " }}}
 
 "" Lignline {{{

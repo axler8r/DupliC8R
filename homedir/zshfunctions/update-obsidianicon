@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+
+if [ -f /var/lib/snapd/desktop/applications/obsidian_obsidian.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/obsidian.svg|g' /var/lib/snapd/desktop/applications/obsidian_obsidian.desktop
+fi
+

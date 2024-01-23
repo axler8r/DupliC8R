@@ -8,9 +8,6 @@ compinit
 
 
 # FEATURES
-# edit command line with vim
-# see also: /usr/share/zsh/functions/Zle/edit-command-line
-#           man 1 zshbuiltins
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M vicmd v edit-command-line
@@ -49,35 +46,37 @@ export GPG_TTY=$(tty)
 
 
 # ZSH CONFIGURATIONS
-# Ignored commands
-zshaddhistory() {
-    [[ ${1} != 'bat '* ]]
-    [[ ${1} != 'cat '* ]]
-    [[ ${1} != 'cd '* ]]
-    [[ ${1} != 'exit'* ]]
-    [[ ${1} != 'history'* ]]
-    [[ ${1} != 'htop'* ]]
-    # [[ ${1} != 'ls'* ]]
-    [[ ${1} != 'locate '* ]]
-    [[ ${1} != 'man '* ]]
-    [[ ${1} != 'updatedb'* ]]
-}
+# TODO: FIX! Doesn't work!
+# zshaddhistory() {
+#     # Dont add these commands to history
+#     [[ ${1} != 'bat '* ]]
+#     [[ ${1} != 'cat '* ]]
+#     [[ ${1} != 'cd '* ]]
+#     [[ ${1} != 'exit'* ]]
+#     [[ ${1} != 'history'* ]]
+#     [[ ${1} != 'htop'* ]]
+#     [[ ${1} != 'ls '* ]]
+#     [[ ${1} != 'locate '* ]]
+#     [[ ${1} != 'man '* ]]
+#     [[ ${1} != 'updatedb'* ]]
+# }
 
 
 # APPLICATIONS
+[[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
 [[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
-[[ -f "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh ]] && source "${XDG_CONFIG_HOME:-$HOME/.config}"/fzf/fzf.zsh
 
 
 # COMPLETIONS
-# [[ -x $(which poetry > /dev/null 2>&1) ]] && source <(poetry completions zsh)
-# [[ -x $(which gh > /dev/null 2>&1) ]] && source <(gh completion --shell zsh)
-# [[ -x $(which just > /dev/null 2>&1) ]] && source <(just --completions zsh)
-# [[ -x $(which fd > /dev/null 2>&1) ]] && source <(fd --gen-completions zsh)
-# [[ -x $(which rg > /dev/null 2>&1) ]] && source <(rg --generate complete-zsh)
-# [[ -x $(which yq > /dev/null 2>&1) ]] && source <(yq shell-completion zsh)
-[[ -x $(which parallel > /dev/null 2>&1) ]] && eval "$(parallel --shell-completion auto)"
+# TODO: FIX! Doesn't work!
+# [[ -x $(which poetry 2> /dev/null) ]] && eval "$(poetry completions zsh)"
+# [[ -x $(which gh 2> /dev/null) ]] && eval "$(gh completion --shell zsh)"
+# [[ -x $(which just 2> /dev/null) ]] && eval "$(just --completions zsh)"
+# [[ -x $(which fd 2> /dev/null) ]] && eval "$(fd --gen-completions zsh)"
+# [[ -x $(which rg 2> /dev/null) ]] && eval "$(rg --generate complete-zsh)"
+# [[ -x $(which yq 2> /dev/null) ]] && eval "$(yq shell-completion zsh)"
+# [[ -x $(which parallel 2> /dev/null) ]] && eval "$(parallel --shell-completion auto)"
 
 
 # ASDF
@@ -86,18 +85,10 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
     # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
 
     # DEFAULTS
-    [[ -x $(asdf which nvim 2> /dev/null) ]] {
+    if [[ -x $(asdf which nvim 2> /dev/null) ]] {
         EDITOR=$(asdf which nvim)
         VISUAL=$(asdf which nvim)
     }
-
-    # COMPLETIONS
-    # [[ -x $(asdf which poetry 2> /dev/null) ]] && poetry completions zsh > ${ASDF_DIR}/completions/_poetry
-    # [[ -x $(asdf which gh 2> /dev/null) ]] && gh completion --shell zsh > ${ASDF_DIR}/completions/_gh
-    # [[ -x $(asdf which just 2> /dev/null) ]] && just --completions zsh > ${ASDF_DIR}/completions/_just
-    # [[ -x $(asdf which fd 2> /dev/null) ]] && fd --gen-completions zsh > $ASDF_DIR/completions/_fd
-    # [[ -x $(asdf which rg 2> /dev/null) ]] && rg --generate complete-zsh > $ASDF_DIR/completions/_rg
-    # [[ -x $(asdf which yq 2> /dev/null) ]] && yq shell-completion zsh > $ASDF_DIR/completions/_yq
 }
 
 
@@ -105,6 +96,3 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
-
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

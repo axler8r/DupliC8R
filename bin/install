@@ -2,13 +2,10 @@ set -e
 
 
 SANDBOX=${HOME}/Downloads/Sandbox
-LOGDIR=/tmp/duplic8r
-if [ -d "${LOGDIR}" ]; then
-    rm -rf "${LOGDIR}"
+DEVELOPMENT=false
+if [ $# -eq 1 ] && [ "${1}" == "--development" ]; then
+    DEVELOPMENT=true
 fi
-mkdir "${LOGDIR}"
-exec > >(tee -i "${LOGDIR}/"install.log)
-exec 2>&1
 
 
 _info() {
@@ -19,6 +16,7 @@ _info() {
 }
 
 
+# Base installation ------------------------------------------------------------
 install_system_requirements() {
     _info "Installing system requirements"
 
@@ -61,10 +59,10 @@ install_system_requirements() {
       "&& apt upgrade ${FLAGS[@]}"
       "&& apt install ${FLAGS[@]} ${PACKAGES[@]}"
     )
-    if [ $(id --user) -eq 0 ]; then
-      echo ${COMMANDS[@]} | bash --
+    if [ "$(id --user)" -eq 0 ]; then
+      echo "${COMMANDS[@]}" | bash --
     else
-      echo ${COMMANDS[@]} | sudo --shell --
+      echo "${COMMANDS[@]}" | sudo --shell --
     fi
 }
 
@@ -72,105 +70,81 @@ install_system_requirements() {
 install_python_requirements() {
     _info "Installing python requirements"
 
-    pip3 install --user --upgrade pip
-    for package in powerline-status powerline-gitstatus; do
-        pip3 install --user $package
-    done
+    local FLAGS=(
+        --user
+        --upgrade
+    )
+    local PACKAGES=(
+        pip
+        cliff
+        kaggle
+        powerline-gitstatus
+        powerline-status
+    )
+
+    pip3 install "${FLAGS[@]}" "${PACKAGES[@]}"
 }
 
 
-backup_existing_config() {
-    _info "Backing up existing configuration"
-
-    local TIMESTAMP=$(date +%Y%m%d%H%M%S)
-    local FILES=(
-        ${HOME}/.XCompose
-        ${HOME}/.ctags
-        ${HOME}/.dircolors
-        ${HOME}/.gitcommit
-        ${HOME}/.gitconfig
-        ${HOME}/.gitignore
-        ${HOME}/.taskrc
-        ${HOME}/.tigrc
-        ${HOME}/.tmux.conf
-        ${HOME}/.tmux_extend.zsh
-        ${HOME}/.zshalias
-        ${HOME}/.zshenv
-        ${HOME}/.zshfunction
-        ${HOME}/.zshprompt
-        ${HOME}/.zshrc
-        ${HOME}/.config/Code/User/settings.json
-    )
-    for file in ${FILES[@]}; do
-        if [ -f $file ]; then
-            mv $file $file.${TIMESTAMP}
-        fi
-    done
-
-    local DIRECTORIES=(
-        ${HOME}/.config/bat
-        ${HOME}/.config/devilspie2
-        ${HOME}/.config/julia
-        ${HOME}/.config/kitty
-        ${HOME}/.config/nvim
-        ${HOME}/.config/powerline
-        ${HOME}/.config/powershell
-        ${HOME}/.config/taskwarrior
-    )
-    for dir in ${DIRECTORIES[@]}; do
-        if [ -d $dir ]; then
-            mv $dir $dir.${TIMESTAMP}
-        fi
-    done
-}
-
+# TODO:Check if this works
 install_duplic8r() {
     _info "Installing duplic8r"
 
     local DUPLIC8R_HOME="${HOME}/.duplic8r"
-    local DUPLIC8R_SOURCE="${DUPLIC8R_HOME}/homedir"
-    local DUPLIC8R_TARGET="${HOME}/.config"
+    local SOURCE="${DUPLIC8R_HOME}/homedir"
+    local TARGET="${HOME}/.config"
+    local REPO="https://github.com/axler8r/duplic8r.git"
+    local BRANCH="stable"
+    if [ ${DEVELOPMENT} == true ]; then
+        BRANCH="development"
+    fi
 
-    if [ -d ${DUPLIC8R_HOME} ]; then
-        cd ${DUPLIC8R_HOME}
-        git pull
+    if [ -d "${DUPLIC8R_HOME}" ]; then
+        cd "${DUPLIC8R_HOME}"
+        git pull origin "${BRANCH}"
     else
-        git clone https://github.com/axler8r/duplic8r.git ${DUPLIC8R_HOME}
+        git clone --branch "${BRANCH}" "${REPO}" "${DUPLIC8R_HOME}"
     fi
 
-    if [ ! -d ${DUPLIC8R_TARGET} ]; then
-        mkdir --parents ${DUPLIC8R_TARGET}
+    if [ ! -d "${TARGET}" ]; then
+        mkdir --parents "${TARGET}"
     fi
 
-    ln --symbolic ${DUPLIC8R_SOURCE}/XCompose           ${HOME}/.XCompose
-    ln --symbolic ${DUPLIC8R_SOURCE}/ctags              ${HOME}/.ctags
-    ln --symbolic ${DUPLIC8R_SOURCE}/dircolors          ${HOME}/.dircolors
-    ln --symbolic ${DUPLIC8R_SOURCE}/gitcommit          ${HOME}/.gitcommit
-    ln --symbolic ${DUPLIC8R_SOURCE}/gitconfig          ${HOME}/.gitconfig
-    ln --symbolic ${DUPLIC8R_SOURCE}/gitignore          ${HOME}/.gitignore
-    ln --symbolic ${DUPLIC8R_SOURCE}/taskrc             ${HOME}/.taskrc
-    ln --symbolic ${DUPLIC8R_SOURCE}/tigrc              ${HOME}/.tigrc
-    ln --symbolic ${DUPLIC8R_SOURCE}/tmux               ${HOME}/.tmux.conf
-    ln --symbolic ${DUPLIC8R_SOURCE}/tmux_extend.zsh    ${HOME}/.tmux_extend.zsh
-    ln --symbolic ${DUPLIC8R_SOURCE}/zshalias           ${HOME}/.zshalias
-    ln --symbolic ${DUPLIC8R_SOURCE}/zshenv             ${HOME}/.zshenv
-    ln --symbolic ${DUPLIC8R_SOURCE}/zshfunction        ${HOME}/.zshfunction
-    ln --symbolic ${DUPLIC8R_SOURCE}/zshprompt          ${HOME}/.zshprompt
-    ln --symbolic ${DUPLIC8R_SOURCE}/zshrc              ${HOME}/.zshrc
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/bat         ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/devilspie2  ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/julia       ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/kitty       ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/nvim        ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/powerline   ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/powershell  ${DUPLIC8R_TARGET}
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/taskwarrior ${DUPLIC8R_TARGET}
+    local FLAGS=(
+        --force
+        --symbolic
+    )
 
-    if [ ! -d ${DUPLIC8R_TARGET}/Code/User ]; then
-        mkdir --parents ${DUPLIC8R_TARGET}/Code/User
+    ln "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
+    ln "${FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
+    ln "${FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
+    ln "${FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
+    ln "${FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
+    ln "${FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
+    ln "${FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
+    ln "${FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
+    ln "${FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
+    ln "${FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
+    ln "${FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
+    ln "${FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
+    ln "${FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
+    ln "${FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
+    ln "${FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
+    ln "${FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
+    ln "${FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
+
+    if [ ! -d "${TARGET}/Code/User" ]; then
+        mkdir --parents "${TARGET}/Code/User"
     fi
-    ln --symbolic ${DUPLIC8R_SOURCE}/config/Code/User/settings.json \
-                  ${DUPLIC8R_TARGET}/Code/User/settings.json
+    ln "${FLAGS[@]}" \
+       "${SOURCE}/config/Code/User/settings.json" \
+       "${TARGET}/Code/User/settings.json"
 }
 
 
@@ -179,13 +153,13 @@ configure_tmux_plugin_manager() {
 
     local TMUX_PLUGINS_HOME="${HOME}/.tmux/plugins"
 
-    if [ ! -d ${HOME}/.tmux ]; then
-        mkdir --parents ${TMUX_PLUGINS_HOME}
+    if [ ! -d "${HOME}/.tmux" ]; then
+        mkdir --parents "${TMUX_PLUGINS_HOME}"
     fi
 
     if [ -d /usr/share/tmux-plugin-manager ]; then
-        if [ ! -L ${TMUX_PLUGINS_HOME}/tpm ]; then
-            ln --symbolic /usr/share/tmux-plugin-manager ${TMUX_PLUGINS_HOME}/tpm
+        if [ ! -L "${TMUX_PLUGINS_HOME}/tpm" ]; then
+            ln --symbolic /usr/share/tmux-plugin-manager "${TMUX_PLUGINS_HOME}/tpm"
         fi
     fi
 }
@@ -201,8 +175,8 @@ install_vim_plug() {
         --output
     )
 
-    if [ ! -f ${HOME}/.local/share/nvim/site/autoload/plug.vim ]; then
-        curl ${FLAGS[@]} ${HOME}/.local/share/nvim/site/autoload/plug.vim \
+    if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
+        curl "${FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
 }
@@ -224,19 +198,20 @@ install_asdf() {
         just
         neovim
         ripgrep
+        shellcheck
         tokei
         yq
     )
 
-    if [ ! -d ${HOME}/.asdf ]; then
-        git clone https://github.com/asdf-vm/asdf.git ${HOME}/.asdf --branch v0.13.1
-        . ${HOME}/.asdf/asdf.sh
+    if [ ! -d "${HOME}/.asdf" ]; then
+        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch v0.13.1
+        source "${HOME}/.asdf/asdf.sh"
 
-        for plugin in ${ASDF_PLUGINS[@]}; do
-            echo "Installing $plugin"
-            asdf plugin add $plugin
-            asdf install $plugin latest
-            asdf global $plugin $(asdf latest $plugin)
+        for plugin in "${ASDF_PLUGINS[@]}"; do
+            echo "Installing ${plugin}"
+            asdf plugin add "${plugin}"
+            asdf install "${plugin}" latest
+            asdf global "${plugin}" "$(asdf latest "${plugin}")"
         done
     fi
 }
@@ -248,45 +223,34 @@ set_default_shell() {
     local COMMAND=("chsh --shell $(which zsh) ${USER}")
 
     if [ ! "${SHELL}" == "$(which zsh)" ]; then
-        if [ $(id --user) -eq 0 ]; then
-            echo ${COMMAND[@]} | bash --
+        if [ "$(id --user)" -eq 0 ]; then
+            echo "${COMMAND[@]}" | bash --
         else
-            echo ${COMMAND[@]} | sudo --shell --
+            echo "${COMMAND[@]}" | sudo --shell --
         fi
     fi
 }
 
 
-install() {
-    install_system_requirements
-    install_python_requirements
-    backup_existing_config
-    install_duplic8r
-    configure_tmux_plugin_manager
-    install_vim_plug
-    install_asdf
-    set_default_shell
-}
-
-
+# Extended installation --------------------------------------------------------
 create_sandbox() {
-    mkdir --parents ${SANDBOX}
+    mkdir --parents "${SANDBOX}"
 }
 
 
 destroy_sandbox() {
-    rm --recursive --force ${SANDBOX}
+    rm --recursive --force "${SANDBOX}"
 }
 
 
 install_ctrlR() {
     _info "Installing ctrl+r"
 
-    if [ ! -d ${HOME}/.zsh-hsmw ]; then
+    if [ ! -d "${HOME}/.zsh-hsmw" ]; then
         git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
-                  ${HOME}/.zsh-hsmw
+                  "${HOME}/.zsh-hsmw"
     else
-        cd ${HOME}/.zsh-hsmw
+        cd "${HOME}/.zsh-hsmw"
         git pull
     fi
 }
@@ -295,23 +259,23 @@ install_ctrlR() {
 install_fonts() {
     _info "Installing fonts"
 
-    if [ ! -d ${HOME}/.fonts ]; then
-        mkdir ${HOME}/.fonts
+    if [ ! -d "${HOME}/.fonts" ]; then
+        mkdir "${HOME}/.fonts"
     fi
 
-    cd ${SANDBOX}
+    cd "${SANDBOX}"
 
     wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
     unzip CascadiaCode-2111.01.zip
-    rm --force ${HOME}/.fonts/CascadiaCode*.ttf
-    mv --update ttf/CascadiaCode*.ttf ${HOME}/.fonts
-    rm --force --recursive ${SANDBOX}/*
+    rm --force "${HOME}/.fonts/CascadiaCode*.ttf"
+    mv --update ttf/CascadiaCode*.ttf "${HOME}/.fonts"
+    rm --force --recursive "${SANDBOX:?}/*"
 
     wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
     unzip CascadiaCode.zip
-    rm --force ${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf
-    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf ${HOME}/.fonts
-    rm --force --recursive ${SANDBOX}/*
+    rm --force "${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf"
+    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${HOME}/.fonts"
+    rm --force --recursive "${SANDBOX:?}/*"
 
     fc-cache --force --verbose
 }
@@ -331,29 +295,29 @@ install_kitty() {
     curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
     ln --symbolic --force \
-       ${HOME}/.local/kitty.app/bin/kitty \
-       ${HOME}/.local/kitty.app/bin/kitten \
-       ${HOME}/.local/bin/
-    cp ${HOME}/.local/kitty.app/share/applications/kitty.desktop \
-       ${HOME}/.local/share/applications/
-    cp ${HOME}/.local/kitty.app/share/applications/kitty-open.desktop \
-       ${HOME}/.local/share/applications/
+       "${HOME}/.local/kitty.app/bin/kitty" \
+       "${HOME}/.local/kitty.app/bin/kitten" \
+       "${HOME}/.local/bin/"
+    cp "${HOME}/.local/kitty.app/share/applications/kitty.desktop" \
+       "${HOME}/.local/share/applications/"
+    cp "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop" \
+       "${HOME}/.local/share/applications/"
 
     sed --in-place \
         "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
-        ${HOME}/.local/share/applications/kitty*.desktop
+        "${HOME}"/.local/share/applications/kitty*.desktop
     sed --in-place \
         "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g" \
-        ${HOME}/.local/share/applications/kitty*.desktop
+        "${HOME}"/.local/share/applications/kitty*.desktop
 }
 
 
 install_docker_engine() {
     _info "Installing docker engine"
 
-    if [ ! -x $(which docker) ]; then
+    if [ ! -x "$(which docker)" ]; then
         curl --location https://get.docker.com | bash /dev/stdin
-        if [ $(id --user) -ne 0 ]; then
+        if [ "$(id --user)" -ne 0 ]; then
             echo "usermod --append --groups docker ${USER}" | sudo --shell --
         fi
     fi
@@ -363,19 +327,19 @@ install_docker_engine() {
 install_parallel() {
     _info "Installing parallel"
 
-    if [ ! -x $(which parallel) ]; then
-        cd ${SANDBOX}
+    if [ ! -x "$(which parallel)" ]; then
+        cd "${SANDBOX}"
 
         wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
         tar --extract --bzip2 --file parallel-latest.tar.bz2
         rm parallel-latest.tar.bz2
         cd parallel*
-        ./configure --prefix=${HOME}/.local
+        ./configure --prefix="${HOME}/.local"
         make
         make install
 
-        cd ${HOME}
-        rm -rf ${SANDBOX}/*
+        cd "${HOME}"
+        rm -rf "${SANDBOX:?}/*"
     fi
 }
 
@@ -383,22 +347,30 @@ install_parallel() {
 install_z() {
     _info "Installing z"
 
-    local BIN_DIR=${HOME}/.local/bin
+    local BIN_DIR="${HOME}/.local/bin"
 
-    if [ ! -x ${BIN_DIR}/z.sh ]; then
-        cd ${SANDBOX}
+    if [ ! -x "${BIN_DIR}/z.sh" ]; then
+        cd "${SANDBOX}"
 
         wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
-        mv z.sh ${BIN_DIR}/z.sh
-        chmod +x ${BIN_DIR}/z.sh
+        mv z.sh "${BIN_DIR}/z.sh"
+        chmod +x "${BIN_DIR}/z.sh"
 
-        cd ${HOME}
-        rm -rf ${SANDBOX}/*
+        cd "${HOME}"
+        rm -rf "${SANDBOX:?}/*"
     fi
 }
 
 
-install_extras() {
+install() {
+    install_system_requirements
+    install_python_requirements
+    install_duplic8r
+    configure_tmux_plugin_manager
+    install_vim_plug
+    install_asdf
+    set_default_shell
+
     create_sandbox
     install_ctrlR
     install_fonts
@@ -411,20 +383,8 @@ install_extras() {
 }
 
 
-if [ $# -eq 0 ]; then
-    install
-    install_extras
-    exit 0
-elif [ $# -eq 1 ]; then
-    if [ ${1} == "--minimal" ]; then
-        install
-        exit 0
-    else
-        echo "Usage: ${0} [--minimal]"
-        exit 1
-    fi
-fi
+install
 
 
 unset SANDBOX
-unset LOGDIR
+unset DEVELOPMENT
