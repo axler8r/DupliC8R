@@ -27,6 +27,7 @@ install_system_requirements() {
         --yes
     )
     local PACKAGES=(
+        attr
         build-essential
         make-doc
         bzip2
@@ -37,8 +38,10 @@ install_system_requirements() {
         git-flow
         tig
         htop
+        'huggingface_hub[cli]'
         less
         lsof
+        pv
         python3
         python3-pip
         strace
@@ -197,6 +200,7 @@ install_asdf() {
         jq
         just
         neovim
+        nodejs
         ripgrep
         shellcheck
         tokei
