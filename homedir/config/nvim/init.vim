@@ -26,6 +26,10 @@ autocmd BufNewFile,BufRead *.code-workspace set filetype=json
 autocmd BufNewFile,BufRead *.dtrace set filetype=dtrace
 " }}}
 
+" toggle settings {{{
+map <Leader>ts :setlocal spell! spelllang=en<CR>
+" }}}
+
 " plugins {{{ {{{
 call plug#begin('~/.config/vim_plugs')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
