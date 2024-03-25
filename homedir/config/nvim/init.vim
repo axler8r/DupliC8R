@@ -31,6 +31,7 @@ call plug#begin('~/.config/vim_plugs')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'github/copilot.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'frazrepo/vim-rainbow'
