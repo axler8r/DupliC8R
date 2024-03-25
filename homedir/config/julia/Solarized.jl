@@ -26,6 +26,6 @@ OhMyREPL.input_prompt!("\ue624 \uf053 ", :cyan)
 OhMyREPL.output_prompt!("\ue624 \uf054 ", :cyan)
 
 Base.active_repl.interface.modes[2].prompt = "\ue795 \uf053 "; #shell prompt
-Base.active_repl.interface.modes[3].prompt = "\uf128 \uf054 "; #help prompt
+Base.active_repl.interface.modes[3].prompt = "\uf128 \uf053 "; #help prompt
 #julia_version = ENV["JULIA_VERSION"];
-# Base.active_repl.interface.modes[6].prompt = "\uf487 \uf054 "; #pkg prompt
+# Base.active_repl.interface.modes[6].prompt = "\uf487 \uf053 "; #pkg prompt
