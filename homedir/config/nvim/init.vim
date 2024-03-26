@@ -100,7 +100,7 @@ let g:tagbar_type_elixir = {
     \ 'ctagstype' : 'elixir',
     \ 'kinds' : [
         \ 'f:functions',
-        \ 'functions:functions',
+        \ 'n:numericfunctions',
         \ 'c:callbacks',
         \ 'd:delegates',
         \ 'e:exceptions',
@@ -110,7 +110,8 @@ let g:tagbar_type_elixir = {
         \ 'm:modules',
         \ 'p:protocols',
         \ 'r:records',
-        \ 't:tests'
+        \ 't:tests',
+        \ 'x:transforms'
     \ ]
 \ }
 " }}}
