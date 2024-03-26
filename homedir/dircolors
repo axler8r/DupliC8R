@@ -33,24 +33,27 @@ EXEC                  01;31 # Unix
 .app                  01;31 # OSX
 
 # Text
-.md                   01;32
-.asciidoc             01;32
+.md                   00;37
+.asciidoc             00;37
+.txt                  00;37
 
 # Source
-.ex                   01;32
-.exs                  01;32
-.rs                   01;32
 .cs                   01;32
 .csproj               00;32
-.swift                01;32
+.ex                   01;32
+.exs                  01;32
 .java                 01;32
+.jl                   01;32
 .kt                   01;32
 .py                   01;32
+.rs                   01;32
+.scala                01;32
+.sql                  00;32
+.swift                01;32
 .sh                   00;32
 .bash                 00;32
 .csh                  00;32
 .zsh                  00;32
-.sql                  00;32
 .json                 01;32
 .xml                  01;32
 .yaml                 01;32
@@ -79,9 +82,10 @@ EXEC                  01;31 # Unix
 .7z                   01;36
 .bz                   01;36
 .bz2                  00;36
-.dmg                  01;36 # OSX
+.dmg                  01;36
 .gz                   01;36
 .iso                  01;36
+.pkg                  01;36
 .rar                  00;36
 .tar                  01;36
 .tbz                  01;36
