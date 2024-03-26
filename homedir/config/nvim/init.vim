@@ -73,7 +73,7 @@ let g:easy_align_delimiters = {
   \ }
 " }}}
 
-"" Lignline {{{
+"" LightLine {{{
 let g:lightline = {
 \   'theme': 'solarized',
 \   'active': {
