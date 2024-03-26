@@ -89,7 +89,7 @@ set guioptions-=e  " Don't use GUI tabline
 " }}}
 
 "" NERDTree {{{
-map <F7> :NERDTreeToggle<CR>
+nmap <F7> :NERDTreeToggle<CR>
 " }}}
 
 "" TagBar {{{
