@@ -25,106 +25,130 @@ NORMAL                00
 FILE                  00
 DIR                   01;34
 LINK                  01;36
-FIFO                  30;47
-SOCK                  30;47
-ORPHAN                05;37;41
-MISSING               05;37;41
-EXEC                  01;31 # Unix
-.app                  01;31 # OSX
+FIFO                  00;48;5;240;38;5;230 # 30;47
+SOCK                  00;48;5;241;38;5;230 # 30;47
+ORPHAN                01;48;5;160;38;5;230 #05;37;41
+MISSING               01;48;5;160;38;5;230 #05;37;41
+EXEC                  01;38;5;160 # Linux
+.app                  00;38;5;160 # OSX
 
 # Text
-.md                   00;37
-.asciidoc             00;37
-.txt                  00;37
+.md                   01;38;5;245
+.asciidoc             00;38;5;245
+.txt                  00;38;5;245
+.tex                  00;38;5;245
 
 # Source
-.cs                   01;32
-.csproj               00;32
-.ex                   01;32
-.exs                  01;32
-.java                 01;32
-.jl                   01;32
-.kt                   01;32
-.py                   01;32
-.rs                   01;32
-.scala                01;32
-.sql                  00;32
-.swift                01;32
-.sh                   00;32
-.bash                 00;32
-.csh                  00;32
-.zsh                  00;32
-.json                 01;32
-.xml                  01;32
-.yaml                 01;32
+.cs                   00;38;5;64
+.csproj               00;38;5;64
+.ex                   01;38;5;64
+.exs                  01;38;5;64
+.java                 00;38;5;64
+.jl                   01;38;5;64
+.kt                   00;38;5;64
+.lua                  00;38;5;64
+.py                   01;38;5;64
+.rs                   01;38;5;64
+.scala                00;38;5;64
+.sql                  00;38;5;64
+.swift                00;38;5;64
+
+# Shell
+.sh                   00;38;5;245
+.bash                 00;38;5;245
+.csh                  00;38;5;245
+.zsh                  01;38;5;245
+
+# Configuration
+.json                 01;38;5;61
+.xml                  00;38;5;61
+.yaml                 01;38;5;61
+.ini                  01;38;5;61
+.cfg                  01;38;5;61
 
 # Notebook & Livebook
-.livemd               01;33
-.ipynb                01;33
+.livemd               01;38;5;136
+.ipynb                01;38;5;136
+.jlnb                 00;38;5;136
 
 # Image
-.jpeg                 00;34
-.jpg                  00;34
-.JPG                  00;34
-.png                  00;34
-.PNG                  01;34
-.svg                  01;34
+.jpeg                 00;38;5;33
+.jpg                  00;38;5;33
+.png                  00;38;5;33
+.svg                  00;38;5;33
+.tiff                 00;38;5;33
 
 # Binary document
-.pdf                  01;35
-.ps                   00;35
-.docx                 00;35
-.dotx                 00;35
-.xlsx                 00;35
-.pptx                 00;35
+.pdf                  01;38;5;125
+.ps                   00;38;5;125
 
 # Archive
-.7z                   01;36
-.bz                   01;36
-.bz2                  00;36
-.dmg                  01;36
-.gz                   01;36
-.iso                  01;36
-.pkg                  01;36
-.rar                  00;36
-.tar                  01;36
-.tbz                  01;36
-.tbz2                 00;36
-.tgz                  01;36
-.z                    01;36
-.Z                    01;36
-.zip                  01;36
-
-# Test
-.dircolors-black         30
-.dircolors-brblack    01;30
-.dircolors-red           31
-.dircolors-brred      01;31
-.dircolors-green         32
-.dircolors-brgreen    01;32
-.dircolors-yellow        33
-.dircolors-bryellow   01;33
-.dircolors-blue          34
-.dircolors-brblue     01;34
-.dircolors-magenta       35
-.dircolors-brmagenta  01;35
-.dircolors-cyan          36
-.dircolors-brcyan     01;36
-.dircolors-white         37
-.dircolors-brwhite    01;37
+# 00;38;5;37
+.7z                   01;38;5;37
+.bz                   00;38;5;37
+.bz2                  00;38;5;37
+.dmg                  00;38;5;37
+.gz                   01;38;5;37
+.iso                  00;38;5;37
+.pkg                  00;38;5;37
+.rar                  00;38;5;37
+.tar                  00;38;5;37
+.tbz                  00;38;5;37
+.tbz2                 00;38;5;37
+.tgz                  00;38;5;37
+.xz                   00;38;5;37
+.z                    00;38;5;37
+.Z                    00;38;5;37
+.zip                  01;38;5;37
+.zstd                 00;38;5;37
 
 # Miscellanea
-.log                  01;32
-*~                    01;32
+.log                  00;38;5;245
+*~                    00;38;5;245
 
 # Meta
-.bak                  01;37
-.BAK                  01;37
-.old                  01;37
-.OLD                  01;37
-.dist                 01;37
-.DIST                 01;37
-.orig                 01;37
-.ORIG                 01;37
-.swp                  01;37
-.swo                  01;37
+.bak                  00;38;5;240
+.BAK                  00;38;5;240
+.old                  00;38;5;240
+.OLD                  00;38;5;240
+.dist                 00;38;5;240
+.DIST                 00;38;5;240
+.orig                 00;38;5;240
+.ORIG                 00;38;5;240
+.swp                  00;38;5;240
+.swo                  00;38;5;240
+
+# Solarized 256 color test
+.dircolors-base03     00;38;5;234
+.dircolors-base02     00;38;5;235
+.dircolors-base01     00;38;5;240
+.dircolors-base00     00;38;5;241
+.dircolors-base0      00;38;5;244
+.dircolors-base1      00;38;5;245
+.dircolors-base2      00;38;5;254
+.dircolors-base3      00;38;5;230
+.dircolors-red        00;38;5;160
+.dircolors-orange     00;38;5;166
+.dircolors-yellow     00;38;5;136
+.dircolors-green      00;38;5;64
+.dircolors-blue       00;38;5;33
+.dircolors-cyan       00;38;5;37
+.dircolors-violet     00;38;5;61
+.dircolors-magenta    00;38;5;125
+.dircolors-bbase03    01;38;5;234
+.dircolors-bbase02    01;38;5;235
+.dircolors-bbase01    01;38;5;240
+.dircolors-bbase00    01;38;5;241
+.dircolors-bbase0     01;38;5;244
+.dircolors-bbase1     01;38;5;245
+.dircolors-bbase2     01;38;5;254
+.dircolors-bbase3     01;38;5;230
+.dircolors-bred       01;38;5;160
+.dircolors-borange    01;38;5;166
+.dircolors-byellow    01;38;5;136
+.dircolors-bgreen     01;38;5;64
+.dircolors-bblue      01;38;5;33
+.dircolors-bcyan      01;38;5;37
+.dircolors-bviolet    01;38;5;61
+.dircolors-bmagenta   01;38;5;125
+
