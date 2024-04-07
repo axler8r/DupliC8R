@@ -119,38 +119,39 @@ install_duplic8r() {
     fi
 
     local FLAGS=(
-        --force
-        --symbolic
+        --mode=644
+        --backup=numbered
+        --compare
     )
 
-    ln "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
-    ln "${FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
-    ln "${FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
-    ln "${FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
-    ln "${FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
-    ln "${FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
-    ln "${FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
-    ln "${FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
-    ln "${FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
-    ln "${FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
-    ln "${FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
-    ln "${FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
-    ln "${FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
-    ln "${FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
-    ln "${FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
-    ln "${FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
-    ln "${FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
+    install "${FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
+    install "${FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
+    install "${FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
+    install "${FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
+    install "${FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
+    install "${FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
+    install "${FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
+    install "${FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
+    install "${FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
+    install "${FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
+    install "${FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
+    install "${FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
+    install "${FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
+    install "${FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
+    install "${FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
+    install "${FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
 
     if [ ! -d "${TARGET}/Code/User" ]; then
         mkdir --parents "${TARGET}/Code/User"
     fi
-    ln "${FLAGS[@]}" \
+    install "${FLAGS[@]}" \
        "${SOURCE}/config/Code/User/settings.json" \
        "${TARGET}/Code/User/settings.json"
 }
