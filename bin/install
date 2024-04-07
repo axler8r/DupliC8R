@@ -1,3 +1,6 @@
+#!/bin/bash
+
+
 set -e
 
 
@@ -17,7 +20,7 @@ _info() {
 
 
 # Base installation ------------------------------------------------------------
-install_system_requirements() {
+install_apt_packages() {
     _info "Installing system requirements"
 
     local FLAGS=(
@@ -38,7 +41,6 @@ install_system_requirements() {
         git-flow
         tig
         htop
-        'huggingface_hub[cli]'
         less
         lsof
         pv
@@ -70,7 +72,7 @@ install_system_requirements() {
 }
 
 
-install_python_requirements() {
+install_python_packages() {
     _info "Installing python requirements"
 
     local FLAGS=(
@@ -367,8 +369,8 @@ install_z() {
 
 
 install() {
-    install_system_requirements
-    install_python_requirements
+    install_apt_packages
+    install_python_packages
     install_duplic8r
     configure_tmux_plugin_manager
     install_vim_plug
