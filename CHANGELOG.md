@@ -1,6 +1,35 @@
 # Changelog
 
 
+## 4.0.0
+**2024-04-13**
+
+### BREAKING CHANGES
++ **BREAKING!!** New install script (`bin/install2`)
+    > Replace most symlinks (`ln`) with files (`install`)
++ Exisiting install script will be deprecated in a future release
+
+### New & Updated Features
++ Add Elixir `ctag` classes
++ Add histoty ignore functionality
++ Add Julia notebook functionality
++ Add NeoVim NERDTree toggle
++ Add Snap installation functionality
++ New helper function for list processing
++ New NeoVim spelling toggle
++ Update Julia prompts
++ Update package list
++ Update `pip` package list
++ Update NeoVim plugin list
+
+### Stylistic & Idiomatic Updates
++ Apply function naming conventions to `bin/install2`
++ Apply standard formatting to `bin/install2`
++ Correct spelling error
++ Sort and organize extension list in `homedir/config/nvim/init.vim`
++ Update ANSI color codes to 256 color in `homedir/dircolors`
+
+
 ## 3.3.0
 **2024-01-23**
 

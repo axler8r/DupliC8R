@@ -13,6 +13,7 @@ alias get-ipaddress=' printf "%s\n" "$(curl --silent --get https://api.ipify.org
 alias get-terminaldimensions=' echo $LINES × $COLUMNS '
 alias get-windowskey=' sudo strings /sys/firmware/acpi/tables/MSDM | command tail --lines=1 '
 alias set-centernewwindow=' gsettings set org.gnome.mutter center-new-windows true '
+alias update-system=' sudo apt update && sudo apt upgrade --yes && sudo apt autoremove --yes && sudo apt autoclean --yes '
 
 
 if [[ "$(type -w asdf)" == "asdf: function" ]] {
@@ -152,6 +153,23 @@ if [[ -x $(which docker) ]] {
             ghcr.io/livebook-dev/livebook:latest-cuda12.1 > "/tmp/${__AX_NAME}.log"
     }
     alias start-dockerelixirlivebookcuda=' __ax_docker_start_elixirlivebookcuda '
+
+    # Julia Pluto Notebook in Docker
+    __ax_docker_start_juliaplutonotebook() {
+        [[ -f /tmp/plutonotebook*(.) ]] && rm /tmp/plutonotebook*
+
+        local __AX_NAME="plutonotebook-$(date +%Y%m%d%H%M%S)"
+
+        docker run \
+            --name "${__AX_NAME}" \
+            --mount="type=volume,source=JuliaConfig,target=/root/.julia" \
+            --mount="type=bind,source=/home/axl/.config/julia/Solarized.jl,target=/root/.julia/Solarized.jl,readonly" \
+            --mount="type=volume,source=JuliaProjects,target=/root/projects" \
+            --publish target=1234,published=12345 \
+            $__AX_ARGS_ONE_TIME $__AX_ARGS_UP_TO_DATE $__AX_ARGS_INTERACTIVE \
+            julia > "/tmp/${__AX_NAME}.log"
+    }
+    alias start-dockerjuliaplutonotebook=" __ax_docker_start_juliaplutonotebook "
 
     # Jupyter Notebook in Docker
     __ax_docker_start_jupyternotebook() {
@@ -371,3 +389,4 @@ alias -g G="| grep "
 alias -g R="| rg "
 alias -g C="| wc --lines - "
 alias -g L="| less --line-numbers "
+

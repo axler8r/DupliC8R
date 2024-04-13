@@ -19,3 +19,13 @@ remove-historyline() {
 
     print "Deleted line ${1} from history."
 }
+
+# Enable processing items in a list that has a header without processing the
+# header, by splitting the header from the body of a list, and passing on the
+# rest the lines for processing.
+list-body() {
+	IFS= read -r header     # Capture the header.
+	printf '%s\n' "$header" # Print the header.
+	"$@"                    # Return the remaining lines.
+}
+

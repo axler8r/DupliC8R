@@ -26,11 +26,16 @@ autocmd BufNewFile,BufRead *.code-workspace set filetype=json
 autocmd BufNewFile,BufRead *.dtrace set filetype=dtrace
 " }}}
 
+" toggle settings {{{
+map <Leader>ts :setlocal spell! spelllang=en<CR>
+" }}}
+
 " plugins {{{ {{{
 call plug#begin('~/.config/vim_plugs')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'github/copilot.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'frazrepo/vim-rainbow'
@@ -68,7 +73,7 @@ let g:easy_align_delimiters = {
   \ }
 " }}}
 
-"" Lignline {{{
+"" LightLine {{{
 let g:lightline = {
 \   'theme': 'solarized',
 \   'active': {
@@ -84,7 +89,7 @@ set guioptions-=e  " Don't use GUI tabline
 " }}}
 
 "" NERDTree {{{
-map <F7> :NERDTreeToggle<CR>
+nmap <F7> :NERDTreeToggle<CR>
 " }}}
 
 "" TagBar {{{
@@ -95,7 +100,7 @@ let g:tagbar_type_elixir = {
     \ 'ctagstype' : 'elixir',
     \ 'kinds' : [
         \ 'f:functions',
-        \ 'functions:functions',
+        \ 'n:numericfunctions',
         \ 'c:callbacks',
         \ 'd:delegates',
         \ 'e:exceptions',
@@ -105,7 +110,8 @@ let g:tagbar_type_elixir = {
         \ 'm:modules',
         \ 'p:protocols',
         \ 'r:records',
-        \ 't:tests'
+        \ 't:tests',
+        \ 'x:transforms'
     \ ]
 \ }
 " }}}
