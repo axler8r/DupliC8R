@@ -29,6 +29,7 @@ install_apt_packages() {
         --quiet
         --yes
     )
+
     local PACKAGES=(
         attr
         build-essential
@@ -59,15 +60,47 @@ install_apt_packages() {
         zsh-doc
         zsh-syntax-highlighting
     )
+
     local COMMANDS=(
       "apt update"
       "&& apt upgrade ${FLAGS[@]}"
       "&& apt install ${FLAGS[@]} ${PACKAGES[@]}"
     )
+
     if [ "$(id --user)" -eq 0 ]; then
       echo "${COMMANDS[@]}" | bash --
     else
       echo "${COMMANDS[@]}" | sudo --shell --
+    fi
+}
+
+
+install_snaps() {
+    _info "Installing snaps"
+
+    local PACKAGES=(
+        blender
+        brave
+        chromium
+        code
+        gimp
+        inkscape
+        obs-studio
+        obsidian
+        slack
+        slides
+        vlc
+    )
+
+    local COMMANDS=(
+        "snap refresh"
+        "&& snap install ${PACKAGES[@]}"
+    )
+
+    if [ "$(id --user)" -eq 0 ]; then
+        echo "${COMMANDS[@]}" | bash --
+    else
+        echo "${COMMANDS[@]}" | sudo --shell --
     fi
 }
 
@@ -79,6 +112,7 @@ install_python_packages() {
         --user
         --upgrade
     )
+
     local PACKAGES=(
         pip
         cliff
@@ -149,6 +183,7 @@ install_duplic8r() {
     if [ ! -d "${TARGET}/Code/User" ]; then
         mkdir --parents "${TARGET}/Code/User"
     fi
+
     install "${FLAGS[@]}" \
        "${SOURCE}/config/Code/User/settings.json" \
        "${TARGET}/Code/User/settings.json"
@@ -372,6 +407,7 @@ install_z() {
 
 install() {
     install_apt_packages
+    install_snaps
     install_python_packages
     install_duplic8r
     configure_tmux_plugin_manager
