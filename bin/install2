@@ -47,16 +47,16 @@ install_apt_packages() {
         "zsh-syntax-highlighting"
     )
 
-    local COMMANDS=(
+    local _COMMANDS=(
       "apt update"
-      "&& apt upgrade ${FLAGS[@]}"
-      "&& apt install ${FLAGS[@]} ${PACKAGES[@]}"
+      "&& apt upgrade ${_FLAGS[@]}"
+      "&& apt install ${_FLAGS[@]} ${_PACKAGES[@]}"
     )
 
     if [ "$(id --user)" -eq 0 ]; then
-      echo "${COMMANDS[@]}" | bash --
+      echo "${_COMMANDS[@]}" | bash --
     else
-      echo "${COMMANDS[@]}" | sudo --shell --
+      echo "${_COMMANDS[@]}" | sudo --shell --
     fi
 }
 
@@ -69,9 +69,6 @@ install_snaps() {
         "--upgrade"
     )
 
-    local COMMANDS=(
-        "snap refresh"
-        "&& snap install ${PACKAGES[@]}"
     local _PACKAGES=(
         "pip"
         "cliff"
@@ -81,11 +78,6 @@ install_snaps() {
         "powerline-status"
     )
 
-    if [ "$(id --user)" -eq 0 ]; then
-        echo "${COMMANDS[@]}" | bash --
-    else
-        echo "${COMMANDS[@]}" | sudo --shell --
-    fi
 }
 
 
@@ -107,12 +99,6 @@ install_python_packages() {
 install_duplic8r() {
     _info "Installing duplic8r"
 
-    local DUPLIC8R_HOME="${HOME}/.duplic8r"
-    local SOURCE="${DUPLIC8R_HOME}/homedir"
-    local TARGET="${HOME}/.config"
-    local REPO="https://github.com/axler8r/duplic8r.git"
-    local BRANCH="stable"
-    if [ ${DEVELOPMENT} == true ]; then
         BRANCH="development"
     fi
 
@@ -266,13 +252,12 @@ install_asdf() {
 set_default_shell() {
     _info "Setting default shell"
 
-    local COMMAND=("chsh --shell $(which zsh) ${USER}")
 
     if [ ! "${SHELL}" == "$(which zsh)" ]; then
         if [ "$(id --user)" -eq 0 ]; then
-            echo "${COMMAND[@]}" | bash --
+            echo chsh --shell "$(which zsh)" "${USER}" | bash --
         else
-            echo "${COMMAND[@]}" | sudo --shell --
+            echo chsh --shell "$(which zsh)" "${USER}" | sudo --shell --
         fi
     fi
 }
@@ -506,4 +491,9 @@ unset _SKIP_DOCKER
 unset _SKIP_CTRLR
 unset _SKIP_PARALLEL
 unset _SKIP_Z
-
+    local DUPLIC8R_HOME="${HOME}/.duplic8r"
+    local SOURCE="${DUPLIC8R_HOME}/homedir"
+    local TARGET="${HOME}/.config"
+    local REPO="https://github.com/axler8r/duplic8r.git"
+    local BRANCH="stable"
+    if [ ${DEVELOPMENT} == true ]; then
