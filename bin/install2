@@ -84,6 +84,8 @@ install_snaps() {
 install_python_packages() {
     _info "Installing python requirements"
 
+    local _SOURCE=$1
+    local _TARGET=$2
     local _FLAGS=(
         "--archive"
         "--checksum"
@@ -99,7 +101,11 @@ install_python_packages() {
 install_duplic8r() {
     _info "Installing duplic8r"
 
-        BRANCH="development"
+    local _DUPLIC8R_HOME="${HOME}/.duplic8r"
+    local _SOURCE="${_DUPLIC8R_HOME}/homedir"
+    local _TARGET="${HOME}/.config"
+    local _REPO="https://github.com/axler8r/duplic8r.git"
+    local _BRANCH="stable"
     fi
 
     if [ -d "${DUPLIC8R_HOME}" ]; then
@@ -235,6 +241,18 @@ install_asdf() {
         "yq"
     )
 
+    local _ASDF_LATEST
+    _ASDF_LATEST=$(
+        git -c \
+        "versionsort.suffix=-" \
+        ls-remote \
+        --exit-code \
+        --refs \
+        --sort="version:refname" \
+        --tags https://github.com/asdf-vm/asdf "*.*.*" \
+        | tail --lines=1 \
+        | cut --delimiter="/" --fields=3
+    )
     if [ ! -d "${HOME}/.asdf" ]; then
         git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch v0.13.1
         source "${HOME}/.asdf/asdf.sh"
