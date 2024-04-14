@@ -8,11 +8,11 @@ set -e
 install_apt_packages() {
     _info "Installing system requirements"
 
-    local FLAGS=(
-        --no-install-recommends
-        --no-show-upgraded
-        --quiet
-        --yes
+    local _FLAGS=(
+        "--no-install-recommends"
+        "--no-show-upgraded"
+        "--quiet"
+        "--yes"
     )
 
     local PACKAGES=(
@@ -75,6 +75,9 @@ install_snaps() {
         slack
         slides
         vlc
+    local _FLAGS=(
+        "--user"
+        "--upgrade"
     )
 
     local COMMANDS=(
@@ -93,11 +96,6 @@ install_snaps() {
 install_python_packages() {
     _info "Installing python requirements"
 
-    local FLAGS=(
-        --user
-        --upgrade
-    )
-
     local PACKAGES=(
         pip
         cliff
@@ -105,6 +103,11 @@ install_python_packages() {
         kaggle
         powerline-gitstatus
         powerline-status
+    local _FLAGS=(
+        "--archive"
+        "--checksum"
+        "--progress"
+        "--verbose"
     )
 
     pip3 install "${FLAGS[@]}" "${PACKAGES[@]}"
@@ -135,10 +138,6 @@ install_duplic8r() {
         mkdir --parents "${TARGET}"
     fi
 
-    local FLAGS=(
-        --mode=644
-        --backup=numbered
-        --compare
     )
 
     install "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
@@ -167,6 +166,13 @@ install_duplic8r() {
 
     if [ ! -d "${TARGET}/Code/User" ]; then
         mkdir --parents "${TARGET}/Code/User"
+#   local _FLAGS=(
+#       "--backup=existing"
+#       "--force"
+#       "--recursive"
+#       "--update"
+#       "--verbose"
+#   )
     fi
 
     install "${FLAGS[@]}" \
@@ -195,11 +201,11 @@ configure_tmux_plugin_manager() {
 install_vim_plug() {
     _info "Installing vim plug"
 
-    local FLAGS=(
-        --create-dirs
-        --fail
-        --location
-        --output
+    local _FLAGS=(
+        "--create-dirs"
+        "--fail"
+        "--location"
+        "--output"
     )
 
     if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
