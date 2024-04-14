@@ -61,8 +61,8 @@ install_apt_packages() {
 }
 
 
-install_snaps() {
-    _info "Installing snaps"
+install_python_packages() {
+    _info "Installing python requirements"
 
     local _FLAGS=(
         "--user"
@@ -81,8 +81,6 @@ install_snaps() {
 }
 
 
-install_python_packages() {
-    _info "Installing python requirements"
 
     local _SOURCE=$1
     local _TARGET=$2
@@ -289,6 +287,9 @@ create_sandbox() {
 
 destroy_sandbox() {
     rm --recursive --force "${SANDBOX}"
+install_snaps() {
+    _info "Installing snaps"
+
     local _SNAPS=(
         "brave"
         "chromium"
@@ -475,6 +476,9 @@ while [ $# -gt 0 ]; do
     shift
 done
 _SANDBOX=${HOME}/Downloads/Sandbox
+
+
+install_all() {
     install_apt_packages
     install_snaps
     install_python_packages
@@ -496,7 +500,7 @@ _SANDBOX=${HOME}/Downloads/Sandbox
 }
 
 
-install
+install_all
 
 unset _SANDBOX
 unset _DEVELOPMENT
