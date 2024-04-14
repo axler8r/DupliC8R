@@ -78,10 +78,11 @@ install_python_packages() {
         "powerline-status"
     )
 
+    pip3 install "${_FLAGS[@]}" "${_PACKAGES[@]}"
 }
 
 
-
+copy_file() {
     local _SOURCE=$1
     local _TARGET=$2
     local _FLAGS=(
@@ -91,11 +92,10 @@ install_python_packages() {
         "--verbose"
     )
 
-    pip3 install "${FLAGS[@]}" "${PACKAGES[@]}"
+    rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
 }
 
 
-# TODO:Check if this works
 install_duplic8r() {
     _info "Installing duplic8r"
 
@@ -104,18 +104,21 @@ install_duplic8r() {
     local _TARGET="${HOME}/.config"
     local _REPO="https://github.com/axler8r/duplic8r.git"
     local _BRANCH="stable"
+    if [ -n "${_DEVELOPMENT}" ]; then
+        _BRANCH="development"
     fi
 
-    if [ -d "${DUPLIC8R_HOME}" ]; then
-        cd "${DUPLIC8R_HOME}"
-        git pull origin "${BRANCH}"
+    if [ -d "${_DUPLIC8R_HOME}" ]; then
+        cd "${_DUPLIC8R_HOME}"
+        git pull origin "${_BRANCH}"
     else
-        git clone --branch "${BRANCH}" "${REPO}" "${DUPLIC8R_HOME}"
+        git clone --branch "${_BRANCH}" "${_REPO}" "${_DUPLIC8R_HOME}"
     fi
 
-    if [ ! -d "${TARGET}" ]; then
-        mkdir --parents "${TARGET}"
+    if [ ! -d "${_TARGET}" ]; then
+        mkdir --parents "${_TARGET}"
     fi
+    
     local _FILES=(
         "XCompose"
         "ctags"
@@ -134,6 +137,10 @@ install_duplic8r() {
         "zshrc"
     )
 
+    for file in "${_FILES[@]}"; do
+        copy_file "${_SOURCE}/${file}" "${HOME}/.${file}"
+    done
+
     local _CONFIGS=(
         "bat"
         "devilspie2"
@@ -142,32 +149,10 @@ install_duplic8r() {
         "nvim"
     )
 
-    install "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
-    install "${FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
-    install "${FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
-    install "${FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
-    install "${FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
-    install "${FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
-    install "${FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
-    install "${FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
-    install "${FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
-    install "${FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
-    install "${FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
-    install "${FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
-    install "${FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
-    install "${FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
-    install "${FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
-    install "${FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
+    for config in "${CONFIGS[@]}"; do
+        copy_file "${_SOURCE}/config/${config}" "${_TARGET}"
+    done
 
-    if [ ! -d "${TARGET}/Code/User" ]; then
-        mkdir --parents "${TARGET}/Code/User"
 #   local _FLAGS=(
 #       "--backup=existing"
 #       "--force"
@@ -175,11 +160,38 @@ install_duplic8r() {
 #       "--update"
 #       "--verbose"
 #   )
+
+#   cp "${_____FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
+#   cp "${_FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
+#   cp "${_FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
+#   cp "${_FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
+#   cp "${_FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
+#   cp "${_FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
+#   cp "${_FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
+#   cp "${_FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
+#   cp "${_FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
+#   cp "${_FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
+#   cp "${_FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
+#   cp "${_FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
+#   cp "${_FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
+#   cp "${_FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
+#   cp "${_FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
+#   cp "${_FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
+
+    if [ ! -d "${_TARGET}/Code/User" ]; then
+        mkdir --parents "${_TARGET}/Code/User"
     fi
 
-    install "${FLAGS[@]}" \
-       "${SOURCE}/config/Code/User/settings.json" \
-       "${TARGET}/Code/User/settings.json"
+    cp "${_FLAGS[@]}" \
+       "${_SOURCE}/config/Code/User/settings.json" \
+       "${_TARGET}/Code/User/settings.json"
 }
 
 
@@ -211,9 +223,11 @@ install_vim_plug() {
     )
 
     if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
-        curl "${FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
+        curl "${_FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
+
+    nvim --headless +'PlugInstall --sync' +qa
 }
 
 
@@ -251,15 +265,16 @@ install_asdf() {
         | tail --lines=1 \
         | cut --delimiter="/" --fields=3
     )
+
     if [ ! -d "${HOME}/.asdf" ]; then
-        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch v0.13.1
+        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch "${_ASDF_LATEST}"
         source "${HOME}/.asdf/asdf.sh"
 
-        for plugin in "${ASDF_PLUGINS[@]}"; do
-            echo "Installing ${plugin}"
-            asdf plugin add "${plugin}"
-            asdf install "${plugin}" latest
-            asdf global "${plugin}" "$(asdf latest "${plugin}")"
+        for _plugin in "${_ASDF_PLUGINS[@]}"; do
+            echo "Installing ${_plugin}"
+            asdf plugin add "${_plugin}"
+            asdf install "${_plugin}" latest
+            asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
         done
     fi
 }
@@ -267,7 +282,6 @@ install_asdf() {
 
 set_default_shell() {
     _info "Setting default shell"
-
 
     if [ ! "${SHELL}" == "$(which zsh)" ]; then
         if [ "$(id --user)" -eq 0 ]; then
@@ -281,12 +295,15 @@ set_default_shell() {
 
 # Extended installation --------------------------------------------------------
 create_sandbox() {
-    mkdir --parents "${SANDBOX}"
+    mkdir --parents "${_SANDBOX}"
 }
 
 
 destroy_sandbox() {
-    rm --recursive --force "${SANDBOX}"
+    rm --recursive --force "${_SANDBOX}"
+}
+
+
 install_snaps() {
     _info "Installing snaps"
 
@@ -297,6 +314,27 @@ install_snaps() {
         "obsidian --classic"
         "slides"
     )
+    # Optional extras
+    # "blender --classic"
+    # "gimp"
+    # "inkscape"
+    # "obs-studio"
+    # "slack"
+    # "vlc"
+
+    if [ "$(id --user)" -eq 0 ]; then
+        echo snap refresh | bash --
+    else
+        echo snap refresh | sudo --shell --
+    fi
+
+    for _snap in "${_SNAPS[@]}"; do
+        if [ "$(id --user)" -eq 0 ]; then
+            echo snap install "${_snap}" | bash --
+        else
+            echo snap install "${_snap}" | sudo --shell --
+        fi
+    done
 }
 
 
@@ -320,19 +358,19 @@ install_fonts() {
         mkdir "${HOME}/.fonts"
     fi
 
-    cd "${SANDBOX}"
+    cd "${_SANDBOX}"
 
     wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
     unzip CascadiaCode-2111.01.zip
     rm --force "${HOME}/.fonts/CascadiaCode*.ttf"
     mv --update ttf/CascadiaCode*.ttf "${HOME}/.fonts"
-    rm --force --recursive "${SANDBOX:?}/*"
+    rm --force --recursive "${_SANDBOX:?}/*"
 
     wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
     unzip CascadiaCode.zip
     rm --force "${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf"
     mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${HOME}/.fonts"
-    rm --force --recursive "${SANDBOX:?}/*"
+    rm --force --recursive "${_SANDBOX:?}/*"
 
     fc-cache --force --verbose
 }
@@ -349,7 +387,7 @@ install_numix_square_icons() {
 install_kitty() {
     _info "Installing kitty"
 
-    curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh --
 
     ln --symbolic --force \
        "${HOME}/.local/kitty.app/bin/kitty" \
@@ -373,9 +411,9 @@ install_docker_engine() {
     _info "Installing docker engine"
 
     if [ ! -x "$(which docker)" ]; then
-        curl --location https://get.docker.com | bash /dev/stdin
+        curl --location https://get.docker.com | bash --
         if [ "$(id --user)" -ne 0 ]; then
-            echo "usermod --append --groups docker ${USER}" | sudo --shell --
+            echo usermod --append --groups docker "${USER}" | sudo --shell --
         fi
     fi
 }
@@ -385,7 +423,7 @@ install_parallel() {
     _info "Installing parallel"
 
     if [ ! -x "$(which parallel)" ]; then
-        cd "${SANDBOX}"
+        cd "${_SANDBOX}"
 
         wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
         tar --extract --bzip2 --file parallel-latest.tar.bz2
@@ -396,7 +434,7 @@ install_parallel() {
         make install
 
         cd "${HOME}"
-        rm -rf "${SANDBOX:?}/*"
+        rm -rf "${_SANDBOX:?}/*"
     fi
 }
 
@@ -407,19 +445,18 @@ install_z() {
     local BIN_DIR="${HOME}/.local/bin"
 
     if [ ! -x "${BIN_DIR}/z.sh" ]; then
-        cd "${SANDBOX}"
+        cd "${_SANDBOX}"
 
         wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
         mv z.sh "${BIN_DIR}/z.sh"
         chmod +x "${BIN_DIR}/z.sh"
 
         cd "${HOME}"
-        rm -rf "${SANDBOX:?}/*"
+        rm -rf "${_SANDBOX:?}/*"
     fi
 }
 
 
-install() {
 # Helper functions -------------------------------------------------------------
 _info() {
     local _MESSAGE=${1}
@@ -431,6 +468,7 @@ _info() {
 
 
 
+# Main -------------------------------------------------------------------------
 while [ $# -gt 0 ]; do
     case "${1}" in
         --development)
@@ -480,7 +518,6 @@ _SANDBOX=${HOME}/Downloads/Sandbox
 
 install_all() {
     install_apt_packages
-    install_snaps
     install_python_packages
     install_duplic8r
     configure_tmux_plugin_manager
@@ -489,18 +526,32 @@ install_all() {
     set_default_shell
 
     create_sandbox
-    install_ctrlR
-    install_fonts
-    install_numix_square_icons
-    install_kitty
-    install_docker_engine
-    install_parallel
-    install_z
+    # don't install if running in a container
+    if [ -z "${_IN_CONTAINER}" ]; then
+        install_snaps
+        install_fonts
+        install_numix_square_icons
+        install_kitty
+        install_docker_engine
+    fi
+
+    if [ -z "${_IN_CONTAINER}" ]; then
+        [ -z "${_SKIP_SNAPS}"  ] && install_snaps
+        [ -z "${_SKIP_FONTS}"  ] && install_fonts
+        [ -z "${_SKIP_ICONS}"  ] && install_numix_square_icons
+        [ -z "${_SKIP_KITTY}"  ] && install_kitty
+        [ -z "${_SKIP_DOCKER}" ] && install_docker_engine
+    fi
+
+    [ -z "${_SKIP_CTRLR}"    ] && install_ctrlR
+    [ -z "${_SKIP_PARALLEL}" ] && install_parallel
+    [ -z "${_SKIP_Z}"        ] && install_z
     destroy_sandbox
 }
 
 
 install_all
+
 
 unset _SANDBOX
 unset _DEVELOPMENT
@@ -513,9 +564,4 @@ unset _SKIP_DOCKER
 unset _SKIP_CTRLR
 unset _SKIP_PARALLEL
 unset _SKIP_Z
-    local DUPLIC8R_HOME="${HOME}/.duplic8r"
-    local SOURCE="${DUPLIC8R_HOME}/homedir"
-    local TARGET="${HOME}/.config"
-    local REPO="https://github.com/axler8r/duplic8r.git"
-    local BRANCH="stable"
-    if [ ${DEVELOPMENT} == true ]; then
+
