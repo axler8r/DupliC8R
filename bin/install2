@@ -4,13 +4,6 @@
 set -e
 
 
-SANDBOX=${HOME}/Downloads/Sandbox
-DEVELOPMENT=false
-if [ $# -eq 1 ] && [ "${1}" == "--development" ]; then
-    DEVELOPMENT=true
-fi
-
-
 _info() {
     local MESSAGE=${1}
     echo
@@ -406,6 +399,51 @@ install_z() {
 
 
 install() {
+while [ $# -gt 0 ]; do
+    case "${1}" in
+        --development)
+            _DEVELOPMENT=true
+            ;;
+        --in-container)
+            _IN_CONTAINER=true
+            ;;
+        --skip-snaps)
+            _SKIP_SNAPS=true
+            ;;
+        --skip-fonts)
+            _SKIP_FONTS=true
+            ;;
+        --skip-icons)
+            _SKIP_ICONS=true
+            ;;
+        --skip-kitty)
+            _SKIP_KITTY=true
+            ;;
+        --skip-docker)
+            _SKIP_DOCKER=true
+            ;;
+        --skip-ctrlr)
+            _SKIP_CTRLR=true
+            ;;
+        --skip-parallel)
+            _SKIP_PARALLEL=true
+            ;;
+        --skip-z)
+            _SKIP_Z=true
+            ;;
+        --skip-extras)
+            _SKIP_FONTS=true
+            _SKIP_ICONS=true
+            _SKIP_KITTY=true
+            _SKIP_DOCKER=true
+            ;;
+        *)
+            echo "Unknown option: ${1}"
+            ;;
+    esac
+    shift
+done
+_SANDBOX=${HOME}/Downloads/Sandbox
     install_apt_packages
     install_snaps
     install_python_packages
@@ -429,6 +467,15 @@ install() {
 
 install
 
+unset _SANDBOX
+unset _DEVELOPMENT
+unset _IN_CONTAINER
+unset _SKIP_SNAPS
+unset _SKIP_FONTS
+unset _SKIP_ICONS
+unset _SKIP_KITTY
+unset _SKIP_DOCKER
+unset _SKIP_CTRLR
+unset _SKIP_PARALLEL
+unset _SKIP_Z
 
-unset SANDBOX
-unset DEVELOPMENT
