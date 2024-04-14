@@ -15,35 +15,36 @@ install_apt_packages() {
         "--yes"
     )
 
-    local PACKAGES=(
-        attr
-        build-essential
-        make-doc
-        bzip2
-        bzip2-doc
-        curl
-        devilspie2
-        git
-        git-flow
-        tig
-        htop
-        less
-        lsof
-        pv
-        python3
-        python3-pip
-        strace
-        taskwarrior
-        tmux
-        tmux-plugin-manager
-        tree
-        universal-ctags
-        unzip
-        zip
-        zsh
-        zsh-autosuggestions
-        zsh-doc
-        zsh-syntax-highlighting
+    local _PACKAGES=(
+        "attr"
+        "build-essential"
+        "make-doc"
+        "bzip2"
+        "bzip2-doc"
+        "curl"
+        "devilspie2"
+        "git"
+        "git-flow"
+        "tig"
+        "htop"
+        "less"
+        "lsof"
+        "pv"
+        "python3"
+        "python3-pip"
+        "software-properties-common"
+        "strace"
+        "taskwarrior"
+        "tmux"
+        "tmux-plugin-manager"
+        "tree"
+        "universal-ctags"
+        "unzip"
+        "zip"
+        "zsh"
+        "zsh-autosuggestions"
+        "zsh-doc"
+        "zsh-syntax-highlighting"
     )
 
     local COMMANDS=(
@@ -63,18 +64,6 @@ install_apt_packages() {
 install_snaps() {
     _info "Installing snaps"
 
-    local PACKAGES=(
-        blender
-        brave
-        chromium
-        code
-        gimp
-        inkscape
-        obs-studio
-        obsidian
-        slack
-        slides
-        vlc
     local _FLAGS=(
         "--user"
         "--upgrade"
@@ -83,6 +72,13 @@ install_snaps() {
     local COMMANDS=(
         "snap refresh"
         "&& snap install ${PACKAGES[@]}"
+    local _PACKAGES=(
+        "pip"
+        "cliff"
+        "huggingface_hub[cli]"
+        "kaggle"
+        "powerline-gitstatus"
+        "powerline-status"
     )
 
     if [ "$(id --user)" -eq 0 ]; then
@@ -96,13 +92,6 @@ install_snaps() {
 install_python_packages() {
     _info "Installing python requirements"
 
-    local PACKAGES=(
-        pip
-        cliff
-        'huggingface_hub[cli]'
-        kaggle
-        powerline-gitstatus
-        powerline-status
     local _FLAGS=(
         "--archive"
         "--checksum"
@@ -137,7 +126,30 @@ install_duplic8r() {
     if [ ! -d "${TARGET}" ]; then
         mkdir --parents "${TARGET}"
     fi
+    local _FILES=(
+        "XCompose"
+        "ctags"
+        "dircolors"
+        "gitcommit"
+        "gitconfig"
+        "gitignore"
+        "taskrc"
+        "tigrc"
+        "tmux"
+        "tmux_extend.zsh"
+        "zshalias"
+        "zshenv"
+        "zshfunction"
+        "zshprompt"
+        "zshrc"
+    )
 
+    local _CONFIGS=(
+        "bat"
+        "devilspie2"
+        "julia"
+        "kitty"
+        "nvim"
     )
 
     install "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
@@ -218,23 +230,23 @@ install_vim_plug() {
 install_asdf() {
     _info "Installing asdf"
 
-    local ASDF_PLUGINS=(
-        bat
-        choose
-        dive
-        duf
-        exa
-        fd
-        fzf
-        github-cli
-        jq
-        just
-        neovim
-        nodejs
-        ripgrep
-        shellcheck
-        tokei
-        yq
+    local _ASDF_PLUGINS=(
+        "bat"
+        "choose"
+        "dive"
+        "duf"
+        "exa"
+        "fd"
+        "fzf"
+        "github-cli"
+        "jq"
+        "just"
+        "neovim"
+        "nodejs"
+        "ripgrep"
+        "shellcheck"
+        "tokei"
+        "yq"
     )
 
     if [ ! -d "${HOME}/.asdf" ]; then
@@ -274,6 +286,13 @@ create_sandbox() {
 
 destroy_sandbox() {
     rm --recursive --force "${SANDBOX}"
+    local _SNAPS=(
+        "brave"
+        "chromium"
+        "code --classic"
+        "obsidian --classic"
+        "slides"
+    )
 }
 
 
