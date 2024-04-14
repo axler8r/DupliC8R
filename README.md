@@ -36,11 +36,13 @@ COMMANDS=(
     'apt update'
     '&& apt upgrade --yes --no-install-recommends'
     '&& apt install --yes --no-install-recommends ca-certificates openssl curl'
+    '&& apt autoremove --yes'
+    '&& apt autoclean'
 )
 if [ $(id --user) -eq 0 ]; then
-    echo ${COMMANDS[@]} | bash /dev/stdin
+    echo ${COMMANDS[@]} | bash --
 else
-    echo ${COMMANDS[@]} | sudo --shell /dev/stdin
+    echo ${COMMANDS[@]} | sudo --shell --
 fi
 unset COMMANDS
 ```
