@@ -4,14 +4,6 @@
 set -e
 
 
-_info() {
-    local MESSAGE=${1}
-    echo
-    echo "${MESSAGE}"
-    echo "------------------------------------------------------------"
-}
-
-
 # Base installation ------------------------------------------------------------
 install_apt_packages() {
     _info "Installing system requirements"
@@ -399,6 +391,17 @@ install_z() {
 
 
 install() {
+# Helper functions -------------------------------------------------------------
+_info() {
+    local _MESSAGE=${1}
+
+    echo
+    echo "${_MESSAGE}"
+    echo "------------------------------------------------------------"
+}
+
+
+
 while [ $# -gt 0 ]; do
     case "${1}" in
         --development)
