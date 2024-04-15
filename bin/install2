@@ -82,20 +82,6 @@ install_python_packages() {
 }
 
 
-copy_file() {
-    local _SOURCE=$1
-    local _TARGET=$2
-    local _FLAGS=(
-        "--archive"
-        "--checksum"
-        "--progress"
-        "--verbose"
-    )
-
-    rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
-}
-
-
 install_duplic8r() {
     _info "Installing duplic8r"
 
@@ -466,6 +452,17 @@ _info() {
     echo "------------------------------------------------------------"
 }
 
+_copy_file() {
+    local _SOURCE=$1
+    local _TARGET=$2
+    local _FLAGS=(
+        "--archive"
+        "--checksum"
+        "--itemize-changes"
+    )
+
+    rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
+}
 
 
 # Main -------------------------------------------------------------------------
