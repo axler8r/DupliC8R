@@ -4,70 +4,59 @@
 set -e
 
 
-SANDBOX=${HOME}/Downloads/Sandbox
-DEVELOPMENT=false
-if [ $# -eq 1 ] && [ "${1}" == "--development" ]; then
-    DEVELOPMENT=true
-fi
-
-
-_info() {
-    local MESSAGE=${1}
-    echo
-    echo "${MESSAGE}"
-    echo "------------------------------------------------------------"
-}
-
-
 # Base installation ------------------------------------------------------------
 install_apt_packages() {
     _info "Installing system requirements"
 
-    local FLAGS=(
-        --no-install-recommends
-        --no-show-upgraded
-        --quiet
-        --yes
+    local _FLAGS=(
+        "--no-install-recommends"
+        "--no-show-upgraded"
+        "--quiet"
+        "--yes"
     )
-    local PACKAGES=(
-        attr
-        build-essential
-        make-doc
-        bzip2
-        bzip2-doc
-        curl
-        devilspie2
-        git
-        git-flow
-        tig
-        htop
-        less
-        lsof
-        pv
-        python3
-        python3-pip
-        strace
-        taskwarrior
-        tmux
-        tmux-plugin-manager
-        tree
-        universal-ctags
-        unzip
-        zip
-        zsh
-        zsh-autosuggestions
-        zsh-doc
-        zsh-syntax-highlighting
+
+    local _PACKAGES=(
+        "attr"
+        "build-essential"
+        "make-doc"
+        "bzip2"
+        "bzip2-doc"
+        "curl"
+        "devilspie2"
+        "git"
+        "git-flow"
+        "tig"
+        "htop"
+        "less"
+        "lsof"
+        "pv"
+        "python3"
+        "python3-pip"
+        "software-properties-common"
+        "strace"
+        "taskwarrior"
+        "tmux"
+        "tmux-plugin-manager"
+        "tree"
+        "universal-ctags"
+        "unzip"
+        "zip"
+        "zsh"
+        "zsh-autosuggestions"
+        "zsh-doc"
+        "zsh-syntax-highlighting"
     )
-    local COMMANDS=(
+
+    local _COMMANDS=(
       "apt update"
-      "&& apt upgrade ${FLAGS[@]}"
-      "&& apt install ${FLAGS[@]} ${PACKAGES[@]}"
+      "&& apt upgrade ${_FLAGS[@]}"
+      "&& apt install ${_FLAGS[@]} ${_PACKAGES[@]}"
     )
+
     if [ "$(id --user)" -eq 0 ]; then
-      echo "${COMMANDS[@]}" | bash --
+      echo "${_COMMANDS[@]}" | bash --
     else
-      echo "${COMMANDS[@]}" | sudo --shell --
+      echo "${_COMMANDS[@]}" | sudo --shell --
     fi
 }
 
@@ -75,85 +64,88 @@ install_apt_packages() {
 install_python_packages() {
     _info "Installing python requirements"
 
-    local FLAGS=(
-        --user
-        --upgrade
-    )
-    local PACKAGES=(
-        pip
-        pipx
-        cliff
-        'huggingface_hub[cli]'
-        kaggle
-        openai
-        powerline-gitstatus
-        powerline-status
+    local _FLAGS=(
+        "--user"
+        "--upgrade"
     )
 
-    pip3 install "${FLAGS[@]}" "${PACKAGES[@]}"
+    local _PACKAGES=(
+        "pip"
+        "cliff"
+        "huggingface_hub[cli]"
+        "kaggle"
+        "powerline-gitstatus"
+        "powerline-status"
+    )
+
+    pip3 install "${_FLAGS[@]}" "${_PACKAGES[@]}"
 }
 
 
-# TODO:Check if this works
 install_duplic8r() {
     _info "Installing duplic8r"
 
-    local DUPLIC8R_HOME="${HOME}/.duplic8r"
-    local SOURCE="${DUPLIC8R_HOME}/homedir"
-    local TARGET="${HOME}/.config"
-    local REPO="https://github.com/axler8r/duplic8r.git"
-    local BRANCH="stable"
-    if [ ${DEVELOPMENT} == true ]; then
-        BRANCH="development"
+    local _DUPLIC8R_HOME="${HOME}/.duplic8r"
+    local _SOURCE="${_DUPLIC8R_HOME}/homedir"
+    local _TARGET="${HOME}/.config"
+    local _REPO="https://github.com/axler8r/duplic8r.git"
+    local _BRANCH="stable"
+    if [ -n "${_DEVELOPMENT}" ]; then
+        _BRANCH="development"
     fi
 
-    if [ -d "${DUPLIC8R_HOME}" ]; then
-        cd "${DUPLIC8R_HOME}"
-        git pull origin "${BRANCH}"
+    if [ -d "${_DUPLIC8R_HOME}" ]; then
+        cd "${_DUPLIC8R_HOME}"
+        git pull origin "${_BRANCH}"
     else
-        git clone --branch "${BRANCH}" "${REPO}" "${DUPLIC8R_HOME}"
+        git clone --branch "${_BRANCH}" "${_REPO}" "${_DUPLIC8R_HOME}"
     fi
 
-    if [ ! -d "${TARGET}" ]; then
-        mkdir --parents "${TARGET}"
+    if [ ! -d "${_TARGET}" ]; then
+        mkdir --parents "${_TARGET}"
     fi
-
-    local FLAGS=(
-        --mode=644
-        --backup=numbered
-        --compare
+    
+    local _FILES=(
+        "XCompose"
+        "ctags"
+        "dircolors"
+        "gitcommit"
+        "gitconfig"
+        "gitignore"
+        "taskrc"
+        "tigrc"
+        "tmux.conf"
+        "tmux_extend.zsh"
+        "zshalias"
+        "zshenv"
+        "zshfunction"
+        "zshprompt"
+        "zshrc"
     )
 
-    install "${FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
-    install "${FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
-    install "${FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
-    install "${FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
-    install "${FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
-    install "${FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
-    install "${FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
-    install "${FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
-    install "${FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
-    install "${FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
-    install "${FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
-    install "${FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
-    install "${FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
-    install "${FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
-    install "${FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
-    install "${FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
-    install "${FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
+    for _file in "${_FILES[@]}"; do
+        _copy_file "${_SOURCE}/${_file}" "${HOME}/.${_file}"
+    done
 
-    if [ ! -d "${TARGET}/Code/User" ]; then
-        mkdir --parents "${TARGET}/Code/User"
+    local _CONFIGS=(
+        "bat"
+        "devilspie2"
+        "julia"
+        "kitty"
+        "nvim"
+    )
+
+    for _config in "${_CONFIGS[@]}"; do
+        _copy_file "${_SOURCE}/config/${_config}" "${_TARGET}"
+    done
+
+    if [ ! -d "${_TARGET}/Code/User" ]; then
+        mkdir --parents "${_TARGET}/Code/User"
     fi
-    install "${FLAGS[@]}" \
-       "${SOURCE}/config/Code/User/settings.json" \
-       "${TARGET}/Code/User/settings.json"
+
+    cp "${_FLAGS[@]}" \
+       "${_SOURCE}/config/Code/User/settings.json" \
+       "${_TARGET}/Code/User/settings.json"
 }
 
 
@@ -174,69 +166,82 @@ configure_tmux_plugin_manager() {
 }
 
 
-install_vim_plug() {
-    _info "Installing vim plug"
+install_asdf() {
+    _info "Installing asdf"
 
-    local FLAGS=(
-        --create-dirs
-        --fail
-        --location
-        --output
+    local _ASDF_PLUGINS=(
+        "bat"
+        "choose"
+        "dive"
+        "duf"
+        "exa"
+        "fd"
+        "fzf"
+        "github-cli"
+        "jq"
+        "just"
+        "neovim"
+        "nodejs"
+        "ripgrep"
+        "shellcheck"
+        "tokei"
+        "yq"
     )
 
-    if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
-        curl "${FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    local _ASDF_LATEST
+    _ASDF_LATEST=$(
+        git -c \
+        "versionsort.suffix=-" \
+        ls-remote \
+        --exit-code \
+        --refs \
+        --sort="version:refname" \
+        --tags https://github.com/asdf-vm/asdf "*.*.*" \
+        | tail --lines=1 \
+        | cut --delimiter="/" --fields=3
+    )
+
+    if [ ! -d "${HOME}/.asdf" ]; then
+        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch "${_ASDF_LATEST}"
+        source "${HOME}/.asdf/asdf.sh"
+
+        for _plugin in "${_ASDF_PLUGINS[@]}"; do
+            echo "Installing ${_plugin}"
+            asdf plugin add "${_plugin}"
+            asdf install "${_plugin}" latest
+            asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
+        done
     fi
 }
 
 
-install_asdf() {
-    _info "Installing asdf"
+install_vim_plug() {
+    _info "Installing vim plug"
 
-    local ASDF_PLUGINS=(
-        bat
-        choose
-        dive
-        duf
-        exa
-        fd
-        fzf
-        github-cli
-        jq
-        just
-        neovim
-        nodejs
-        ripgrep
-        shellcheck
-        tokei
-        yq
+    local _FLAGS=(
+        "--create-dirs"
+        "--fail"
+        "--location"
+        "--output"
     )
 
-    if [ ! -d "${HOME}/.asdf" ]; then
-        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch v0.13.1
-        source "${HOME}/.asdf/asdf.sh"
-
-        for plugin in "${ASDF_PLUGINS[@]}"; do
-            echo "Installing ${plugin}"
-            asdf plugin add "${plugin}"
-            asdf install "${plugin}" latest
-            asdf global "${plugin}" "$(asdf latest "${plugin}")"
-        done
+    if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
+        curl "${_FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
+
+    # nvim --headless +'PlugInstall --sync' +qa
 }
 
 
 set_default_shell() {
     _info "Setting default shell"
 
-    local COMMAND=("chsh --shell $(which zsh) ${USER}")
-
     if [ ! "${SHELL}" == "$(which zsh)" ]; then
         if [ "$(id --user)" -eq 0 ]; then
-            echo "${COMMAND[@]}" | bash --
+            echo chsh --shell "$(which zsh)" "${USER}" | bash --
         else
-            echo "${COMMAND[@]}" | sudo --shell --
+            echo chsh --shell "$(which zsh)" "${USER}" | sudo --shell --
         fi
     fi
 }
@@ -244,12 +249,47 @@ set_default_shell() {
 
 # Extended installation --------------------------------------------------------
 create_sandbox() {
-    mkdir --parents "${SANDBOX}"
+    mkdir --parents "${_SANDBOX}"
 }
 
 
 destroy_sandbox() {
-    rm --recursive --force "${SANDBOX}"
+    rm --recursive --force "${_SANDBOX}"
+}
+
+
+install_snaps() {
+    _info "Installing snaps"
+
+    local _SNAPS=(
+        "brave"
+        "chromium"
+        "code --classic"
+        "obsidian --classic"
+        "slack"
+        "slides"
+    )
+
+    # Optional extras
+    # "blender --classic"
+    # "gimp"
+    # "inkscape"
+    # "obs-studio"
+    # "vlc"
+
+    if [ "$(id --user)" -eq 0 ]; then
+        echo snap refresh | bash --
+    else
+        echo snap refresh | sudo --shell --
+    fi
+
+    for _snap in "${_SNAPS[@]}"; do
+        if [ "$(id --user)" -eq 0 ]; then
+            echo snap install "${_snap}" | bash --
+        else
+            echo snap install "${_snap}" | sudo --shell --
+        fi
+    done
 }
 
 
@@ -273,19 +313,19 @@ install_fonts() {
         mkdir "${HOME}/.fonts"
     fi
 
-    cd "${SANDBOX}"
+    cd "${_SANDBOX}"
 
     wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
     unzip CascadiaCode-2111.01.zip
     rm --force "${HOME}/.fonts/CascadiaCode*.ttf"
     mv --update ttf/CascadiaCode*.ttf "${HOME}/.fonts"
-    rm --force --recursive "${SANDBOX:?}/*"
+    rm --force --recursive "${_SANDBOX:?}/*"
 
     wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
     unzip CascadiaCode.zip
     rm --force "${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf"
     mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${HOME}/.fonts"
-    rm --force --recursive "${SANDBOX:?}/*"
+    rm --force --recursive "${_SANDBOX:?}/*"
 
     fc-cache --force --verbose
 }
@@ -302,7 +342,7 @@ install_numix_square_icons() {
 install_kitty() {
     _info "Installing kitty"
 
-    curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+    curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh --
 
     ln --symbolic --force \
        "${HOME}/.local/kitty.app/bin/kitty" \
@@ -326,9 +366,9 @@ install_docker_engine() {
     _info "Installing docker engine"
 
     if [ ! -x "$(which docker)" ]; then
-        curl --location https://get.docker.com | bash /dev/stdin
+        curl --location https://get.docker.com | bash --
         if [ "$(id --user)" -ne 0 ]; then
-            echo "usermod --append --groups docker ${USER}" | sudo --shell --
+            echo usermod --append --groups docker "${USER}" | sudo --shell --
         fi
     fi
 }
@@ -338,7 +378,7 @@ install_parallel() {
     _info "Installing parallel"
 
     if [ ! -x "$(which parallel)" ]; then
-        cd "${SANDBOX}"
+        cd "${_SANDBOX}"
 
         wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
         tar --extract --bzip2 --file parallel-latest.tar.bz2
@@ -349,7 +389,7 @@ install_parallel() {
         make install
 
         cd "${HOME}"
-        rm -rf "${SANDBOX:?}/*"
+        rm -rf "${_SANDBOX:?}/*"
     fi
 }
 
@@ -360,19 +400,81 @@ install_z() {
     local BIN_DIR="${HOME}/.local/bin"
 
     if [ ! -x "${BIN_DIR}/z.sh" ]; then
-        cd "${SANDBOX}"
+        cd "${_SANDBOX}"
 
         wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
         mv z.sh "${BIN_DIR}/z.sh"
         chmod +x "${BIN_DIR}/z.sh"
 
         cd "${HOME}"
-        rm -rf "${SANDBOX:?}/*"
+        rm -rf "${_SANDBOX:?}/*"
     fi
 }
 
 
-install() {
+# Helper functions -------------------------------------------------------------
+_info() {
+    local _MESSAGE=${1}
+
+    echo
+    echo "${_MESSAGE}"
+    echo "------------------------------------------------------------"
+}
+
+_copy_file() {
+    local _SOURCE=$1
+    local _TARGET=$2
+    local _FLAGS=(
+        "--archive"
+        "--checksum"
+        "--itemize-changes"
+    )
+
+    rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
+}
+
+
+# Main -------------------------------------------------------------------------
+while [ $# -gt 0 ]; do
+    case "${1}" in
+        --development)
+            _DEVELOPMENT=true
+            ;;
+        --in-container)
+            _IN_CONTAINER=true
+            ;;
+        --snaps)
+            _SNAPS=true
+            ;;
+        --fonts)
+            _FONTS=true
+            ;;
+        --icons)
+            _ICONS=true
+            ;;
+        --kitty)
+            _KITTY=true
+            ;;
+        --docker)
+            _DOCKER=true
+            ;;
+        --skip-extras)
+            _SNAPS=true
+            _FONTS=true
+            _ICONS=true
+            _KITTY=true
+            _DOCKER=true
+            ;;
+        *)
+            echo "Unknown option: ${1}"
+            ;;
+    esac
+    shift
+done
+_SANDBOX=${HOME}/Downloads/Sandbox
+
+
+install_all() {
     install_apt_packages
     install_python_packages
     install_duplic8r
@@ -382,19 +484,34 @@ install() {
     set_default_shell
 
     create_sandbox
-    install_ctrlR
-    install_fonts
-    install_numix_square_icons
-    install_kitty
-    install_docker_engine
-    install_parallel
-    install_z
+    if [ -n "${_IN_CONTAINER}" ]; then
+        [ -n "${_SNAPS}"  ] && install_snaps
+        [ -n "${_FONTS}"  ] && install_fonts
+        [ -n "${_ICONS}"  ] && install_numix_square_icons
+        [ -n "${_KITTY}"  ] && install_kitty
+        [ -n "${_DOCKER}" ] && install_docker_engine
+    else
+        install_snaps
+        install_fonts
+        install_numix_square_icons
+        install_kitty
+    fi
+
+    [ -z "${_SKIP_CTRLR}"    ] && install_ctrlR
+    [ -z "${_SKIP_PARALLEL}" ] && install_parallel
+    [ -z "${_SKIP_Z}"        ] && install_z
     destroy_sandbox
 }
 
 
-install
+install_all
 
 
-unset SANDBOX
-unset DEVELOPMENT
+unset _SANDBOX
+unset _DEVELOPMENT
+unset _IN_CONTAINER
+unset _SNAPS
+unset _FONTS
+unset _ICONS
+unset _KITTY
+unset _DOCKER
