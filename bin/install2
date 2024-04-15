@@ -266,14 +266,15 @@ install_snaps() {
         "chromium"
         "code --classic"
         "obsidian --classic"
+        "slack"
         "slides"
     )
+
     # Optional extras
     # "blender --classic"
     # "gimp"
     # "inkscape"
     # "obs-studio"
-    # "slack"
     # "vlc"
 
     if [ "$(id --user)" -eq 0 ]; then
