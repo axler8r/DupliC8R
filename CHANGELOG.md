@@ -1,6 +1,30 @@
 # Changelog
 
 
+## 4.0.1
+**2024-04-15**
+
+### New & Updated Features
++ Add installation cli arguments
++ Add helper function section
++ Update install function
++ Update snap package list
++ Update installation function
+
+### Refactor
++ Rename tmux configuration file
+
+### Stylistic & Idiomatic Updates
++ Format flag sections
++ Format install candidates
++ Format install commands
++ Format script variables
++ Format variable names
++ Order helper functions
++ Order install functions
++ Remove redundant comments
+
+
 ## 4.0.0
 **2024-04-13**
 
