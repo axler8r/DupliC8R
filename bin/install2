@@ -139,38 +139,6 @@ install_duplic8r() {
         copy_file "${_SOURCE}/config/${config}" "${_TARGET}"
     done
 
-#   local _FLAGS=(
-#       "--backup=existing"
-#       "--force"
-#       "--recursive"
-#       "--update"
-#       "--verbose"
-#   )
-
-#   cp "${_____FLAGS[@]}" "${SOURCE}/XCompose"           "${HOME}/.XCompose"
-#   cp "${_FLAGS[@]}" "${SOURCE}/ctags"              "${HOME}/.ctags"
-#   cp "${_FLAGS[@]}" "${SOURCE}/dircolors"          "${HOME}/.dircolors"
-#   cp "${_FLAGS[@]}" "${SOURCE}/gitcommit"          "${HOME}/.gitcommit"
-#   cp "${_FLAGS[@]}" "${SOURCE}/gitconfig"          "${HOME}/.gitconfig"
-#   cp "${_FLAGS[@]}" "${SOURCE}/gitignore"          "${HOME}/.gitignore"
-#   cp "${_FLAGS[@]}" "${SOURCE}/taskrc"             "${HOME}/.taskrc"
-#   cp "${_FLAGS[@]}" "${SOURCE}/tigrc"              "${HOME}/.tigrc"
-#   cp "${_FLAGS[@]}" "${SOURCE}/tmux"               "${HOME}/.tmux.conf"
-#   cp "${_FLAGS[@]}" "${SOURCE}/tmux_extend.zsh"    "${HOME}/.tmux_extend.zsh"
-#   cp "${_FLAGS[@]}" "${SOURCE}/zshalias"           "${HOME}/.zshalias"
-#   cp "${_FLAGS[@]}" "${SOURCE}/zshenv"             "${HOME}/.zshenv"
-#   cp "${_FLAGS[@]}" "${SOURCE}/zshfunction"        "${HOME}/.zshfunction"
-#   cp "${_FLAGS[@]}" "${SOURCE}/zshprompt"          "${HOME}/.zshprompt"
-#   cp "${_FLAGS[@]}" "${SOURCE}/zshrc"              "${HOME}/.zshrc"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/bat"         "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/devilspie2"  "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/julia"       "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/kitty"       "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/nvim"        "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/powerline"   "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/powershell"  "${TARGET}"
-#   cp "${_FLAGS[@]}" "${SOURCE}/config/taskwarrior" "${TARGET}"
-
     if [ ! -d "${_TARGET}/Code/User" ]; then
         mkdir --parents "${_TARGET}/Code/User"
     fi
