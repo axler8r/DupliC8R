@@ -477,35 +477,27 @@ while [ $# -gt 0 ]; do
         --in-container)
             _IN_CONTAINER=true
             ;;
-        --skip-snaps)
-            _SKIP_SNAPS=true
+        --snaps)
+            _SNAPS=true
             ;;
-        --skip-fonts)
-            _SKIP_FONTS=true
+        --fonts)
+            _FONTS=true
             ;;
-        --skip-icons)
-            _SKIP_ICONS=true
+        --icons)
+            _ICONS=true
             ;;
-        --skip-kitty)
-            _SKIP_KITTY=true
+        --kitty)
+            _KITTY=true
             ;;
-        --skip-docker)
-            _SKIP_DOCKER=true
-            ;;
-        --skip-ctrlr)
-            _SKIP_CTRLR=true
-            ;;
-        --skip-parallel)
-            _SKIP_PARALLEL=true
-            ;;
-        --skip-z)
-            _SKIP_Z=true
+        --docker)
+            _DOCKER=true
             ;;
         --skip-extras)
-            _SKIP_FONTS=true
-            _SKIP_ICONS=true
-            _SKIP_KITTY=true
-            _SKIP_DOCKER=true
+            _SNAPS=true
+            _FONTS=true
+            _ICONS=true
+            _KITTY=true
+            _DOCKER=true
             ;;
         *)
             echo "Unknown option: ${1}"
@@ -556,12 +548,8 @@ install_all
 unset _SANDBOX
 unset _DEVELOPMENT
 unset _IN_CONTAINER
-unset _SKIP_SNAPS
-unset _SKIP_FONTS
-unset _SKIP_ICONS
-unset _SKIP_KITTY
-unset _SKIP_DOCKER
-unset _SKIP_CTRLR
-unset _SKIP_PARALLEL
-unset _SKIP_Z
-
+unset _SNAPS
+unset _FONTS
+unset _ICONS
+unset _KITTY
+unset _DOCKER
