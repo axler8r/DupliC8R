@@ -123,8 +123,8 @@ install_duplic8r() {
         "zshrc"
     )
 
-    for file in "${_FILES[@]}"; do
-        copy_file "${_SOURCE}/${file}" "${HOME}/.${file}"
+    for _file in "${_FILES[@]}"; do
+        _copy_file "${_SOURCE}/${_file}" "${HOME}/.${_file}"
     done
 
     local _CONFIGS=(
@@ -135,8 +135,8 @@ install_duplic8r() {
         "nvim"
     )
 
-    for config in "${CONFIGS[@]}"; do
-        copy_file "${_SOURCE}/config/${config}" "${_TARGET}"
+    for _config in "${_CONFIGS[@]}"; do
+        _copy_file "${_SOURCE}/config/${_config}" "${_TARGET}"
     done
 
     if [ ! -d "${_TARGET}/Code/User" ]; then
