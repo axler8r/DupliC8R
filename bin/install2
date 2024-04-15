@@ -518,21 +518,17 @@ install_all() {
     set_default_shell
 
     create_sandbox
-    # don't install if running in a container
-    if [ -z "${_IN_CONTAINER}" ]; then
+    if [ -n "${_IN_CONTAINER}" ]; then
+        [ -n "${_SNAPS}"  ] && install_snaps
+        [ -n "${_FONTS}"  ] && install_fonts
+        [ -n "${_ICONS}"  ] && install_numix_square_icons
+        [ -n "${_KITTY}"  ] && install_kitty
+        [ -n "${_DOCKER}" ] && install_docker_engine
+    else
         install_snaps
         install_fonts
         install_numix_square_icons
         install_kitty
-        install_docker_engine
-    fi
-
-    if [ -z "${_IN_CONTAINER}" ]; then
-        [ -z "${_SKIP_SNAPS}"  ] && install_snaps
-        [ -z "${_SKIP_FONTS}"  ] && install_fonts
-        [ -z "${_SKIP_ICONS}"  ] && install_numix_square_icons
-        [ -z "${_SKIP_KITTY}"  ] && install_kitty
-        [ -z "${_SKIP_DOCKER}" ] && install_docker_engine
     fi
 
     [ -z "${_SKIP_CTRLR}"    ] && install_ctrlR
