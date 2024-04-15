@@ -114,7 +114,7 @@ install_duplic8r() {
         "gitignore"
         "taskrc"
         "tigrc"
-        "tmux"
+        "tmux.conf"
         "tmux_extend.zsh"
         "zshalias"
         "zshenv"
