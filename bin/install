@@ -89,12 +89,10 @@ install_duplic8r() {
 
     local _DUPLIC8R_HOME="${HOME}/.duplic8r"
     local _SOURCE="${_DUPLIC8R_HOME}/homedir"
-    local _TARGET="${HOME}/.config"
+    local _XDG_CONFIG_DIR="${HOME}/.config"
     local _REPO="https://github.com/axler8r/duplic8r.git"
     local _BRANCH="stable"
-    if [ -n "${_DEVELOPMENT}" ]; then
-        _BRANCH="development"
-    fi
+    [ -n "${_DEVELOPMENT}" ] && _BRANCH="development"
     _trace "Duplic8r home: " "${_DUPLIC8R_HOME}"
     _trace "Duplic8r source: " "${_SOURCE}"
     _trace "XDG config dir: " "${_XDG_CONFIG_DIR}"
@@ -102,16 +100,13 @@ install_duplic8r() {
     _trace "Duplic8r branch: " "${_BRANCH}"
 
     if [ -d "${_DUPLIC8R_HOME}" ]; then
-        cd "${_DUPLIC8R_HOME}"
-        git pull origin "${_BRANCH}"
+        _pull_repo "${_DUPLIC8R_HOME}" "${_BRANCH}"
     else
-        git clone --branch "${_BRANCH}" "${_REPO}" "${_DUPLIC8R_HOME}"
+        _clone_repo "${_REPO}" "${_DUPLIC8R_HOME}" "${_BRANCH}"
     fi
 
-    if [ ! -d "${_TARGET}" ]; then
-        mkdir --parents "${_TARGET}"
-    fi
-    
+    [ ! -d "${_XDG_CONFIG_DIR}" ] && mkdir --parents "${_XDG_CONFIG_DIR}"
+
     local _FILES=(
         "XCompose"
         "ctags"
@@ -137,6 +132,7 @@ install_duplic8r() {
     done
 
     local _CONFIGS=(
+        "Code"
         "bat"
         "devilspie2"
         "julia"
@@ -146,8 +142,8 @@ install_duplic8r() {
     _trace "Configs: " "${_CONFIGS[*]}"
 
     for _config in "${_CONFIGS[@]}"; do
-        _copy_file "${_SOURCE}/config/${_config}" "${_TARGET}"
         _trace "Copying ${_config} from ${_SOURCE}/config to ${_XDG_CONFIG_DIR}"
+        _copy_file "${_SOURCE}/config/${_config}" "${_XDG_CONFIG_DIR}"
     done
 
     # TODO: Is this necessary?
@@ -317,7 +313,7 @@ install_ctrlR() {
 
     if [ ! -d "${HOME}/.zsh-hsmw" ]; then
         git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
-                  "${HOME}/.zsh-hsmw"
+        "${HOME}/.zsh-hsmw"
     else
         cd "${HOME}/.zsh-hsmw"
         git pull
@@ -521,6 +517,9 @@ install_all() {
     configure_tmux_plugin_manager
     install_vim_plug
     install_asdf
+    install_ctrlR
+    install_parallel
+    install_z
     set_default_shell
 
     create_sandbox
@@ -535,6 +534,7 @@ install_all() {
         install_fonts
         install_numix_square_icons
         install_kitty
+        install_docker_engine
     fi
 
     destroy_sandbox
