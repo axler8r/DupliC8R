@@ -150,13 +150,14 @@ install_duplic8r() {
         _trace "Copying ${_config} from ${_SOURCE}/config to ${_XDG_CONFIG_DIR}"
     done
 
-    if [ ! -d "${_TARGET}/Code/User" ]; then
-        mkdir --parents "${_TARGET}/Code/User"
-    fi
+    # TODO: Is this necessary?
+    # if [ ! -d "${_XDG_CONFIG_DIR}/Code/User" ]; then
+    #     mkdir --parents "${_XDG_CONFIG_DIR}/Code/User"
+    # fi
 
-    cp "${_FLAGS[@]}" \
-       "${_SOURCE}/config/Code/User/settings.json" \
-       "${_TARGET}/Code/User/settings.json"
+    # cp "${_FLAGS[@]}" \
+    #    "${_SOURCE}/config/Code/User/settings.json" \
+    #    "${_XDG_CONFIG_DIR}/Code/User/settings.json"
 }
 
 
@@ -544,9 +545,6 @@ install_all() {
         install_kitty
     fi
 
-    [ -z "${_SKIP_CTRLR}"    ] && install_ctrlR
-    [ -z "${_SKIP_PARALLEL}" ] && install_parallel
-    [ -z "${_SKIP_Z}"        ] && install_z
     destroy_sandbox
 }
 
