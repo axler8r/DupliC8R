@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+docker stop zsh-testcontainer
+

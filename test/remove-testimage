@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+docker rmi --force axler8r/duplic8r:latest
+
