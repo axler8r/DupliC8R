@@ -21,7 +21,12 @@
             "zprofile": "shellscript",
             "zshalias": "shellscript",
             "zshfunction": "shellscript",
-            "zshprompt": "shellscript"
+            "zshprompt": "shellscript",
+            "new-testimage": "shellscript",
+            "remove-testimage": "shellscript",
+            "start-testcontainer": "shellscript",
+            "stop-testcontainer": "shellscript",
+            "**/zshfunctions/*": "shellscript",
         },
         "material-icon-theme.files.associations": {
             "dircolors": "settings",
