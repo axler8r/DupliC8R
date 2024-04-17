@@ -6,7 +6,7 @@ update_all() {
     local _ax_application_name
 
     cd "${_ax_this_dir}"
-    foreach script in update*icon
+    foreach script in update*icon(.)
     do
         _ax_application_name=$(echo "${script}" | sed -e 's/.*update-//' | sed -e 's/icon//')
         printf "Updating %s icon...\n" "${_ax_application_name}"

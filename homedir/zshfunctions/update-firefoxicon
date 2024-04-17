@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+[ ! -d /usr/share/icons/Numix-Square ] && exit
+
 if [ -f /var/lib/snapd/desktop/applications/firefox_firefox.desktop ]; then
     sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/firefox.svg|g' /var/lib/snapd/desktop/applications/firefox_firefox.desktop
 fi

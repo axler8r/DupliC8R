@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+[ ! -d /usr/share/icons/Numix-Square ] && exit
+
 if [ -f /var/lib/snapd/desktop/applications/discord_discord.desktop ]; then
     sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/discord.svg|' /var/lib/snapd/desktop/applications/discord_discord.desktop
 fi
