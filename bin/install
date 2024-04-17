@@ -222,7 +222,6 @@ install_asdf() {
         source "${HOME}/.asdf/asdf.sh"
 
         for _plugin in "${_ASDF_PLUGINS[@]}"; do
-            echo "Installing ${_plugin}"
             _trace "Installing ${_plugin}"
             asdf plugin add "${_plugin}"
             asdf install "${_plugin}" latest
@@ -497,13 +496,6 @@ while [ $# -gt 0 ]; do
             _KITTY=true
             ;;
         --docker)
-            _DOCKER=true
-            ;;
-        --skip-extras)
-            _SNAPS=true
-            _FONTS=true
-            _ICONS=true
-            _KITTY=true
             _DOCKER=true
             ;;
         *)
