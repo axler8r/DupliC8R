@@ -261,16 +261,6 @@ set_default_shell() {
 
 
 # Extended installation --------------------------------------------------------
-create_sandbox() {
-    mkdir --parents "${_SANDBOX}"
-}
-
-
-destroy_sandbox() {
-    rm --recursive --force "${_SANDBOX}"
-}
-
-
 install_snaps() {
     _info "Installing snaps"
 
@@ -433,8 +423,9 @@ _info() {
     local _MESSAGE=${1}
 
     echo
-    echo "${_MESSAGE}"
-    echo "------------------------------------------------------------"
+    echo "---- ${_MESSAGE}" | tee --append "${HOME}/duplic8r.log"
+}
+
 _trace() {
     local _MESSAGE="${1}"
     local _DATA="${2}"
@@ -449,8 +440,8 @@ _trace() {
 }
 
 _copy_file() {
-    local _SOURCE=$1
-    local _TARGET=$2
+    local _SOURCE="$1"
+    local _TARGET="$2"
     local _FLAGS=(
         "--archive"
         "--checksum"
@@ -462,11 +453,51 @@ _copy_file() {
 }
 
 
+_clone_repo() {
+    [ -n "${_LOCAL}" ] && return
+
+    _info "Cloning git repository"
+
+    local _REPO="${1}"
+    local _TARGET="${2}"
+    local _BRANCH="${3:-stable}"
     _trace "Repo: " "${_REPO}"
     _trace "Target: " "${_TARGET}"
     _trace "Branch: " "${_BRANCH}"
+
+     git clone --branch "${_BRANCH}" "${_REPO}" "${_TARGET}"
+}
+
+
+_pull_repo() {
+    [ -n "${_LOCAL}" ] && return
+
+    _info "Updating git repository"
+
+    local _TARGET="${1}"
+    local _BRANCH="${2:-stable}"
     _trace "Target: " "${_TARGET}"
     _trace "Branch: " "${_BRANCH}"
+
+    cd "${_TARGET}"
+    git pull origin "${_BRANCH}"
+}
+
+
+_create_sandbox() {
+    _info "Creating sandbox"
+
+    mkdir --parents "${_SANDBOX}"
+}
+
+
+_destroy_sandbox() {
+    _info "Destroying sandbox"
+
+    rm --recursive --force "${_SANDBOX}"
+}
+
+
 # Main -------------------------------------------------------------------------
 while [ $# -gt 0 ]; do
     case "${1}" in
@@ -523,6 +554,7 @@ install_all() {
     set_default_shell
 
     create_sandbox
+    _create_sandbox
     if [ -n "${_IN_CONTAINER}" ]; then
         [ -n "${_SNAPS}"  ] && install_snaps
         [ -n "${_FONTS}"  ] && install_fonts
@@ -538,6 +570,7 @@ install_all() {
     fi
 
     destroy_sandbox
+    _destroy_sandbox
 }
 
 
