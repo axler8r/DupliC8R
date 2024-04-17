@@ -1,9 +1,6 @@
 #!/bin/bash
 
 
-set -e
-
-
 # Base installation ------------------------------------------------------------
 install_apt_packages() {
     _info "Installing system requirements"
@@ -14,6 +11,7 @@ install_apt_packages() {
         "--quiet"
         "--yes"
     )
+    _trace "APT flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
         "attr"
@@ -46,12 +44,14 @@ install_apt_packages() {
         "zsh-doc"
         "zsh-syntax-highlighting"
     )
+    _trace "APT packages: " "${_PACKAGES[*]}"
 
     local _COMMANDS=(
       "apt update"
       "&& apt upgrade ${_FLAGS[@]}"
       "&& apt install ${_FLAGS[@]} ${_PACKAGES[@]}"
     )
+    _trace "APT commands: " "${_COMMANDS[*]}"
 
     if [ "$(id --user)" -eq 0 ]; then
       echo "${_COMMANDS[@]}" | bash --
@@ -68,6 +68,7 @@ install_python_packages() {
         "--user"
         "--upgrade"
     )
+    _trace "PIP flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
         "pip"
@@ -77,6 +78,7 @@ install_python_packages() {
         "powerline-gitstatus"
         "powerline-status"
     )
+    _trace "PIP packages: " "${_PACKAGES[*]}"
 
     pip3 install "${_FLAGS[@]}" "${_PACKAGES[@]}"
 }
@@ -93,6 +95,11 @@ install_duplic8r() {
     if [ -n "${_DEVELOPMENT}" ]; then
         _BRANCH="development"
     fi
+    _trace "Duplic8r home: " "${_DUPLIC8R_HOME}"
+    _trace "Duplic8r source: " "${_SOURCE}"
+    _trace "XDG config dir: " "${_XDG_CONFIG_DIR}"
+    _trace "Duplic8r repo: " "${_REPO}"
+    _trace "Duplic8r branch: " "${_BRANCH}"
 
     if [ -d "${_DUPLIC8R_HOME}" ]; then
         cd "${_DUPLIC8R_HOME}"
@@ -122,8 +129,10 @@ install_duplic8r() {
         "zshprompt"
         "zshrc"
     )
+    _trace "Files: " "${_FILES[*]}"
 
     for _file in "${_FILES[@]}"; do
+        _trace "Copying ${_file} from ${_SOURCE} to ${HOME}/.${_file}"
         _copy_file "${_SOURCE}/${_file}" "${HOME}/.${_file}"
     done
 
@@ -134,9 +143,11 @@ install_duplic8r() {
         "kitty"
         "nvim"
     )
+    _trace "Configs: " "${_CONFIGS[*]}"
 
     for _config in "${_CONFIGS[@]}"; do
         _copy_file "${_SOURCE}/config/${_config}" "${_TARGET}"
+        _trace "Copying ${_config} from ${_SOURCE}/config to ${_XDG_CONFIG_DIR}"
     done
 
     if [ ! -d "${_TARGET}/Code/User" ]; then
@@ -153,6 +164,7 @@ configure_tmux_plugin_manager() {
     _info "Configuring tmux plugin manager"
 
     local TMUX_PLUGINS_HOME="${HOME}/.tmux/plugins"
+    _trace "TMUX plugins home: " "${TMUX_PLUGINS_HOME}"
 
     if [ ! -d "${HOME}/.tmux" ]; then
         mkdir --parents "${TMUX_PLUGINS_HOME}"
@@ -160,6 +172,7 @@ configure_tmux_plugin_manager() {
 
     if [ -d /usr/share/tmux-plugin-manager ]; then
         if [ ! -L "${TMUX_PLUGINS_HOME}/tpm" ]; then
+        _trace "Linking /usr/share/tmux-plugin-manager to ${TMUX_PLUGINS_HOME}/tpm"
             ln --symbolic /usr/share/tmux-plugin-manager "${TMUX_PLUGINS_HOME}/tpm"
         fi
     fi
@@ -187,6 +200,7 @@ install_asdf() {
         "tokei"
         "yq"
     )
+    _trace "ASDF plugins: " "${_ASDF_PLUGINS[*]}"
 
     local _ASDF_LATEST
     _ASDF_LATEST=$(
@@ -200,6 +214,7 @@ install_asdf() {
         | tail --lines=1                               \
         | cut --delimiter="/" --fields=3
     )
+    _trace "ASDF latest: " "${_ASDF_LATEST}"
 
     if [ ! -d "${HOME}/.asdf" ]; then
         git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch "${_ASDF_LATEST}"
@@ -207,6 +222,7 @@ install_asdf() {
 
         for _plugin in "${_ASDF_PLUGINS[@]}"; do
             echo "Installing ${_plugin}"
+            _trace "Installing ${_plugin}"
             asdf plugin add "${_plugin}"
             asdf install "${_plugin}" latest
             asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
@@ -224,6 +240,7 @@ install_vim_plug() {
         "--location"
         "--output"
     )
+    _trace "Curl flags: " "${_FLAGS[*]}"
 
     if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
         curl "${_FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
@@ -269,6 +286,7 @@ install_snaps() {
         "slack"
         "slides"
     )
+    _trace "Snaps: " "${_SNAPS[*]}"
 
     # Optional extras
     # "blender --classic"
@@ -284,6 +302,7 @@ install_snaps() {
     fi
 
     for _snap in "${_SNAPS[@]}"; do
+        _trace "Installing ${_snap}"
         if [ "$(id --user)" -eq 0 ]; then
             echo snap install "${_snap}" | bash --
         else
@@ -398,6 +417,7 @@ install_z() {
     _info "Installing z"
 
     local BIN_DIR="${HOME}/.local/bin"
+    _trace "Bin dir: " "${BIN_DIR}"
 
     if [ ! -x "${BIN_DIR}/z.sh" ]; then
         cd "${_SANDBOX}"
@@ -419,6 +439,17 @@ _info() {
     echo
     echo "${_MESSAGE}"
     echo "------------------------------------------------------------"
+_trace() {
+    local _MESSAGE="${1}"
+    local _DATA="${2}"
+    local _TIMESTAMP
+    _TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S.%3N")
+
+    if [ -n "${_TRACE}" ]; then
+        echo
+        echo "|> ${_TIMESTAMP}: ${_MESSAGE} ${_DATA}" | tee --append "${HOME}/duplic8r.log"
+    fi
+
 }
 
 _copy_file() {
@@ -429,11 +460,17 @@ _copy_file() {
         "--checksum"
         "--itemize-changes"
     )
+    _trace "Copy flags: " "${_FLAGS[*]}"
 
     rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
 }
 
 
+    _trace "Repo: " "${_REPO}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Branch: " "${_BRANCH}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Branch: " "${_BRANCH}"
 # Main -------------------------------------------------------------------------
 while [ $# -gt 0 ]; do
     case "${1}" in
@@ -442,6 +479,9 @@ while [ $# -gt 0 ]; do
             ;;
         --in-container)
             _IN_CONTAINER=true
+            ;;
+        --trace)
+            _TRACE=true
             ;;
         --snaps)
             _SNAPS=true
@@ -472,6 +512,13 @@ while [ $# -gt 0 ]; do
     shift
 done
 _SANDBOX=${HOME}/Downloads/Sandbox
+if [ -n "${_DEBUG}" ]; then
+    exec 7>"${HOME}/duplic8r.trace"
+    BASH_XTRACEFD=7
+    set -x
+else
+    set -e
+fi
 
 
 install_all() {
@@ -506,6 +553,11 @@ install_all() {
 
 install_all
 
+
+if [ -n "${_DEBUG}" ]; then
+    set +x
+    exec 7>&-
+fi
 
 unset _SANDBOX
 unset _DEVELOPMENT
