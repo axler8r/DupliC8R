@@ -190,14 +190,14 @@ install_asdf() {
 
     local _ASDF_LATEST
     _ASDF_LATEST=$(
-        git -c \
-        "versionsort.suffix=-" \
-        ls-remote \
-        --exit-code \
-        --refs \
-        --sort="version:refname" \
+        git -c                                         \
+        "versionsort.suffix=-"                         \
+        ls-remote                                      \
+        --exit-code                                    \
+        --refs                                         \
+        --sort="version:refname"                       \
         --tags https://github.com/asdf-vm/asdf "*.*.*" \
-        | tail --lines=1 \
+        | tail --lines=1                               \
         | cut --delimiter="/" --fields=3
     )
 
@@ -344,20 +344,20 @@ install_kitty() {
 
     curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh --
 
-    ln --symbolic --force \
-       "${HOME}/.local/kitty.app/bin/kitty" \
-       "${HOME}/.local/kitty.app/bin/kitten" \
+    ln --symbolic --force                                                     \
+       "${HOME}/.local/kitty.app/bin/kitty"                                   \
+       "${HOME}/.local/kitty.app/bin/kitten"                                  \
        "${HOME}/.local/bin/"
-    cp "${HOME}/.local/kitty.app/share/applications/kitty.desktop" \
+    cp "${HOME}/.local/kitty.app/share/applications/kitty.desktop"            \
        "${HOME}/.local/share/applications/"
-    cp "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop" \
+    cp "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop"       \
        "${HOME}/.local/share/applications/"
 
-    sed --in-place \
+    sed --in-place                                                            \
         "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
         "${HOME}"/.local/share/applications/kitty*.desktop
-    sed --in-place \
-        "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g" \
+    sed --in-place                                                            \
+        "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g"        \
         "${HOME}"/.local/share/applications/kitty*.desktop
 }
 
