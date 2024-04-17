@@ -499,8 +499,13 @@ _destroy_sandbox() {
 
 
 # Main -------------------------------------------------------------------------
+_IN_CONTAINER="${IN_CONTAINER}"
+
 while [ $# -gt 0 ]; do
     case "${1}" in
+        --local)
+            _LOCAL=true
+            ;;
         --development)
             _DEVELOPMENT=true
             ;;
@@ -509,6 +514,9 @@ while [ $# -gt 0 ]; do
             ;;
         --trace)
             _TRACE=true
+            ;;
+        --debug)
+            _DEBUG=true
             ;;
         --snaps)
             _SNAPS=true
@@ -526,12 +534,15 @@ while [ $# -gt 0 ]; do
             _DOCKER=true
             ;;
         *)
-            echo "Unknown option: ${1}"
+            echo "Unknown option: " "${1}"
             ;;
     esac
     shift
 done
-_SANDBOX=${HOME}/Downloads/Sandbox
+
+_SANDBOX=/tmp/Sandbox
+
+
 if [ -n "${_DEBUG}" ]; then
     exec 7>"${HOME}/duplic8r.trace"
     BASH_XTRACEFD=7
@@ -553,8 +564,8 @@ install_all() {
     install_z
     set_default_shell
 
-    create_sandbox
     _create_sandbox
+
     if [ -n "${_IN_CONTAINER}" ]; then
         [ -n "${_SNAPS}"  ] && install_snaps
         [ -n "${_FONTS}"  ] && install_fonts
@@ -569,7 +580,6 @@ install_all() {
         install_docker_engine
     fi
 
-    destroy_sandbox
     _destroy_sandbox
 }
 
@@ -582,9 +592,15 @@ if [ -n "${_DEBUG}" ]; then
     exec 7>&-
 fi
 
+set +e
+set +x
+
 unset _SANDBOX
+unset _LOCAL
 unset _DEVELOPMENT
 unset _IN_CONTAINER
+unset _TRACE
+unset _DEBUG
 unset _SNAPS
 unset _FONTS
 unset _ICONS
