@@ -1,0 +1,26 @@
+#! /usr/bin/env zsh
+
+local _test=false
+[[ "$1" == "--test" ]] && _test=true
+
+local _parent_dir="${0:a:h:h}"
+local _flags=(
+    "--name=zsh-testcontainer"
+    "--interactive"
+    "--tty"
+    "--rm"
+    "--user=duplic8r"
+)
+local _mounts=()
+
+if ${_test}; then
+    _mounts+=("--mount=type=bind,source=${_parent_dir},target=/home/duplic8r/.duplic8r,readonly")
+    _mounts+=("--mount=type=bind,source=${_parent_dir}/bin/install,target=/home/duplic8r/install,readonly")
+fi
+
+docker run "${_flags[@]}" "${_mounts[@]}" axler8r/duplic8r:latest
+
+unset _test
+unset _mounts
+unset _flags
+unset _parent_dir

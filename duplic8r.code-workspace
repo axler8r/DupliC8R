@@ -21,7 +21,21 @@
             "zprofile": "shellscript",
             "zshalias": "shellscript",
             "zshfunction": "shellscript",
-            "zshprompt": "shellscript"
+            "zshprompt": "shellscript",
+            "new-testimage": "shellscript",
+            "remove-testimage": "shellscript",
+            "start-testcontainer": "shellscript",
+            "stop-testcontainer": "shellscript",
+            "**/zshfunctions/*": "shellscript",
+        },
+        "files.exclude": {
+            "**/.git": true,
+            "**/.svn": true,
+            "**/.hg": true,
+            "**/CVS": true,
+            "**/.DS_Store": true,
+            "**/Thumbs.db": true,
+            "**/tags": true,
         },
         "material-icon-theme.files.associations": {
             "dircolors": "settings",

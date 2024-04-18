@@ -4,16 +4,19 @@
 
 ## About
 `duplic8r` is a collection of my personal dotfiles and a little more. It is
-designed to be installed on a fresh, Ubuntu-based distribution. It has an intall
-script with a few options. It can be installed as a regular user in a single
-user environment, but can be installed as root as well.
+primarily focussed on setting up my command line environment and tools I access
+from the command line. It is designed to be installed on a fresh, Ubuntu-based
+distribution. It has an intall script with a few options. It can be installed as
+a regular user in a single user environment, but can be installed as root as
+well.
+
+For more information about the install script see [INSTALL.md](INSTALL.md).
 
 
 ## Table of Contents
 + [Install](#install)
   + [Requirements](#requirements)
-  + [Install Stable Version](#install-stable-version)
-  + [Install Development Version](#install-development-version)
+  + [Targets](#targets)
 + [Contribute](#contribute)
 + [License](#license)
 
@@ -24,55 +27,51 @@ piped to `bash`.
 
 
 ### Requirements
-> [!IMPORTANT]
-> Install require `curl`.
-
-> [!NOTE]
-> `curl` depends on `ca-certificates` and `openssl` which may be missing from
-> your initial setup. Install it before running the install script.
+Copy and paste the following code block into your terminal to install the
+dependencies.
 
 ```bash
-COMMANDS=(
-    'apt update'
-    '&& apt upgrade --yes --no-install-recommends'
-    '&& apt install --yes --no-install-recommends ca-certificates openssl curl'
-    '&& apt autoremove --yes'
-    '&& apt autoclean'
-)
-if [ $(id --user) -eq 0 ]; then
-    echo ${COMMANDS[@]} | bash --
-else
-    echo ${COMMANDS[@]} | sudo --shell --
-fi
-unset COMMANDS
+install_duplic8r_dependencies() {
+    _COMMANDS=(
+        'apt update'
+        '&& apt upgrade --yes --no-install-recommends'
+        '&& apt install --yes --no-install-recommends ca-certificates curl openssl rsync wget' 
+        '&& apt autoremove --yes'
+        '&& apt autoclean'
+    )
+    if [ $(id --user) -eq 0 ]; then
+        echo ${_COMMANDS[@]} | bash --
+    else
+        echo ${_COMMANDS[@]} | sudo --shell --
+    fi
+    unset _COMMANDS
+} && install_duplic8r_dependencies && unset -f install_duplic8r_dependencies
 ```
 
 
-### Install Stable Version
+### Targets
 To install the **stable** version of `duplic8r`, run the following command.
-
 ```bash
 curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install | bash /dev/stdin  
 ```
 
-### Install Development Version
 To install the **development** version of `duplic8r`, run the following command.
-
 ```bash
 curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install | bash -s /dev/stdin --development
 ```
 
-### Run the Development Installer
-To run the **development** version of `install`, run the following command.
-> [!NOTE]
-> This will run the latest installer from the `development` branch.
-
-> [!WARNING]
-> The `development` version of the installer may not be stable.
-
+To run the **development** version of `duplic8r`'s `install`er, and to install
+the **development** version of `duplic8r` run the following command.
 ```bash
 curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin/install | bash -s /dev/stdin --development
 ```
+
+> [!NOTE]
+> This will run the installer from the `development` branch, and install the
+> `development` branch of `duplic8r`.
+
+> [!WARNING]
+> The `development` version of the installer may not be stable.
 
 
 ## Contribute

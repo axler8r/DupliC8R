@@ -1,7 +1,4 @@
-#!/bin/bash
-
-
-set -e
+#! /bin/bash
 
 
 # Base installation ------------------------------------------------------------
@@ -14,6 +11,7 @@ install_apt_packages() {
         "--quiet"
         "--yes"
     )
+    _trace "APT flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
         "attr"
@@ -46,13 +44,16 @@ install_apt_packages() {
         "zsh-doc"
         "zsh-syntax-highlighting"
     )
+    _trace "APT packages: " "${_PACKAGES[*]}"
 
     local _COMMANDS=(
       "apt update"
       "&& apt upgrade ${_FLAGS[@]}"
       "&& apt install ${_FLAGS[@]} ${_PACKAGES[@]}"
     )
+    _trace "APT commands: " "${_COMMANDS[*]}"
 
+    _trace "Running APT"
     if [ "$(id --user)" -eq 0 ]; then
       echo "${_COMMANDS[@]}" | bash --
     else
@@ -68,6 +69,7 @@ install_python_packages() {
         "--user"
         "--upgrade"
     )
+    _trace "PIP flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
         "pip"
@@ -77,7 +79,9 @@ install_python_packages() {
         "powerline-gitstatus"
         "powerline-status"
     )
+    _trace "PIP packages: " "${_PACKAGES[*]}"
 
+    _trace "Running PIP"
     pip3 install "${_FLAGS[@]}" "${_PACKAGES[@]}"
 }
 
@@ -87,24 +91,25 @@ install_duplic8r() {
 
     local _DUPLIC8R_HOME="${HOME}/.duplic8r"
     local _SOURCE="${_DUPLIC8R_HOME}/homedir"
-    local _TARGET="${HOME}/.config"
+    local _XDG_CONFIG_DIR="${HOME}/.config"
     local _REPO="https://github.com/axler8r/duplic8r.git"
     local _BRANCH="stable"
-    if [ -n "${_DEVELOPMENT}" ]; then
-        _BRANCH="development"
-    fi
+    [ -n "${_DEVELOPMENT_FLAG}" ] && _BRANCH="development"
+    _trace "Duplic8r home: " "${_DUPLIC8R_HOME}"
+    _trace "Duplic8r source: " "${_SOURCE}"
+    _trace "XDG config dir: " "${_XDG_CONFIG_DIR}"
+    _trace "Duplic8r repo: " "${_REPO}"
+    _trace "Duplic8r branch: " "${_BRANCH}"
 
+    _trace "Installing duplic8r"
     if [ -d "${_DUPLIC8R_HOME}" ]; then
-        cd "${_DUPLIC8R_HOME}"
-        git pull origin "${_BRANCH}"
+        _pull_repo "${_DUPLIC8R_HOME}" "${_BRANCH}"
     else
-        git clone --branch "${_BRANCH}" "${_REPO}" "${_DUPLIC8R_HOME}"
+        _clone_repo "${_REPO}" "${_DUPLIC8R_HOME}" "${_BRANCH}"
     fi
 
-    if [ ! -d "${_TARGET}" ]; then
-        mkdir --parents "${_TARGET}"
-    fi
-    
+    [ ! -d "${_XDG_CONFIG_DIR}" ] && mkdir --parents "${_XDG_CONFIG_DIR}"
+
     local _FILES=(
         "XCompose"
         "ctags"
@@ -122,30 +127,27 @@ install_duplic8r() {
         "zshprompt"
         "zshrc"
     )
+    _trace "Files: " "${_FILES[*]}"
 
     for _file in "${_FILES[@]}"; do
+        _trace "Copying ${_file} from ${_SOURCE} to ${HOME}/.${_file}"
         _copy_file "${_SOURCE}/${_file}" "${HOME}/.${_file}"
     done
 
     local _CONFIGS=(
+        "Code"
         "bat"
         "devilspie2"
         "julia"
         "kitty"
         "nvim"
     )
+    _trace "Configs: " "${_CONFIGS[*]}"
 
     for _config in "${_CONFIGS[@]}"; do
-        _copy_file "${_SOURCE}/config/${_config}" "${_TARGET}"
+        _trace "Copying ${_config} from ${_SOURCE}/config to ${_XDG_CONFIG_DIR}"
+        _copy_file "${_SOURCE}/config/${_config}" "${_XDG_CONFIG_DIR}"
     done
-
-    if [ ! -d "${_TARGET}/Code/User" ]; then
-        mkdir --parents "${_TARGET}/Code/User"
-    fi
-
-    cp "${_FLAGS[@]}" \
-       "${_SOURCE}/config/Code/User/settings.json" \
-       "${_TARGET}/Code/User/settings.json"
 }
 
 
@@ -153,6 +155,7 @@ configure_tmux_plugin_manager() {
     _info "Configuring tmux plugin manager"
 
     local TMUX_PLUGINS_HOME="${HOME}/.tmux/plugins"
+    _trace "TMUX plugins home: " "${TMUX_PLUGINS_HOME}"
 
     if [ ! -d "${HOME}/.tmux" ]; then
         mkdir --parents "${TMUX_PLUGINS_HOME}"
@@ -160,6 +163,7 @@ configure_tmux_plugin_manager() {
 
     if [ -d /usr/share/tmux-plugin-manager ]; then
         if [ ! -L "${TMUX_PLUGINS_HOME}/tpm" ]; then
+            _trace "Linking /usr/share/tmux-plugin-manager to ${TMUX_PLUGINS_HOME}/tpm"
             ln --symbolic /usr/share/tmux-plugin-manager "${TMUX_PLUGINS_HOME}/tpm"
         fi
     fi
@@ -169,6 +173,8 @@ configure_tmux_plugin_manager() {
 install_asdf() {
     _info "Installing asdf"
 
+    local _SOURCE="https://github.com/asdf-vm/asdf.git"
+    local _TARGET="${HOME}/.asdf"
     local _ASDF_PLUGINS=(
         "bat"
         "choose"
@@ -179,6 +185,7 @@ install_asdf() {
         "fzf"
         "github-cli"
         "jq"
+        "julia"
         "just"
         "neovim"
         "nodejs"
@@ -187,26 +194,32 @@ install_asdf() {
         "tokei"
         "yq"
     )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+    _trace "ASDF plugins: " "${_ASDF_PLUGINS[*]}"
 
+    _trace "Finding latest asdf"
     local _ASDF_LATEST
     _ASDF_LATEST=$(
-        git -c \
-        "versionsort.suffix=-" \
-        ls-remote \
-        --exit-code \
-        --refs \
-        --sort="version:refname" \
+        git -c                                         \
+        "versionsort.suffix=-"                         \
+        ls-remote                                      \
+        --exit-code                                    \
+        --refs                                         \
+        --sort="version:refname"                       \
         --tags https://github.com/asdf-vm/asdf "*.*.*" \
-        | tail --lines=1 \
+        | tail --lines=1                               \
         | cut --delimiter="/" --fields=3
     )
+    _trace "ASDF latest: " "${_ASDF_LATEST}"
 
     if [ ! -d "${HOME}/.asdf" ]; then
-        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch "${_ASDF_LATEST}"
+        _trace "Cloning asdf ${_ASDF_LATEST}@${_SOURCE} to ${_TARGET}"
+        git clone ${_SOURCE} "${_TARGET}" --branch "${_ASDF_LATEST}"
         source "${HOME}/.asdf/asdf.sh"
 
         for _plugin in "${_ASDF_PLUGINS[@]}"; do
-            echo "Installing ${_plugin}"
+            _trace "Installing ${_plugin}"
             asdf plugin add "${_plugin}"
             asdf install "${_plugin}" latest
             asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
@@ -218,19 +231,22 @@ install_asdf() {
 install_vim_plug() {
     _info "Installing vim plug"
 
+    local _SOURCE="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    local _TARGET="${HOME}/.local/share/nvim/site/autoload/plug.vim"
     local _FLAGS=(
         "--create-dirs"
         "--fail"
         "--location"
         "--output"
     )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Curl flags: " "${_FLAGS[*]}"
 
     if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
-        curl "${_FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        _trace "Downloading vim plug from ${_SOURCE} to ${_TARGET}"
+        curl "${_FLAGS[@]}" "${_TARGET}" ${_SOURCE}
     fi
-
-    # nvim --headless +'PlugInstall --sync' +qa
 }
 
 
@@ -238,6 +254,7 @@ set_default_shell() {
     _info "Setting default shell"
 
     if [ ! "${SHELL}" == "$(which zsh)" ]; then
+        _trace "Changing shell to zsh"
         if [ "$(id --user)" -eq 0 ]; then
             echo chsh --shell "$(which zsh)" "${USER}" | bash --
         else
@@ -248,16 +265,6 @@ set_default_shell() {
 
 
 # Extended installation --------------------------------------------------------
-create_sandbox() {
-    mkdir --parents "${_SANDBOX}"
-}
-
-
-destroy_sandbox() {
-    rm --recursive --force "${_SANDBOX}"
-}
-
-
 install_snaps() {
     _info "Installing snaps"
 
@@ -269,14 +276,9 @@ install_snaps() {
         "slack"
         "slides"
     )
+    _trace "Snaps: " "${_SNAPS[*]}"
 
-    # Optional extras
-    # "blender --classic"
-    # "gimp"
-    # "inkscape"
-    # "obs-studio"
-    # "vlc"
-
+    _trace "Refreshing snaps"
     if [ "$(id --user)" -eq 0 ]; then
         echo snap refresh | bash --
     else
@@ -284,6 +286,7 @@ install_snaps() {
     fi
 
     for _snap in "${_SNAPS[@]}"; do
+        _trace "Installing ${_snap}"
         if [ "$(id --user)" -eq 0 ]; then
             echo snap install "${_snap}" | bash --
         else
@@ -296,11 +299,18 @@ install_snaps() {
 install_ctrlR() {
     _info "Installing ctrl+r"
 
+    local _SOURCE="https://github.com/zdharma-continuum/history-search-multi-word.git"
+    local _TARGET="${HOME}/.zsh-hsmw"
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+
+    _trace "Installing history-search-multi-word"
     if [ ! -d "${HOME}/.zsh-hsmw" ]; then
-        git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
-                  "${HOME}/.zsh-hsmw"
+        _trace "Cloning history-search-multi-word from ${_SOURCE} to ${_TARGET}"
+        git clone ${_SOURCE} "${_TARGET}"
     else
-        cd "${HOME}/.zsh-hsmw"
+        _trace "Pulling history-search-multi-word from ${_SOURCE} to ${_TARGET}"
+        cd "${_TARGET}"
         git pull
     fi
 }
@@ -309,24 +319,32 @@ install_ctrlR() {
 install_fonts() {
     _info "Installing fonts"
 
-    if [ ! -d "${HOME}/.fonts" ]; then
-        mkdir "${HOME}/.fonts"
-    fi
+    local _FONTS_DIR="${HOME}/.fonts"
+    local _CASCADIA_SOURCE="https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip"
+    local _CASKAYDIA_SOURCE="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip"
+    _trace "Fonts dir: " "${_FONTS_DIR}"
+    _trace "Cascadia source: " "${_CASCADIA_SOURCE}"
+    _trace "Caskaydia source: " "${_CASKAYDIA_SOURCE}"
+
+    [ ! -d "${_FONTS_DIR}" ] && mkdir "${_FONTS_DIR}"
 
     cd "${_SANDBOX}"
 
-    wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+    _trace "Installing Cascadia Code"
+    wget --quiet ${_CASCADIA_SOURCE}
     unzip CascadiaCode-2111.01.zip
-    rm --force "${HOME}/.fonts/CascadiaCode*.ttf"
-    mv --update ttf/CascadiaCode*.ttf "${HOME}/.fonts"
+    rm --force "${_FONTS_DIR}/CascadiaCode*.ttf"
+    mv --update ttf/CascadiaCode*.ttf "${_FONTS_DIR}"
     rm --force --recursive "${_SANDBOX:?}/*"
 
-    wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
+    _trace "Installing Caskaydia Cove Nerd Font"
+    wget --quiet ${_CASKAYDIA_SOURCE}
     unzip CascadiaCode.zip
-    rm --force "${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf"
-    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${HOME}/.fonts"
+    rm --force "${_FONTS_DIR}/CaskaydiaCoveNerdFont*.ttf"
+    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${_FONTS_DIR}"
     rm --force --recursive "${_SANDBOX:?}/*"
 
+    _trace "Updating font cache"
     fc-cache --force --verbose
 }
 
@@ -334,7 +352,9 @@ install_fonts() {
 install_numix_square_icons() {
     _info "Installing numix square icons"
 
+    _trace "Adding numix ppa"
     sudo add-apt-repository ppa:numix/ppa
+    _trace "Updating apt"
     sudo apt update && sudo apt install numix-icon-theme-square
 }
 
@@ -342,22 +362,27 @@ install_numix_square_icons() {
 install_kitty() {
     _info "Installing kitty"
 
+    _trace "Installing kitty"
     curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh --
 
-    ln --symbolic --force \
-       "${HOME}/.local/kitty.app/bin/kitty" \
-       "${HOME}/.local/kitty.app/bin/kitten" \
+    _trace "Linking kitty"
+    ln --symbolic --force                                                     \
+       "${HOME}/.local/kitty.app/bin/kitty"                                   \
+       "${HOME}/.local/kitty.app/bin/kitten"                                  \
        "${HOME}/.local/bin/"
-    cp "${HOME}/.local/kitty.app/share/applications/kitty.desktop" \
+
+    _trace "Copying kitty desktop files"
+    cp "${HOME}/.local/kitty.app/share/applications/kitty.desktop"            \
        "${HOME}/.local/share/applications/"
-    cp "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop" \
+    cp "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop"       \
        "${HOME}/.local/share/applications/"
 
-    sed --in-place \
+    _trace "Updating kitty desktop files"
+    sed --in-place                                                            \
         "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
         "${HOME}"/.local/share/applications/kitty*.desktop
-    sed --in-place \
-        "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g" \
+    sed --in-place                                                            \
+        "s|Exec=kitty|Exec=/home/${USER}/.local/kitty.app/bin/kitty|g"        \
         "${HOME}"/.local/share/applications/kitty*.desktop
 }
 
@@ -366,8 +391,10 @@ install_docker_engine() {
     _info "Installing docker engine"
 
     if [ ! -x "$(which docker)" ]; then
+        _trace "Installing docker"
         curl --location https://get.docker.com | bash --
         if [ "$(id --user)" -ne 0 ]; then
+            _trace "Adding user to docker group"
             echo usermod --append --groups docker "${USER}" | sudo --shell --
         fi
     fi
@@ -380,6 +407,7 @@ install_parallel() {
     if [ ! -x "$(which parallel)" ]; then
         cd "${_SANDBOX}"
 
+        _trace "Installing parallel"
         wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
         tar --extract --bzip2 --file parallel-latest.tar.bz2
         rm parallel-latest.tar.bz2
@@ -389,7 +417,7 @@ install_parallel() {
         make install
 
         cd "${HOME}"
-        rm -rf "${_SANDBOX:?}/*"
+        rm --force --recursive "${_SANDBOX:?}/*"
     fi
 }
 
@@ -398,16 +426,18 @@ install_z() {
     _info "Installing z"
 
     local BIN_DIR="${HOME}/.local/bin"
+    _trace "Bin dir: " "${BIN_DIR}"
 
     if [ ! -x "${BIN_DIR}/z.sh" ]; then
         cd "${_SANDBOX}"
 
+        _trace "Installing z"
         wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
         mv z.sh "${BIN_DIR}/z.sh"
         chmod +x "${BIN_DIR}/z.sh"
 
         cd "${HOME}"
-        rm -rf "${_SANDBOX:?}/*"
+        rm --force --recursive "${_SANDBOX:?}/*"
     fi
 }
 
@@ -417,61 +447,180 @@ _info() {
     local _MESSAGE=${1}
 
     echo
-    echo "${_MESSAGE}"
-    echo "------------------------------------------------------------"
+    echo "---- ${_MESSAGE}" | tee --append "${HOME}/duplic8r.log"
+}
+
+_trace() {
+    if [ -n "${_TRACE_FLAG}" ]; then
+        local _MESSAGE="${1}"
+        local _DATA="${2}"
+        local _TIMESTAMP
+        _TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S.%3N")
+
+        echo
+        echo "|> ${_TIMESTAMP}: ${_MESSAGE} ${_DATA}" | tee --append "${HOME}/duplic8r.log"
+    fi
+
 }
 
 _copy_file() {
-    local _SOURCE=$1
-    local _TARGET=$2
+    local _SOURCE="$1"
+    local _TARGET="$2"
     local _FLAGS=(
         "--archive"
         "--checksum"
         "--itemize-changes"
     )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Copy flags: " "${_FLAGS[*]}"
 
+    _trace "Copying file from ${_SOURCE} to ${_TARGET}"
     rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
 }
 
 
+_clone_repo() {
+    [ -n "${_TEST_FLAG}" ] && return
+
+    _info "Cloning git repository"
+
+    local _REPO="${1}"
+    local _TARGET="${2}"
+    local _BRANCH="${3:-stable}"
+    _trace "Repo: " "${_REPO}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Branch: " "${_BRANCH}"
+
+    _trace "Cloning git repository ${_BRANCH}@${_REPO} to ${_TARGET}"
+    git clone --branch "${_BRANCH}" "${_REPO}" "${_TARGET}"
+}
+
+
+_pull_repo() {
+    [ -n "${_TEST_FLAG}" ] && return
+
+    _info "Updating git repository"
+
+    local _TARGET="${1}"
+    local _BRANCH="${2:-stable}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Branch: " "${_BRANCH}"
+
+    cd "${_TARGET}"
+    _trace "Pulling git repository ${_BRANCH}@${_TARGET}"
+    git pull origin "${_BRANCH}"
+}
+
+
+_create_sandbox() {
+    _info "Creating sandbox"
+
+    mkdir --parents "${_SANDBOX}"
+}
+
+
+_destroy_sandbox() {
+    _info "Destroying sandbox"
+
+    rm --recursive --force "${_SANDBOX}"
+}
+
+
+_help() {
+    cat <<EOF
+Usage:
+    ${0} [OPTIONS]
+
+Options:
+  --test          Perform a test install
+  --development   Install development features
+  --in-container  Indicate installation is running in a container
+  --snaps         Install snaps if running in a container
+  --fonts         Install fonts if running in a container
+  --icons         Install icons if running in a container
+  --kitty         Install kitty if running in a container
+  --docker        Install docker engine if running in a container
+  --trace         Enable tracing
+  --debug         Enable debugging
+  --help          Show this help message
+
+Description:
+    Provision a ready-to-use environment. It was tested on Ubuntu 22.04 LTS.
+    
+    Run with the '--test' flag to perform an install where the git repository is
+    not cloned. It is only useful if the 'start-testcontainer' command was used
+    to start a test container. See 'bin/start-testcontainer'.
+    
+    Specify '--development' to install development (beta) features.
+    
+    Specify '--in-container' to indicate that the script is running in a
+    container. Features that are not useful in a container is not installed.
+    
+    The '--trace' flag enables tracing of the installation process. Output goes
+    to '/dev/stdout' and '\${HOME}/duplic8r.log'.
+    
+    The '--debug' flag enables debugging of the installation process. Output
+    goes to '\${HOME}/duplic8r.debug.'
+    
+    Specify '--snaps' to install snap packages if running in a container.
+    
+    Specify '--fonts' to install fonts if running in a container.
+    
+    Specify '--icons' to install icons if running in a container.
+    
+    Specify '--kitty' to install the kitty terminal if running in a container.
+    
+    Specify '--docker' install the docker engine if running in a container.
+
+Examples:
+    Start a test container with the 'start-testcontainer' command. Then run the
+    following command to install duplic8r in the test container with out cloing
+    the git repository:
+      cat ${0} | bash -s /dev/stdin --test --trace --debug --fonts
+
+    Open a terminal on a fresh Ubuntu 22.04 LTS installation and run the
+    following command to install duplic8r:
+      curl --silent                                                           \\
+        https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install \\
+        | bash /dev/stdin  
+EOF
+}
+
+
 # Main -------------------------------------------------------------------------
+_IN_CONTAINER_FLAG="${IN_CONTAINER}"
+
 while [ $# -gt 0 ]; do
     case "${1}" in
-        --development)
-            _DEVELOPMENT=true
-            ;;
-        --in-container)
-            _IN_CONTAINER=true
-            ;;
-        --snaps)
-            _SNAPS=true
-            ;;
-        --fonts)
-            _FONTS=true
-            ;;
-        --icons)
-            _ICONS=true
-            ;;
-        --kitty)
-            _KITTY=true
-            ;;
-        --docker)
-            _DOCKER=true
-            ;;
-        --skip-extras)
-            _SNAPS=true
-            _FONTS=true
-            _ICONS=true
-            _KITTY=true
-            _DOCKER=true
-            ;;
+        --development)  _DEVELOPMENT_FLAG=true  ;;
+        --in-container) _IN_CONTAINER_FLAG=true ;;
+        --trace)        _TRACE_FLAG=true        ;;
+        --debug)        _DEBUG_FLAG=true        ;;
+        --test)         _TEST_FLAG=true         ;;
+        --snaps)        _SNAPS_FLAG=true        ;;
+        --fonts)        _FONTS_FLAG=true        ;;
+        --icons)        _ICONS_FLAG=true        ;;
+        --kitty)        _KITTY_FLAG=true        ;;
+        --docker)       _DOCKER_FLAG=true       ;;
+        --help)         _help; exit 0      ;;
         *)
-            echo "Unknown option: ${1}"
-            ;;
+            echo "Unknown option: " "${1}" ;;
     esac
     shift
 done
-_SANDBOX=${HOME}/Downloads/Sandbox
+
+_SANDBOX=/tmp/Sandbox
+
+
+if [ -n "${_DEBUG_FLAG}" ]; then
+    _trace "Enabled debugging"
+    exec 7>"${HOME}/duplic8r.debug"
+    BASH_XTRACEFD=7
+    set -x
+else
+    set -e
+fi
 
 
 install_all() {
@@ -481,37 +630,52 @@ install_all() {
     configure_tmux_plugin_manager
     install_vim_plug
     install_asdf
+    install_ctrlR
+    install_parallel
+    install_z
     set_default_shell
 
-    create_sandbox
-    if [ -n "${_IN_CONTAINER}" ]; then
-        [ -n "${_SNAPS}"  ] && install_snaps
-        [ -n "${_FONTS}"  ] && install_fonts
-        [ -n "${_ICONS}"  ] && install_numix_square_icons
-        [ -n "${_KITTY}"  ] && install_kitty
-        [ -n "${_DOCKER}" ] && install_docker_engine
+    _create_sandbox
+
+    if [ -n "${_IN_CONTAINER_FLAG}" ]; then
+        [ -n "${_SNAPS_FLAG}"  ] && install_snaps
+        [ -n "${_FONTS_FLAG}"  ] && install_fonts
+        [ -n "${_ICONS_FLAG}"  ] && install_numix_square_icons
+        [ -n "${_KITTY_FLAG}"  ] && install_kitty
+        [ -n "${_DOCKER_FLAG}" ] && install_docker_engine
     else
         install_snaps
         install_fonts
         install_numix_square_icons
         install_kitty
+        install_docker_engine
     fi
 
-    [ -z "${_SKIP_CTRLR}"    ] && install_ctrlR
-    [ -z "${_SKIP_PARALLEL}" ] && install_parallel
-    [ -z "${_SKIP_Z}"        ] && install_z
-    destroy_sandbox
+    _destroy_sandbox
 }
 
 
 install_all
 
 
+if [ -n "${_DEBUG_FLAG}" ]; then
+    _trace "Disable debugging"
+    exec 7>&-
+fi
+
+_trace "Disable tracing"
+set +e
+set +x
+
+_trace "Unsetting variables"
 unset _SANDBOX
-unset _DEVELOPMENT
-unset _IN_CONTAINER
-unset _SNAPS
-unset _FONTS
-unset _ICONS
-unset _KITTY
-unset _DOCKER
+unset _DEVELOPMENT_FLAG
+unset _IN_CONTAINER_FLAG
+unset _TEST_FLAG
+unset _TRACE_FLAG
+unset _DEBUG_FLAG
+unset _SNAPS_FLAG
+unset _FONTS_FLAG
+unset _ICONS_FLAG
+unset _KITTY_FLAG
+unset _DOCKER_FLAG
