@@ -624,6 +624,8 @@ fi
 
 
 install_all() {
+    _create_sandbox
+
     install_apt_packages
     install_python_packages
     install_duplic8r
@@ -634,8 +636,6 @@ install_all() {
     install_parallel
     install_z
     set_default_shell
-
-    _create_sandbox
 
     if [ -n "${_IN_CONTAINER_FLAG}" ]; then
         [ -n "${_SNAPS_FLAG}"  ] && install_snaps
