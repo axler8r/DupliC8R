@@ -526,6 +526,67 @@ _destroy_sandbox() {
 }
 
 
+_help() {
+    cat <<EOF
+Usage:
+    ${0} [OPTIONS]
+
+Options:
+  --test          Perform a test install
+  --development   Install development features
+  --in-container  Indicate installation is running in a container
+  --snaps         Install snaps if running in a container
+  --fonts         Install fonts if running in a container
+  --icons         Install icons if running in a container
+  --kitty         Install kitty if running in a container
+  --docker        Install docker engine if running in a container
+  --trace         Enable tracing
+  --debug         Enable debugging
+  --help          Show this help message
+
+Description:
+    Provision a ready-to-use environment. It was tested on Ubuntu 22.04 LTS.
+    
+    Run with the '--test' flag to perform an install where the git repository is
+    not cloned. It is only useful if the 'start-testcontainer' command was used
+    to start a test container. See 'bin/start-testcontainer'.
+    
+    Specify '--development' to install development (beta) features.
+    
+    Specify '--in-container' to indicate that the script is running in a
+    container. Features that are not useful in a container is not installed.
+    
+    The '--trace' flag enables tracing of the installation process. Output goes
+    to '/dev/stdout' and '\${HOME}/duplic8r.log'.
+    
+    The '--debug' flag enables debugging of the installation process. Output
+    goes to '\${HOME}/duplic8r.debug.'
+    
+    Specify '--snaps' to install snap packages if running in a container.
+    
+    Specify '--fonts' to install fonts if running in a container.
+    
+    Specify '--icons' to install icons if running in a container.
+    
+    Specify '--kitty' to install the kitty terminal if running in a container.
+    
+    Specify '--docker' install the docker engine if running in a container.
+
+Examples:
+    Start a test container with the 'start-testcontainer' command. Then run the
+    following command to install duplic8r in the test container with out cloing
+    the git repository:
+      cat ${0} | bash -s /dev/stdin --test --trace --debug --fonts
+
+    Open a terminal on a fresh Ubuntu 22.04 LTS installation and run the
+    following command to install duplic8r:
+      curl --silent                                                           \\
+        https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install \\
+        | bash /dev/stdin  
+EOF
+}
+
+
 # Main -------------------------------------------------------------------------
 _IN_CONTAINER_FLAG="${IN_CONTAINER}"
 
