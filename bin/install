@@ -53,6 +53,7 @@ install_apt_packages() {
     )
     _trace "APT commands: " "${_COMMANDS[*]}"
 
+    _trace "Running APT"
     if [ "$(id --user)" -eq 0 ]; then
       echo "${_COMMANDS[@]}" | bash --
     else
@@ -80,6 +81,7 @@ install_python_packages() {
     )
     _trace "PIP packages: " "${_PACKAGES[*]}"
 
+    _trace "Running PIP"
     pip3 install "${_FLAGS[@]}" "${_PACKAGES[@]}"
 }
 
@@ -99,6 +101,7 @@ install_duplic8r() {
     _trace "Duplic8r repo: " "${_REPO}"
     _trace "Duplic8r branch: " "${_BRANCH}"
 
+    _trace "Installing duplic8r"
     if [ -d "${_DUPLIC8R_HOME}" ]; then
         _pull_repo "${_DUPLIC8R_HOME}" "${_BRANCH}"
     else
@@ -169,7 +172,7 @@ configure_tmux_plugin_manager() {
 
     if [ -d /usr/share/tmux-plugin-manager ]; then
         if [ ! -L "${TMUX_PLUGINS_HOME}/tpm" ]; then
-        _trace "Linking /usr/share/tmux-plugin-manager to ${TMUX_PLUGINS_HOME}/tpm"
+            _trace "Linking /usr/share/tmux-plugin-manager to ${TMUX_PLUGINS_HOME}/tpm"
             ln --symbolic /usr/share/tmux-plugin-manager "${TMUX_PLUGINS_HOME}/tpm"
         fi
     fi
@@ -197,8 +200,11 @@ install_asdf() {
         "tokei"
         "yq"
     )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
     _trace "ASDF plugins: " "${_ASDF_PLUGINS[*]}"
 
+    _trace "Finding latest asdf"
     local _ASDF_LATEST
     _ASDF_LATEST=$(
         git -c                                         \
@@ -215,6 +221,7 @@ install_asdf() {
 
     if [ ! -d "${HOME}/.asdf" ]; then
         git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch "${_ASDF_LATEST}"
+        _trace "Cloning asdf ${_ASDF_LATEST}@${_SOURCE} to ${_TARGET}"
         source "${HOME}/.asdf/asdf.sh"
 
         for _plugin in "${_ASDF_PLUGINS[@]}"; do
@@ -236,11 +243,14 @@ install_vim_plug() {
         "--location"
         "--output"
     )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
     _trace "Curl flags: " "${_FLAGS[*]}"
 
     if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
         curl "${_FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        _trace "Downloading vim plug from ${_SOURCE} to ${_TARGET}"
     fi
 
     # nvim --headless +'PlugInstall --sync' +qa
@@ -251,6 +261,7 @@ set_default_shell() {
     _info "Setting default shell"
 
     if [ ! "${SHELL}" == "$(which zsh)" ]; then
+        _trace "Changing shell to zsh"
         if [ "$(id --user)" -eq 0 ]; then
             echo chsh --shell "$(which zsh)" "${USER}" | bash --
         else
@@ -281,6 +292,7 @@ install_snaps() {
     # "obs-studio"
     # "vlc"
 
+    _trace "Refreshing snaps"
     if [ "$(id --user)" -eq 0 ]; then
         echo snap refresh | bash --
     else
@@ -301,11 +313,16 @@ install_snaps() {
 install_ctrlR() {
     _info "Installing ctrl+r"
 
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Installing history-search-multi-word"
     if [ ! -d "${HOME}/.zsh-hsmw" ]; then
         git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
         "${HOME}/.zsh-hsmw"
+        _trace "Cloning history-search-multi-word from ${_SOURCE} to ${_TARGET}"
     else
         cd "${HOME}/.zsh-hsmw"
+        _trace "Pulling history-search-multi-word from ${_SOURCE} to ${_TARGET}"
         git pull
     fi
 }
@@ -317,21 +334,27 @@ install_fonts() {
     if [ ! -d "${HOME}/.fonts" ]; then
         mkdir "${HOME}/.fonts"
     fi
+    _trace "Fonts dir: " "${_FONTS_DIR}"
+    _trace "Cascadia source: " "${_CASCADIA_SOURCE}"
+    _trace "Caskaydia source: " "${_CASKAYDIA_SOURCE}"
 
     cd "${_SANDBOX}"
 
     wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+    _trace "Installing Cascadia Code"
     unzip CascadiaCode-2111.01.zip
     rm --force "${HOME}/.fonts/CascadiaCode*.ttf"
     mv --update ttf/CascadiaCode*.ttf "${HOME}/.fonts"
     rm --force --recursive "${_SANDBOX:?}/*"
 
     wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
+    _trace "Installing Caskaydia Cove Nerd Font"
     unzip CascadiaCode.zip
     rm --force "${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf"
     mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${HOME}/.fonts"
     rm --force --recursive "${_SANDBOX:?}/*"
 
+    _trace "Updating font cache"
     fc-cache --force --verbose
 }
 
@@ -339,7 +362,9 @@ install_fonts() {
 install_numix_square_icons() {
     _info "Installing numix square icons"
 
+    _trace "Adding numix ppa"
     sudo add-apt-repository ppa:numix/ppa
+    _trace "Updating apt"
     sudo apt update && sudo apt install numix-icon-theme-square
 }
 
@@ -347,17 +372,22 @@ install_numix_square_icons() {
 install_kitty() {
     _info "Installing kitty"
 
+    _trace "Installing kitty"
     curl --location https://sw.kovidgoyal.net/kitty/installer.sh | sh --
 
+    _trace "Linking kitty"
     ln --symbolic --force                                                     \
        "${HOME}/.local/kitty.app/bin/kitty"                                   \
        "${HOME}/.local/kitty.app/bin/kitten"                                  \
        "${HOME}/.local/bin/"
+
+    _trace "Copying kitty desktop files"
     cp "${HOME}/.local/kitty.app/share/applications/kitty.desktop"            \
        "${HOME}/.local/share/applications/"
     cp "${HOME}/.local/kitty.app/share/applications/kitty-open.desktop"       \
        "${HOME}/.local/share/applications/"
 
+    _trace "Updating kitty desktop files"
     sed --in-place                                                            \
         "s|Icon=kitty|Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg|g" \
         "${HOME}"/.local/share/applications/kitty*.desktop
@@ -371,8 +401,10 @@ install_docker_engine() {
     _info "Installing docker engine"
 
     if [ ! -x "$(which docker)" ]; then
+        _trace "Installing docker"
         curl --location https://get.docker.com | bash --
         if [ "$(id --user)" -ne 0 ]; then
+            _trace "Adding user to docker group"
             echo usermod --append --groups docker "${USER}" | sudo --shell --
         fi
     fi
@@ -385,6 +417,7 @@ install_parallel() {
     if [ ! -x "$(which parallel)" ]; then
         cd "${_SANDBOX}"
 
+        _trace "Installing parallel"
         wget --quiet https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
         tar --extract --bzip2 --file parallel-latest.tar.bz2
         rm parallel-latest.tar.bz2
@@ -408,6 +441,7 @@ install_z() {
     if [ ! -x "${BIN_DIR}/z.sh" ]; then
         cd "${_SANDBOX}"
 
+        _trace "Installing z"
         wget --quiet https://raw.githubusercontent.com/rupa/z/master/z.sh
         mv z.sh "${BIN_DIR}/z.sh"
         chmod +x "${BIN_DIR}/z.sh"
@@ -447,8 +481,11 @@ _copy_file() {
         "--checksum"
         "--itemize-changes"
     )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
     _trace "Copy flags: " "${_FLAGS[*]}"
 
+    _trace "Copying file from ${_SOURCE} to ${_TARGET}"
     rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
 }
 
@@ -466,6 +503,7 @@ _clone_repo() {
     _trace "Branch: " "${_BRANCH}"
 
      git clone --branch "${_BRANCH}" "${_REPO}" "${_TARGET}"
+    _trace "Cloning git repository ${_BRANCH}@${_REPO} to ${_TARGET}"
 }
 
 
@@ -480,6 +518,7 @@ _pull_repo() {
     _trace "Branch: " "${_BRANCH}"
 
     cd "${_TARGET}"
+    _trace "Pulling git repository ${_BRANCH}@${_TARGET}"
     git pull origin "${_BRANCH}"
 }
 
@@ -545,6 +584,7 @@ _SANDBOX=/tmp/Sandbox
 
 if [ -n "${_DEBUG}" ]; then
     exec 7>"${HOME}/duplic8r.trace"
+    _trace "Enabled debugging"
     BASH_XTRACEFD=7
     set -x
 else
@@ -589,12 +629,15 @@ install_all
 
 if [ -n "${_DEBUG}" ]; then
     set +x
+    _trace "Disable debugging"
     exec 7>&-
 fi
 
+_trace "Disable tracing"
 set +e
 set +x
 
+_trace "Unsetting variables"
 unset _SANDBOX
 unset _LOCAL
 unset _DEVELOPMENT
