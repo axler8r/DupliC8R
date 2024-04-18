@@ -1,6 +1,34 @@
 # Changelog
 
 
+## 4.0.3
+**2024-04-18**
+
+### Bug Fixes
++ Format code to pass linting
+
+### New & Updated Documentation
++ Simplify readme
+
+### New & Updated Features
++ Add apt package
++ Add help function
++ Add helper functions
++ Add icon update functions
++ Add test functions
++ Add trace functionality
++ Simplify test container
++ Update install logic
+
+### Stylistic & Idiomatic Updates
++ Add file type definitions to project file
++ Add ignore list to project file
++ Align line continuation characters
++ Aply observability principles
++ Apply idomatic code patterns
++ Remove redundant code
+
+
 ## 4.0.2
 **2024-04-15**
 
