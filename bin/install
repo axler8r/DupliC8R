@@ -480,7 +480,7 @@ _copy_file() {
 
 
 _clone_repo() {
-    [ -n "${_LOCAL}" ] && return
+    [ -n "${_TEST_FLAG}" ] && return
 
     _info "Cloning git repository"
 
@@ -497,7 +497,7 @@ _clone_repo() {
 
 
 _pull_repo() {
-    [ -n "${_LOCAL}" ] && return
+    [ -n "${_TEST_FLAG}" ] && return
 
     _info "Updating git repository"
 
@@ -527,43 +527,23 @@ _destroy_sandbox() {
 
 
 # Main -------------------------------------------------------------------------
-_IN_CONTAINER="${IN_CONTAINER}"
+_IN_CONTAINER_FLAG="${IN_CONTAINER}"
 
 while [ $# -gt 0 ]; do
     case "${1}" in
-        --local)
-            _LOCAL=true
-            ;;
-        --development)
-            _DEVELOPMENT=true
-            ;;
-        --in-container)
-            _IN_CONTAINER=true
-            ;;
-        --trace)
-            _TRACE=true
-            ;;
-        --debug)
-            _DEBUG=true
-            ;;
-        --snaps)
-            _SNAPS=true
-            ;;
-        --fonts)
-            _FONTS=true
-            ;;
-        --icons)
-            _ICONS=true
-            ;;
-        --kitty)
-            _KITTY=true
-            ;;
-        --docker)
-            _DOCKER=true
-            ;;
+        --development)  _DEVELOPMENT_FLAG=true  ;;
+        --in-container) _IN_CONTAINER_FLAG=true ;;
+        --trace)        _TRACE_FLAG=true        ;;
+        --debug)        _DEBUG_FLAG=true        ;;
+        --test)         _TEST_FLAG=true         ;;
+        --snaps)        _SNAPS_FLAG=true        ;;
+        --fonts)        _FONTS_FLAG=true        ;;
+        --icons)        _ICONS_FLAG=true        ;;
+        --kitty)        _KITTY_FLAG=true        ;;
+        --docker)       _DOCKER_FLAG=true       ;;
+        --help)         _help; exit 0      ;;
         *)
-            echo "Unknown option: " "${1}"
-            ;;
+            echo "Unknown option: " "${1}" ;;
     esac
     shift
 done
@@ -571,8 +551,6 @@ done
 _SANDBOX=/tmp/Sandbox
 
 
-if [ -n "${_DEBUG}" ]; then
-    exec 7>"${HOME}/duplic8r.trace"
 if [ -n "${_DEBUG_FLAG}" ]; then
     _trace "Enabled debugging"
     exec 7>"${HOME}/duplic8r.debug"
@@ -597,12 +575,12 @@ install_all() {
 
     _create_sandbox
 
-    if [ -n "${_IN_CONTAINER}" ]; then
-        [ -n "${_SNAPS}"  ] && install_snaps
-        [ -n "${_FONTS}"  ] && install_fonts
-        [ -n "${_ICONS}"  ] && install_numix_square_icons
-        [ -n "${_KITTY}"  ] && install_kitty
-        [ -n "${_DOCKER}" ] && install_docker_engine
+    if [ -n "${_IN_CONTAINER_FLAG}" ]; then
+        [ -n "${_SNAPS_FLAG}"  ] && install_snaps
+        [ -n "${_FONTS_FLAG}"  ] && install_fonts
+        [ -n "${_ICONS_FLAG}"  ] && install_numix_square_icons
+        [ -n "${_KITTY_FLAG}"  ] && install_kitty
+        [ -n "${_DOCKER_FLAG}" ] && install_docker_engine
     else
         install_snaps
         install_fonts
@@ -618,8 +596,6 @@ install_all() {
 install_all
 
 
-if [ -n "${_DEBUG}" ]; then
-    set +x
 if [ -n "${_DEBUG_FLAG}" ]; then
     _trace "Disable debugging"
     exec 7>&-
@@ -631,13 +607,13 @@ set +x
 
 _trace "Unsetting variables"
 unset _SANDBOX
-unset _LOCAL
-unset _DEVELOPMENT
-unset _IN_CONTAINER
-unset _TRACE
-unset _DEBUG
-unset _SNAPS
-unset _FONTS
-unset _ICONS
-unset _KITTY
-unset _DOCKER
+unset _DEVELOPMENT_FLAG
+unset _IN_CONTAINER_FLAG
+unset _TEST_FLAG
+unset _TRACE_FLAG
+unset _DEBUG_FLAG
+unset _SNAPS_FLAG
+unset _FONTS_FLAG
+unset _ICONS_FLAG
+unset _KITTY_FLAG
+unset _DOCKER_FLAG
