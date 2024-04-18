@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 
 
 # Base installation ------------------------------------------------------------
@@ -185,6 +185,7 @@ install_asdf() {
         "fzf"
         "github-cli"
         "jq"
+        "julia"
         "just"
         "neovim"
         "nodejs"
