@@ -94,7 +94,7 @@ install_duplic8r() {
     local _XDG_CONFIG_DIR="${HOME}/.config"
     local _REPO="https://github.com/axler8r/duplic8r.git"
     local _BRANCH="stable"
-    [ -n "${_DEVELOPMENT}" ] && _BRANCH="development"
+    [ -n "${_DEVELOPMENT_FLAG}" ] && _BRANCH="development"
     _trace "Duplic8r home: " "${_DUPLIC8R_HOME}"
     _trace "Duplic8r source: " "${_SOURCE}"
     _trace "XDG config dir: " "${_XDG_CONFIG_DIR}"
@@ -148,15 +148,6 @@ install_duplic8r() {
         _trace "Copying ${_config} from ${_SOURCE}/config to ${_XDG_CONFIG_DIR}"
         _copy_file "${_SOURCE}/config/${_config}" "${_XDG_CONFIG_DIR}"
     done
-
-    # TODO: Is this necessary?
-    # if [ ! -d "${_XDG_CONFIG_DIR}/Code/User" ]; then
-    #     mkdir --parents "${_XDG_CONFIG_DIR}/Code/User"
-    # fi
-
-    # cp "${_FLAGS[@]}" \
-    #    "${_SOURCE}/config/Code/User/settings.json" \
-    #    "${_XDG_CONFIG_DIR}/Code/User/settings.json"
 }
 
 
@@ -182,6 +173,8 @@ configure_tmux_plugin_manager() {
 install_asdf() {
     _info "Installing asdf"
 
+    local _SOURCE="https://github.com/asdf-vm/asdf.git"
+    local _TARGET="${HOME}/.asdf"
     local _ASDF_PLUGINS=(
         "bat"
         "choose"
@@ -220,8 +213,8 @@ install_asdf() {
     _trace "ASDF latest: " "${_ASDF_LATEST}"
 
     if [ ! -d "${HOME}/.asdf" ]; then
-        git clone https://github.com/asdf-vm/asdf.git "${HOME}/.asdf" --branch "${_ASDF_LATEST}"
         _trace "Cloning asdf ${_ASDF_LATEST}@${_SOURCE} to ${_TARGET}"
+        git clone ${_SOURCE} "${_TARGET}" --branch "${_ASDF_LATEST}"
         source "${HOME}/.asdf/asdf.sh"
 
         for _plugin in "${_ASDF_PLUGINS[@]}"; do
@@ -237,6 +230,8 @@ install_asdf() {
 install_vim_plug() {
     _info "Installing vim plug"
 
+    local _SOURCE="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    local _TARGET="${HOME}/.local/share/nvim/site/autoload/plug.vim"
     local _FLAGS=(
         "--create-dirs"
         "--fail"
@@ -248,12 +243,9 @@ install_vim_plug() {
     _trace "Curl flags: " "${_FLAGS[*]}"
 
     if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
-        curl "${_FLAGS[@]}" "${HOME}/.local/share/nvim/site/autoload/plug.vim" \
-            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         _trace "Downloading vim plug from ${_SOURCE} to ${_TARGET}"
+        curl "${_FLAGS[@]}" "${_TARGET}" ${_SOURCE}
     fi
-
-    # nvim --headless +'PlugInstall --sync' +qa
 }
 
 
@@ -285,13 +277,6 @@ install_snaps() {
     )
     _trace "Snaps: " "${_SNAPS[*]}"
 
-    # Optional extras
-    # "blender --classic"
-    # "gimp"
-    # "inkscape"
-    # "obs-studio"
-    # "vlc"
-
     _trace "Refreshing snaps"
     if [ "$(id --user)" -eq 0 ]; then
         echo snap refresh | bash --
@@ -313,16 +298,18 @@ install_snaps() {
 install_ctrlR() {
     _info "Installing ctrl+r"
 
+    local _SOURCE="https://github.com/zdharma-continuum/history-search-multi-word.git"
+    local _TARGET="${HOME}/.zsh-hsmw"
     _trace "Source: " "${_SOURCE}"
     _trace "Target: " "${_TARGET}"
+
     _trace "Installing history-search-multi-word"
     if [ ! -d "${HOME}/.zsh-hsmw" ]; then
-        git clone https://github.com/zdharma-continuum/history-search-multi-word.git \
-        "${HOME}/.zsh-hsmw"
         _trace "Cloning history-search-multi-word from ${_SOURCE} to ${_TARGET}"
+        git clone ${_SOURCE} "${_TARGET}"
     else
-        cd "${HOME}/.zsh-hsmw"
         _trace "Pulling history-search-multi-word from ${_SOURCE} to ${_TARGET}"
+        cd "${_TARGET}"
         git pull
     fi
 }
@@ -331,27 +318,29 @@ install_ctrlR() {
 install_fonts() {
     _info "Installing fonts"
 
-    if [ ! -d "${HOME}/.fonts" ]; then
-        mkdir "${HOME}/.fonts"
-    fi
+    local _FONTS_DIR="${HOME}/.fonts"
+    local _CASCADIA_SOURCE="https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip"
+    local _CASKAYDIA_SOURCE="https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip"
     _trace "Fonts dir: " "${_FONTS_DIR}"
     _trace "Cascadia source: " "${_CASCADIA_SOURCE}"
     _trace "Caskaydia source: " "${_CASKAYDIA_SOURCE}"
 
+    [ ! -d "${_FONTS_DIR}" ] && mkdir "${_FONTS_DIR}"
+
     cd "${_SANDBOX}"
 
-    wget --quiet https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
     _trace "Installing Cascadia Code"
+    wget --quiet ${_CASCADIA_SOURCE}
     unzip CascadiaCode-2111.01.zip
-    rm --force "${HOME}/.fonts/CascadiaCode*.ttf"
-    mv --update ttf/CascadiaCode*.ttf "${HOME}/.fonts"
+    rm --force "${_FONTS_DIR}/CascadiaCode*.ttf"
+    mv --update ttf/CascadiaCode*.ttf "${_FONTS_DIR}"
     rm --force --recursive "${_SANDBOX:?}/*"
 
-    wget --quiet https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
     _trace "Installing Caskaydia Cove Nerd Font"
+    wget --quiet ${_CASKAYDIA_SOURCE}
     unzip CascadiaCode.zip
-    rm --force "${HOME}/.fonts/CaskaydiaCoveNerdFont*.ttf"
-    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${HOME}/.fonts"
+    rm --force "${_FONTS_DIR}/CaskaydiaCoveNerdFont*.ttf"
+    mv --update CaskaydiaCoveNerdFont-{Regular,Italic,Bold,BoldItalic}.ttf "${_FONTS_DIR}"
     rm --force --recursive "${_SANDBOX:?}/*"
 
     _trace "Updating font cache"
@@ -427,7 +416,7 @@ install_parallel() {
         make install
 
         cd "${HOME}"
-        rm -rf "${_SANDBOX:?}/*"
+        rm --force --recursive "${_SANDBOX:?}/*"
     fi
 }
 
@@ -447,7 +436,7 @@ install_z() {
         chmod +x "${BIN_DIR}/z.sh"
 
         cd "${HOME}"
-        rm -rf "${_SANDBOX:?}/*"
+        rm --force --recursive "${_SANDBOX:?}/*"
     fi
 }
 
@@ -461,12 +450,12 @@ _info() {
 }
 
 _trace() {
-    local _MESSAGE="${1}"
-    local _DATA="${2}"
-    local _TIMESTAMP
-    _TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S.%3N")
+    if [ -n "${_TRACE_FLAG}" ]; then
+        local _MESSAGE="${1}"
+        local _DATA="${2}"
+        local _TIMESTAMP
+        _TIMESTAMP=$(date +"%Y-%m-%dT%H:%M:%S.%3N")
 
-    if [ -n "${_TRACE}" ]; then
         echo
         echo "|> ${_TIMESTAMP}: ${_MESSAGE} ${_DATA}" | tee --append "${HOME}/duplic8r.log"
     fi
@@ -502,8 +491,8 @@ _clone_repo() {
     _trace "Target: " "${_TARGET}"
     _trace "Branch: " "${_BRANCH}"
 
-     git clone --branch "${_BRANCH}" "${_REPO}" "${_TARGET}"
     _trace "Cloning git repository ${_BRANCH}@${_REPO} to ${_TARGET}"
+    git clone --branch "${_BRANCH}" "${_REPO}" "${_TARGET}"
 }
 
 
@@ -584,7 +573,9 @@ _SANDBOX=/tmp/Sandbox
 
 if [ -n "${_DEBUG}" ]; then
     exec 7>"${HOME}/duplic8r.trace"
+if [ -n "${_DEBUG_FLAG}" ]; then
     _trace "Enabled debugging"
+    exec 7>"${HOME}/duplic8r.debug"
     BASH_XTRACEFD=7
     set -x
 else
@@ -629,6 +620,7 @@ install_all
 
 if [ -n "${_DEBUG}" ]; then
     set +x
+if [ -n "${_DEBUG_FLAG}" ]; then
     _trace "Disable debugging"
     exec 7>&-
 fi
