@@ -134,4 +134,3 @@ colorscheme solarized8
 " }}}
 
 " vim: foldmethod=marker
-

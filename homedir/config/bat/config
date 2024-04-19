@@ -31,4 +31,3 @@
 --map-syntax ".tmux.conf:Bourne Again Shell (bash)"
 --map-syntax ".xonshrc:Python"
 --map-syntax ".zsh*:Bourne Again Shell (bash)"
-

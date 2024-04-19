@@ -58,4 +58,3 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
     #    echo ${__man_dir} >> zshenv.startup
     #done
 }
-

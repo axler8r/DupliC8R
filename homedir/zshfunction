@@ -28,4 +28,3 @@ list-body() {
 	printf '%s\n' "$header" # Print the header.
 	"$@"                    # Return the remaining lines.
 }
-

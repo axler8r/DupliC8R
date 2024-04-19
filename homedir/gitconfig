@@ -46,4 +46,3 @@
     develop = development
 [gitflow "prefix"]
     versiontag = v
-

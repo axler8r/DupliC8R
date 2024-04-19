@@ -234,4 +234,3 @@
 + New Spacemacs
 + New Git
 + New Solarized Color Theme
-

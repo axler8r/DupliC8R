@@ -15,4 +15,3 @@ RUN echo 'duplic8r ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/duplic8r
 RUN useradd -u 1000 -m duplic8r
 
 USER duplic8r
-

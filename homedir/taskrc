@@ -17,4 +17,3 @@ news.version=2.6.0
 # User configuration
 include /home/axl/.config/taskwarrior/solarized.theme
 weekstart=Monday
-

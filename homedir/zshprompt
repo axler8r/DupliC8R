@@ -20,4 +20,3 @@ if [[ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]] {
 if [[ -f $HOME/.zsh-hsmw/history-search-multi-word.plugin.zsh ]] {
     source $HOME/.zsh-hsmw/history-search-multi-word.plugin.zsh
 }
-

@@ -45,4 +45,3 @@ $PSReadLineOptions = @{
 Set-PSReadLineOption @PSReadLineOptions
 
 oh-my-posh init pwsh --config $PROFILE/axler8r.omp.json | Invoke-Expression
-
