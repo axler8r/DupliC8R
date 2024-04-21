@@ -1,3 +1,3 @@
 #! /usr/bin/env zsh
 
-docker build --tag axler8r/duplic8r:latest - < Dockerfile
+docker build --tag axler8r/duplic8r-test:latest - < Dockerfile
