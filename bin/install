@@ -15,6 +15,7 @@ install_apt_packages() {
 
     local _PACKAGES=(
         "attr"
+        "btop"
         "build-essential"
         "make-doc"
         "bzip2"
@@ -27,6 +28,7 @@ install_apt_packages() {
         "htop"
         "less"
         "lsof"
+        "p7zip-full"
         "pv"
         "python3"
         "python3-pip"
@@ -90,7 +92,7 @@ install_duplic8r() {
     _info "Installing duplic8r"
 
     local _DUPLIC8R_HOME="${HOME}/.duplic8r"
-    local _SOURCE="${_DUPLIC8R_HOME}/homedir"
+    local _SOURCE="${_DUPLIC8R_HOME}/source/userhome"
     local _XDG_CONFIG_DIR="${HOME}/.config"
     local _REPO="https://github.com/axler8r/duplic8r.git"
     local _BRANCH="stable"

@@ -10,20 +10,22 @@ distribution. It has an intall script with a few options. It can be installed as
 a regular user in a single user environment, but can be installed as root as
 well.
 
-For more information about the install script see [INSTALL.md](INSTALL.md).
+For more information about the install script see the
+[detailed installation instructions](documentation/INSTALL.md).
 
 
 ## Table of Contents
 + [Install](#install)
   + [Requirements](#requirements)
   + [Targets](#targets)
++ [Test](#test)
 + [Contribute](#contribute)
 + [License](#license)
 
 
 ## Install
-Install is kept simple. The install script is a single command that can be
-piped to `bash`.
+Install is kept simple. The install script is a single command that can be piped
+to `bash`.
 
 
 ### Requirements
@@ -74,11 +76,15 @@ curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin
 > The `development` version of the installer may not be stable.
 
 
+## Test
+For more information on testing, see the [detailed test](documentation/TEST.md)
+documentation.
+
+
 ## Contribute
 Fork this repository, make changes, and submit a pull request.
 
 
 ## License
-This is free and unencumbered public domain software. For more
-information, see <http://unlicense.org/> or the accompanying UNLICENSE
-file.
+This is free and unencumbered public domain software. For more information, see
+<http://unlicense.org/> or the accompanying UNLICENSE file.

@@ -5,7 +5,7 @@ More information about the `duplic8r` installer.
 + [Flags & Environment Variables](#flags-&-environment-variables)
     + [Examples](#examples)
 + [Test Environments](#test-environments)
-+ [What is installed?](#what-is-installed?)
++ [What is installed?](#what-is-installed)
 
 
 ## Flags & Environment Variables
