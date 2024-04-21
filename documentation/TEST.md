@@ -20,9 +20,9 @@ follows:
     the `duplic8r` repository is NOT cloned from the origin but is mounted from
     the host. This is useful for testing the `install` script in a controlled
     environment. For more information see the
-    [Detailed Installation Instructions](../INSTALL.md).
+    [detailed installation instructions](../documentation/INSTALL.md).
 + `test/start-remotetestcontainer` - Start the test container for 'remote'
     testing. No special setup is performed for this test container. For more
-    information see the [Installation Instructions](../README.md).
+    information see the [general installation instructions](../README.md).
 + `test/stop-testcontainer` - Stop the test container.
 + `test/test-localinstall` - Perform a controlled test of the `install` script.
