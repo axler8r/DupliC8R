@@ -2,7 +2,6 @@ FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV IN_CONTAINER=true
-ENV AXLER8R=true
 
 RUN apt update \
     && apt upgrade --yes --no-install-recommends \
