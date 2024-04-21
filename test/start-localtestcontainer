@@ -1,0 +1,22 @@
+#! /usr/bin/env zsh
+
+local _PARENT_DIR="${0:a:h:h}"
+local _FLAGS=(
+    "--name=duplic8r-test"
+    "--interactive"
+    "--tty"
+    "--rm"
+    "--user=duplic8r"
+    "--env=TEST=local"
+)
+local _MOUNTS=(
+    "--mount=type=bind,source=${_PARENT_DIR},target=/home/duplic8r/.duplic8r,readonly"
+    "--mount=type=bind,source=${_PARENT_DIR}/bin/install,target=/home/duplic8r/install,readonly"
+    "--mount=type=bind,source=${_PARENT_DIR}/test/test-localinstall,target=/home/duplic8r/test-install,readonly"
+)
+
+docker run "${_FLAGS[@]}" "${_MOUNTS[@]}" axler8r/duplic8r-test:latest
+
+unset _MOUNTS
+unset _FLAGS
+unset _PARENT_DIR
