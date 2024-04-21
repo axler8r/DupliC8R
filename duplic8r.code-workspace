@@ -22,10 +22,7 @@
             "zshalias": "shellscript",
             "zshfunction": "shellscript",
             "zshprompt": "shellscript",
-            "new-testimage": "shellscript",
-            "remove-testimage": "shellscript",
-            "start-testcontainer": "shellscript",
-            "stop-testcontainer": "shellscript",
+            "**/test/*-*": "shellscript",
             "**/zshfunctions/*": "shellscript",
         },
         "files.exclude": {
