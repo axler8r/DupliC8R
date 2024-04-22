@@ -1,6 +1,35 @@
 # Changelog
 
 
+## 4.0.4
+**2024-04-22**
+
+### Bug Fixes
++ Fix missing sandbox
++ Resolve docker file location
+
+### New & Updated Documentation
++ Add test documentation
++ Add post install section
++ Allign install document with the truth
+
+### New & Updated Features
++ Add local test container startup script
++ Add remote test container startup script
++ Add local testing functionality
++ Remove redundant environment variable
++ Rename test image
+
+### Refactor
++ Add source directory
++ Add documentation directory
++ Update artefacts to reflect refactoring
+
+### Stylistic & Idiomatic Updates
++ Arange function order
++ Declare project file types
+
+
 ## 4.0.3
 **2024-04-18**
 
