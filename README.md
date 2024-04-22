@@ -18,6 +18,7 @@ For more information about the install script see the
 + [Install](#install)
   + [Requirements](#requirements)
   + [Targets](#targets)
++ [After Install](#after-install)
 + [Test](#test)
 + [Contribute](#contribute)
 + [License](#license)
@@ -74,6 +75,18 @@ curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin
 
 > [!WARNING]
 > The `development` version of the installer may not be stable.
+
+
+## After Install
+After the install script has completed, you will need to log out and log back in
+to see the changes take effect. Alternatively you can just start `zsh` if you
+want to postpone logging out.
+
+To complete the installation of 'vim-plug' NeoVim plugins, run the follwoing
+command.
+```bash
+nvim --headless +'PlugInstall --sync' +qall
+```
 
 
 ## Test
