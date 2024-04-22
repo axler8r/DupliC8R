@@ -1,0 +1,15 @@
+#! /usr/bin/env zsh
+
+
+local _FLAGS=(
+    "--name=duplic8r-test"
+    "--interactive"
+    "--tty"
+    "--rm"
+    "--user=duplic8r"
+    "--env=TEST=remote"
+)
+
+docker run "${_FLAGS[@]}" axler8r/duplic8r-test:latest
+
+unset _FLAGS

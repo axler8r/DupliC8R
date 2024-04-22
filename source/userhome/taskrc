@@ -1,0 +1,19 @@
+# [Created by task 2.5.1 6/10/2021 20:56:42]
+# Taskwarrior program configuration file.
+# For more documentation, see http://taskwarrior.org or try 'man task', 'man task-color',
+# 'man task-sync' or 'man taskrc'
+
+# Use the command 'task show' to see all defaults and overrides
+
+# Files
+data.location=~/.task
+
+# Holidays
+calendar.holidays=full
+include /usr/share/taskwarrior/holidays.en-NZ.rc
+
+news.version=2.6.0
+
+# User configuration
+include /home/axl/.config/taskwarrior/solarized.theme
+weekstart=Monday

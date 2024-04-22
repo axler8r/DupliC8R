@@ -1,4 +1,7 @@
 #! /usr/bin/env zsh
 
-docker build --tag axler8r/duplic8r:latest - < Dockerfile
+local _THIS_DIR=${0:a:h}
 
+docker build --tag axler8r/duplic8r-test:latest - < "${_THIS_DIR}"/Dockerfile
+
+unset _THIS_DIR

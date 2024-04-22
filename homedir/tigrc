@@ -1,5 +1,0 @@
-bind generic + !git commit --amend
-bind generic I !git add --interactive %(file)
-set line-graphics = utf-8
-color cursor black green
-

@@ -1,0 +1,153 @@
+COLOR                 tty
+
+# One TERM entry for each colorizable termtype
+TERM                  alacritty
+TERM                  ansi
+TERM                  gnome
+TERM                  gnome-256color
+TERM                  putty
+TERM                  putty-256color
+TERM                  rxvt
+TERM                  rxvt-256color
+TERM                  screen
+TERM                  screen-256color
+TERM                  screen-256color-italic
+TERM                  tmux
+TERM                  tmux-256color
+TERM                  xterm
+TERM                  xterm-256color
+TERM                  xterm-256color-italic
+TERM                  xterm-kitty
+
+EIGHTBIT              1
+
+NORMAL                00
+FILE                  00
+DIR                   01;34
+LINK                  01;36
+FIFO                  00;48;5;240;38;5;230 # 30;47
+SOCK                  00;48;5;241;38;5;230 # 30;47
+ORPHAN                01;48;5;160;38;5;230 #05;37;41
+MISSING               01;48;5;160;38;5;230 #05;37;41
+EXEC                  01;38;5;160 # Linux
+.app                  00;38;5;160 # OSX
+
+# Text
+.md                   01;38;5;245
+.asciidoc             00;38;5;245
+.txt                  00;38;5;245
+.tex                  00;38;5;245
+
+# Source
+.cs                   00;38;5;64
+.csproj               00;38;5;64
+.ex                   01;38;5;64
+.exs                  01;38;5;64
+.java                 00;38;5;64
+.jl                   01;38;5;64
+.kt                   00;38;5;64
+.lua                  00;38;5;64
+.py                   01;38;5;64
+.rs                   01;38;5;64
+.scala                00;38;5;64
+.sql                  00;38;5;64
+.swift                00;38;5;64
+
+# Shell
+.sh                   00;38;5;245
+.bash                 00;38;5;245
+.csh                  00;38;5;245
+.zsh                  01;38;5;245
+
+# Configuration
+.json                 01;38;5;61
+.xml                  00;38;5;61
+.yaml                 01;38;5;61
+.ini                  01;38;5;61
+.cfg                  01;38;5;61
+
+# Notebook & Livebook
+.livemd               01;38;5;136
+.ipynb                01;38;5;136
+.jlnb                 00;38;5;136
+
+# Image
+.jpeg                 00;38;5;33
+.jpg                  00;38;5;33
+.png                  00;38;5;33
+.svg                  00;38;5;33
+.tiff                 00;38;5;33
+
+# Binary document
+.pdf                  01;38;5;125
+.ps                   00;38;5;125
+
+# Archive
+# 00;38;5;37
+.7z                   01;38;5;37
+.bz                   00;38;5;37
+.bz2                  00;38;5;37
+.dmg                  00;38;5;37
+.gz                   01;38;5;37
+.iso                  00;38;5;37
+.pkg                  00;38;5;37
+.rar                  00;38;5;37
+.tar                  00;38;5;37
+.tbz                  00;38;5;37
+.tbz2                 00;38;5;37
+.tgz                  00;38;5;37
+.xz                   00;38;5;37
+.z                    00;38;5;37
+.Z                    00;38;5;37
+.zip                  01;38;5;37
+.zstd                 00;38;5;37
+
+# Miscellanea
+.log                  00;38;5;245
+*~                    00;38;5;245
+
+# Meta
+.bak                  00;38;5;240
+.BAK                  00;38;5;240
+.old                  00;38;5;240
+.OLD                  00;38;5;240
+.dist                 00;38;5;240
+.DIST                 00;38;5;240
+.orig                 00;38;5;240
+.ORIG                 00;38;5;240
+.swp                  00;38;5;240
+.swo                  00;38;5;240
+
+# Solarized 256 color test
+.dircolors-base03     00;38;5;234
+.dircolors-base02     00;38;5;235
+.dircolors-base01     00;38;5;240
+.dircolors-base00     00;38;5;241
+.dircolors-base0      00;38;5;244
+.dircolors-base1      00;38;5;245
+.dircolors-base2      00;38;5;254
+.dircolors-base3      00;38;5;230
+.dircolors-red        00;38;5;160
+.dircolors-orange     00;38;5;166
+.dircolors-yellow     00;38;5;136
+.dircolors-green      00;38;5;64
+.dircolors-blue       00;38;5;33
+.dircolors-cyan       00;38;5;37
+.dircolors-violet     00;38;5;61
+.dircolors-magenta    00;38;5;125
+.dircolors-bbase03    01;38;5;234
+.dircolors-bbase02    01;38;5;235
+.dircolors-bbase01    01;38;5;240
+.dircolors-bbase00    01;38;5;241
+.dircolors-bbase0     01;38;5;244
+.dircolors-bbase1     01;38;5;245
+.dircolors-bbase2     01;38;5;254
+.dircolors-bbase3     01;38;5;230
+.dircolors-bred       01;38;5;160
+.dircolors-borange    01;38;5;166
+.dircolors-byellow    01;38;5;136
+.dircolors-bgreen     01;38;5;64
+.dircolors-bblue      01;38;5;33
+.dircolors-bcyan      01;38;5;37
+.dircolors-bviolet    01;38;5;61
+.dircolors-bmagenta   01;38;5;125

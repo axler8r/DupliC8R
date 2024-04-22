@@ -1,0 +1,134 @@
+################################################################################
+#
+# Copyright 2023, Axl Mattheus.
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included
+# in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+# THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# http://www.opensource.org/licenses/mit-license.php
+#
+###############################################################################
+
+
+# Colors used are based on the Solarized palette created by Ethan Schoonover
+# <http://ethanschoonover.com/solarized>
+#
+# This theme was designed to work with a terminal application that is using a
+# Solarized "Light" or "Dark" color theme. Solarized themes are available for
+# many terminal applications.
+#
+# Colors 0 through 15 in this theme are based on the 16 color positions defined
+# in the Xresources file distributed with the Solarized color palette.  Some
+# of the colors used are "named" in order to use the bold feature.  The color
+# "name" is based on the color's original name as the terminal understands it.
+#
+# Taskwarrior axler8r heme created by Axl Mattheus.
+#
+# Red                       color1
+# Orange                    color9
+# Yellow                    color3
+# Green                     color2
+# Blue                      color4
+# Cyan                      color6
+# Magenta                   color5
+# Violet                    color13
+# Default Dark Background   color0
+# Default Dark Foreground   color7
+# Default Light Foreground  color8
+# Default Light Background  color15
+# Darkest Grey              color10
+# Dark Grey                 color11
+# Light Grey                color12
+# Lighetest Grey            color14
+
+
+# Precedence
+rule.precedence.color=deleted,completed,active,keyword.,tag.,project.,overdue,scheduled,due.today,due,blocked,blocking,recurring,tagged,uda.
+
+# General decoration
+color.label=
+color.label.sort=
+color.alternate=
+color.header=color4
+color.footnote=color6
+color.warning=black on red
+color.error=rgb550 on red
+color.debug=cyan
+
+# Task state
+color.completed=
+color.deleted=
+color.active=green
+color.recurring=magenta
+color.scheduled=
+color.until=
+color.blocked=
+color.blocking=cyan
+
+# Project
+color.project.none=
+
+# Priority
+color.uda.priority.H=blue
+color.uda.priority.M=yellow
+color.uda.priority.L=green
+
+# Tags
+color.tag.next=
+color.tag.none=
+color.tagged=color10
+
+# Due
+color.due=yellow
+color.due.today=red
+color.overdue=magenta
+
+# Report: burndown
+color.burndown.done=color0 on color6
+color.burndown.pending=color0 on color1
+color.burndown.started=color0 on color3
+
+# Report: history
+color.history.add=white on green
+color.history.delete=white on color9
+color.history.done=white on color10
+
+# Report: summary
+color.summary.background=
+# color.summary.background=on color0
+color.summary.bar=
+# color.summary.bar=color0 on color6
+
+# Command: calendar
+color.calendar.due=bold white on yellow
+color.calendar.due.today=bold white on red
+color.calendar.holiday=black on yellow
+color.calendar.overdue=bold white on magenta
+color.calendar.scheduled=bold white on green
+color.calendar.today=bold white on cyan
+color.calendar.weekend=color15 on color12
+color.calendar.weeknumber=color4
+
+# Command: sync
+color.sync.added=color14
+color.sync.changed=color9
+color.sync.rejected=color13
+
+# Command: undo
+color.undo.after=color2
+color.undo.before=color1

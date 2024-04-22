@@ -1,0 +1,12 @@
+#! /bin/bash
+
+if [ "${IN_CONTAINER}" != "true" ] || [ "${TEST}" != "local" ]; then
+    _MESAGE <<EOF
+This script is meant to be run only if the container was started with
+the 'start-localtestcontainer' script.
+EOF
+    echo "${_MESAGE}"
+    exit 1
+fi
+
+cat "${HOME}"/install | bash -s /dev/stdin --test --trace "${@}"

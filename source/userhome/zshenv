@@ -1,0 +1,60 @@
+# .zshenv
+#
+# ABOUT
+# Path: ${HOME}
+# Name: .zshenv
+# Link: ${XDG_CONFIG_HOME}/duplic8r/_before_zshrc if it exists or
+#       ${HOME}/.confg/duplic8r/_before_zshrc
+# Mode: 0664
+#
+# WHEN IS THIS FILE SOURCED?
+# /etc/zshenv
+# --> HERE <--
+# /etc/zprofile
+# ${ZSHDOTDIR}/.profile
+# /etc/zlogin
+# ${ZSHDOTDIR}/.login
+# /etc/zshrc
+# ${ZSHDOTDIR}/.zshrc
+# /etc/zlogout
+# ${ZSHDOTDIR}/.logout
+#
+# PURPOSE
+# Put as little as possible in this file. The following goes here:
+#     1. Set and export USER environment variables for NON-INTERACIVE
+#        shells. To set and export SYSTEM environment vairables for
+#        INTERACTIVE shells use /etc/zshrc. Set and export USER
+#        environment variables for INTERACTIVE shells in
+#        ${HOME}/.zshrc.
+#     2. Set or modify $path environment array.
+#     3. Set or modify $fpath environment array.
+
+
+# ENVIRONMENT VARIABLES AND EXPORTS
+if [[ -x $(which python3) ]] {
+    SITE_PACKAGE_HOME=$(python3 -m site --user-site)
+    export SITE_PACKAGE_HOME
+}
+
+
+# PATH
+path=(${HOME}/.local/bin $path)
+path=(${HOME}/.dotnet/tools $path)
+
+
+# FPATH
+fpath=(${ASDF_DIR}/completions $fpath)
+
+
+# MANPATH
+if [[ "$(type -w asdf)" == "asdf: function" ]] {
+    # TODO:
+    #   implement manpath for asdf installed utilities
+    #echo "ASDF man dirs" > zshenv.startup
+    #local __Ax_ASDF_MAN_DIRS=$(printf "%s\n" .asdf/**/man(/) | grep -v "python")
+    #foreach __man_dir in ${__Ax_ASDF_MAN_DIRS}
+    #do
+    #    manpath+=( ${__man_dir} )
+    #    echo ${__man_dir} >> zshenv.startup
+    #done
+}

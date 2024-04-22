@@ -1,0 +1,33 @@
+<header>[(<scope>)]: <message>
+
+[<body>]
+
+[<footer>]
+
+# ----------- INSTRUCTIONS ------------------------------------- >8 -|
+#
+#             CHOOSE <header> FROM OPTIONS BELOW.
+#             Invent your own header if needed.
+#             Add a <scope> if necessary.
+#             Be consistent.
+#             When in doubt, use 'chore'.
+#
+# ----------- HEADERS THAT CHANGE THE SYMANTIC VERSION ---------------|
+# feat!     : BREAKING CHANGES (increment MAJOR)
+# feat      : new feature or non-breaking enhancement (increment MINOR)
+# revert    : revert to a previous commit (increment PATCH)
+# fix       : controlled fix (increment PATCH)
+# hotfix    : hotfix (increment PATCH)
+#
+# ----------- HEADERS THAT DO NOT CHANGE THE SYMANTIC VERSION --------|
+# build     : build
+# chore     : unclassified commit (ignored)
+# cicd      : pipeline
+# doc       : documentation
+# perf      : performace enhancement
+# refactor  : change directory structures and/or file names
+# style     : idiomatic and stylistic changes
+# test      : introduce, modify or remove tests
+# wip       : work in progress (ignored)
+#
+# ----------- END INSTRUCTIONS --------------------------------- >8 -|

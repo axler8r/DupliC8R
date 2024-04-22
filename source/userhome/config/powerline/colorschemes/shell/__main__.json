@@ -1,0 +1,11 @@
+{
+  "groups": {
+    "continuation":         "cwd",
+    "continuation:current": "cwd:current_folder",
+    "exit_fail":            "critical:failure",
+    "exit_success":         "critical:success",
+    "jobnum":               "information:priority",
+    "superuser":            "warning:regular"
+  },
+  "__vim__": { "modeline": "/* vim: set ts=2 sw=2 et: */"}
+}
