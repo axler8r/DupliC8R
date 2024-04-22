@@ -24,12 +24,17 @@ Command line flags take priority over environment variables.
 
 | Flag             | Environment Variable | Description                                    |
 |------------------|----------------------|------------------------------------------------|
-| `--development`  | `DEVELOPMENT`        | Install the development version of `duplic8r`. |
-| `--in-container` | `IN_CONTAINER`       | Install `duplic8r` in a container.             |
-| `--fonts`        | `FONTS`              | Install fonts.                                 |
-| `--icons`        | `ICONS`              | Install icons.                                 |
-| `--snaps`        | `SNAPS`              | Install `snap`s.                               |
-| `--docker`       | `DOCKER`             | Install Docker Engine.                         |
+| `--development`  | `DEVELOPMENT=true`   | Install the development version of `duplic8r`. |
+| `--in-container` | `IN_CONTAINER=true`  | Install `duplic8r` in a container.             |
+| `--trace`        | `TRACE=true`         | Log and print progress.                        |
+| `--debug`        | `DEBUG=true`         | Log commands.                                  |
+| `--test`         | `TEST=true`          | Perform a controlled test installation.        |
+| `--snaps`        |                      | Install `snap`s when `--test`ing.              |
+| `--fonts`        |                      | Install fonts when `--test`ing.                |
+| `--fonts`        |                      | Install fonts when `--test`ing.                |
+| `--kitty`        |                      | Install Kitty Terminal when `--test`ing.       |
+| `--docker`       |                      | Install Docker Engine when `--test`ing.        |
+| `--help`         |                      | Print help message.                            |
 
 
 ### Examples
@@ -78,11 +83,14 @@ curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/inst
 
 
 ## Test Environments
-The `test` directory contains a `Dockerfile` and the following scripts to facilitate testing.
+The `test` directory contains the following scripts and files to facilitate testing.
++ `Dockerfile` - Dockerfile to build a test image.
 + `new-testimage` - Build a Docker image from the `Dockerfile`.
 + `remove-testimage` - Remove the test image.
-+ `start-testcontainer` - Start a container from the test image.
++ `start-localtestcontainer` - Start a container from the test image.
++ `start-remotetestcontainer` - Start a container from the test image.
 + `stop-testcontainer` - Stop the test container.
++ `test-localinstall` - Install `duplic8r` in a controlled test environment.
 
 
 ## What is installed?
@@ -90,6 +98,7 @@ The `duplic8r` installer will install the following packages and configurations
 for Ubuntu Desktop and Server.
 + `apt` packages
   + `attr`
+  + `btop`
   + `build-essential`
   + `make-doc`
   + `bzip2`
