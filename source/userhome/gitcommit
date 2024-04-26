@@ -1,33 +1,34 @@
-<header>[(<scope>)]: <message>
+<type>[(<id>|<context>)]: <message>
 
 [<body>]
 
 [<footer>]
 
-# ----------- INSTRUCTIONS ------------------------------------- >8 -|
-#
-#             CHOOSE <header> FROM OPTIONS BELOW.
-#             Invent your own header if needed.
-#             Add a <scope> if necessary.
-#             Be consistent.
-#             When in doubt, use 'chore'.
-#
-# ----------- HEADERS THAT CHANGE THE SYMANTIC VERSION ---------------|
-# feat!     : BREAKING CHANGES (increment MAJOR)
-# feat      : new feature or non-breaking enhancement (increment MINOR)
-# revert    : revert to a previous commit (increment PATCH)
-# fix       : controlled fix (increment PATCH)
-# hotfix    : hotfix (increment PATCH)
-#
-# ----------- HEADERS THAT DO NOT CHANGE THE SYMANTIC VERSION --------|
-# build     : build
-# chore     : unclassified commit (ignored)
-# cicd      : pipeline
-# doc       : documentation
-# perf      : performace enhancement
-# refactor  : change directory structures and/or file names
-# style     : idiomatic and stylistic changes
-# test      : introduce, modify or remove tests
-# wip       : work in progress (ignored)
-#
-# ----------- END INSTRUCTIONS --------------------------------- >8 -|
+# ----------- INSTRUCTIONS -------------------------------------- >8 -|
+#             See https://www.conventionalcommits.org for details.
+#             Choose <type> from options below.
+#             Add an <id> or <context> for reference where relevant.
+#             Supply a <message> in <verb> <detail> message.
+#             When in doubt, use 'wip'.
+# ----------- MAJOR --------------------------------------------------|
+# feat!     : BREAKING CHANGES (change, refactor, retire)
+# feat      : major new feature (new)
+# ----------- MINOR --------------------------------------------------|
+# feat      : minor new feature (add, enchance, deprecate)
+# refactor  : change artefacts (move, rename, combine, separate)
+# defect    : correct a defect (stub, correct, revert)
+# ----------- PATCH --------------------------------------------------|
+# dep       : modify dependencies (add, update, remove)
+# doc       : documentation (add, update, refactor, remove)
+# perf      : performace enhancement (optimize, increase)
+# sec       : security (<verb> dependency, code, system)
+# style     : idiomatic and stylistic changes (format, implement)
+# ----------- NONE ---------------------------------------------------|
+# chore     : unclassified commit
+# cicd      : pipeline updates
+# build     : build system updates
+# merge     : merge branches
+# test      : test functionality (add, update, remove)
+# wip       : work in progress
+# ----------- END INSTRUCTIONS ---------------------------------- >8 -|
+
