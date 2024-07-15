@@ -68,6 +68,36 @@ install_cli_tools() {
 }
 
 
+install_gui_tools() {
+    _info "Installing GUI requirements"
+
+    local _FLAGS=(
+        "--no-install-recommends"
+        "--no-show-upgraded"
+        "--quiet"
+        "--yes"
+    )
+    _trace "APT flags: " "${_FLAGS[*]}"
+
+    local _PACKAGES=(
+        "devilspie2"
+        "gnome-clocks"
+        "meld"
+    )
+    _trace "APT packages: " "${_PACKAGES[*]}"
+
+    local _COMMAND="apt install ${_FLAGS[@]} ${_PACKAGES[@]}"
+    _trace "APT commands: " "${_COMMAND}"
+
+    _trace "Running APT"
+    if [ "$(id --user)" -eq 0 ]; then
+      echo "${_COMMAND}" | bash --
+    else
+      echo "${_COMMAND}" | sudo --shell --
+    fi
+}
+
+
 install_python_packages() {
     _info "Installing python requirements"
 
@@ -544,6 +574,7 @@ Options:
   --test          Perform a test install
   --development   Install development features
   --in-container  Indicate installation is running in a container
+  --gui           Install GUI tools
   --snaps         Install snaps if running in a container
   --fonts         Install fonts if running in a container
   --icons         Install icons if running in a container
@@ -570,6 +601,8 @@ Description:
 
     The '--debug' flag enables debugging of the installation process. Output
     goes to '\${HOME}/duplic8r.debug.'
+
+    Specify '--gui' to install GUI tools.
 
     Specify '--snaps' to install snap packages if running in a container.
 
@@ -607,6 +640,7 @@ while [ $# -gt 0 ]; do
         --trace)        _TRACE_FLAG=true        ;;
         --debug)        _DEBUG_FLAG=true        ;;
         --test)         _TEST_FLAG=true         ;;
+        --gui)          _GUI_FLAG=true          ;;
         --snaps)        _SNAPS_FLAG=true        ;;
         --fonts)        _FONTS_FLAG=true        ;;
         --icons)        _ICONS_FLAG=true        ;;
@@ -633,8 +667,6 @@ fi
 install_all() {
     _create_sandbox
 
-    install_apt_packages
-    install_python_packages
     install_cli_tools
     [ -n "${_GUI_FLAG}"] && install_gui_tools
     install_duplic8r
