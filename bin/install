@@ -28,6 +28,7 @@ install_apt_packages() {
         "htop"
         "less"
         "lsof"
+        "ncdu"
         "p7zip-full"
         "pv"
         "python3"
@@ -75,7 +76,7 @@ install_python_packages() {
 
     local _PACKAGES=(
         "pip"
-        "cliff"
+        "git-cliff"
         "huggingface_hub[cli]"
         "kaggle"
         "powerline-gitstatus"
@@ -215,6 +216,7 @@ install_asdf() {
         "just"
         "neovim"
         "nodejs"
+        "pipx"
         "ripgrep"
         "shellcheck"
         "tokei"
@@ -337,6 +339,7 @@ install_snaps() {
         "brave"
         "chromium"
         "code --classic"
+        "gnome-boxes"
         "obsidian --classic"
         "slack"
         "slides"
