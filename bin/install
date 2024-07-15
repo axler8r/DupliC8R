@@ -176,9 +176,13 @@ install_duplic8r() {
         "Code"
         "bat"
         "devilspie2"
+        "git-cliff"
         "julia"
         "kitty"
         "nvim"
+        "powerline"
+        "powershell"
+        "taskwarrior"
     )
     _trace "Configs: " "${_CONFIGS[*]}"
 
