@@ -69,20 +69,20 @@ nmap ga <Plug>(EasyAlign)
 
 " Align '\' characters at the end of the line
 let g:easy_align_delimiters = {
-  \ '\': {
-  \     'pattern': '\\$',
-  \ },
-  \ }
+    \ '\': {
+    \     'pattern': '\\$',
+    \ },
+    \ }
 " }}}
 
 "" LightLine {{{
 let g:lightline = {
-\   'theme': 'solarized',
-\   'active': {
-\       'left': [['mode', 'paste' ], ['gitbranch', 'readonly', 'filename', 'modified']],
-\       'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
-\   }
-\}
+    \   'theme': 'solarized',
+    \   'active': {
+    \       'left': [['mode', 'paste' ], ['gitbranch', 'readonly', 'filename', 'modified']],
+    \       'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+    \   }
+    \}
 let g:lightline.tabline = { 'left': [ ['buffers'] ] }
 let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type   = {'buffers': 'tabsel'}
