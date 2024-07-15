@@ -2,8 +2,8 @@
 
 
 # Base installation ------------------------------------------------------------
-install_apt_packages() {
-    _info "Installing system requirements"
+install_cli_tools() {
+    _info "Installing CLI requirements"
 
     local _FLAGS=(
         "--no-install-recommends"
@@ -21,17 +21,20 @@ install_apt_packages() {
         "bzip2"
         "bzip2-doc"
         "curl"
-        "devilspie2"
         "git"
         "git-flow"
+        "git-lfs"
         "tig"
         "htop"
         "less"
         "lsof"
+        "openssh-server"
+        "plocate"
         "p7zip-full"
         "pv"
         "python3"
         "python3-pip"
+        "socat"
         "software-properties-common"
         "strace"
         "taskwarrior"
@@ -40,6 +43,7 @@ install_apt_packages() {
         "tree"
         "universal-ctags"
         "unzip"
+        "webp"
         "zip"
         "zsh"
         "zsh-autosuggestions"
@@ -631,6 +635,8 @@ install_all() {
 
     install_apt_packages
     install_python_packages
+    install_cli_tools
+    [ -n "${_GUI_FLAG}"] && install_gui_tools
     install_duplic8r
     configure_tmux_plugin_manager
     install_vim_plug
