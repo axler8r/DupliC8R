@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+# get the PLUGIN name from the command line
+# if no PLUGIN is provided, display an error message and exit
+PLUGIN=$1
+if [[ -z $PLUGIN ]]; then
+  echo "Usage: $0 PLUGIN"
+  exit 1
+fi
+
+# if the plugin is not installed, display an error message and exit
+if [[ -z "$(asdf list ${PLUGIN} 2>/dev/null)" ]]; then
+  echo "Plugin ${PLUGIN} is not installed"
+  exit 1
+fi
+
+CURRENT_VERSION=$(asdf current ${PLUGIN} | awk '{print $2}')
+LATEST_VERSION=$(asdf latest ${PLUGIN})
+
+# if the plugin is already up to date, display a message and exit
+if [[ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ]]; then
+  echo "Plugin ${PLUGIN} is already up to date"
+  exit 0
+fi
+
+# install the latest version of the plugin, set it as the global version, and uninstall the old version
+# display what will be done
+echo "Updating ${PLUGIN} from ${CURRENT_VERSION} to ${LATEST_VERSION}"
+asdf install ${PLUGIN} latest       \
+    && asdf global ${PLUGIN} latest \
+    && asdf uninstall ${PLUGIN} ${CURRENT_VERSION}
+
