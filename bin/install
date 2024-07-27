@@ -162,7 +162,6 @@ install_duplic8r() {
         "tmux_extend.zsh"
         "zshalias"
         "zshenv"
-        "zshfunction"
         "zshprompt"
         "zshrc"
     )
