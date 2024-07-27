@@ -259,15 +259,20 @@ install_asdf() {
     if [ ! -d "${HOME}/.asdf" ]; then
         _trace "Cloning asdf ${_ASDF_LATEST}@${_SOURCE} to ${_TARGET}"
         git clone ${_SOURCE} "${_TARGET}" --branch "${_ASDF_LATEST}"
-        source "${HOME}/.asdf/asdf.sh"
-
-        for _plugin in "${_ASDF_PLUGINS[@]}"; do
-            _trace "Installing ${_plugin}"
-            asdf plugin add "${_plugin}"
-            asdf install "${_plugin}" latest
-            asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
-        done
     fi
+
+    _trace "Sourcing asdf"
+    source "${HOME}/.asdf/asdf.sh"
+
+    for _plugin in "${_ASDF_PLUGINS[@]}"; do
+        _trace "Installing ${_plugin}"
+        asdf plugin add "${_plugin}" || true
+        asdf install "${_plugin}" latest
+        asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
+    done
+}
+
+
 install_vim_plug() {
     _info "Installing vim plug"
 
