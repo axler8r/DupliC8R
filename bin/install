@@ -87,7 +87,7 @@ install_gui_tools() {
     )
     _trace "APT packages: " "${_PACKAGES[*]}"
 
-    local _COMMAND="apt install ${_FLAGS[@]} ${_PACKAGES[@]}"
+    local _COMMAND="apt install ${_FLAGS[*]} ${_PACKAGES[*]}"
     _trace "APT commands: " "${_COMMAND}"
 
     _trace "Running APT"
