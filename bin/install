@@ -679,7 +679,7 @@ install_all() {
     _create_sandbox
 
     install_cli_tools
-    [ -n "${_GUI_FLAG}"] && install_gui_tools
+    [ -n "${_GUI_FLAG}" ] && install_gui_tools
     install_duplic8r
     configure_tmux_plugin_manager
     install_asdf
