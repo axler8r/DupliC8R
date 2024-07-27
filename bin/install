@@ -212,28 +212,6 @@ configure_tmux_plugin_manager() {
 }
 
 
-install_vim_plug() {
-    _info "Installing vim plug"
-
-    local _SOURCE="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-    local _TARGET="${HOME}/.local/share/nvim/site/autoload/plug.vim"
-    local _FLAGS=(
-        "--create-dirs"
-        "--fail"
-        "--location"
-        "--output"
-    )
-    _trace "Source: " "${_SOURCE}"
-    _trace "Target: " "${_TARGET}"
-    _trace "Curl flags: " "${_FLAGS[*]}"
-
-    if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
-        _trace "Downloading vim plug from ${_SOURCE} to ${_TARGET}"
-        curl "${_FLAGS[@]}" "${_TARGET}" ${_SOURCE}
-    fi
-}
-
-
 install_asdf() {
     _info "Installing asdf"
 
@@ -290,6 +268,28 @@ install_asdf() {
             asdf global "${_plugin}" "$(asdf latest "${_plugin}")"
         done
     fi
+install_vim_plug() {
+    _info "Installing vim plug"
+
+    local _SOURCE="https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    local _TARGET="${HOME}/.local/share/nvim/site/autoload/plug.vim"
+    local _FLAGS=(
+        "--create-dirs"
+        "--fail"
+        "--location"
+        "--output"
+    )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Curl flags: " "${_FLAGS[*]}"
+
+    if [ ! -f "${HOME}/.local/share/nvim/site/autoload/plug.vim" ]; then
+        _trace "Downloading vim plug from ${_SOURCE} to ${_TARGET}"
+        curl "${_FLAGS[@]}" "${_TARGET}" ${_SOURCE}
+    fi
+
+    _trace "Installing vim plug plugins"
+    nvim +'PlugInstall --sync' +'qa'
 }
 
 
@@ -677,8 +677,8 @@ install_all() {
     [ -n "${_GUI_FLAG}"] && install_gui_tools
     install_duplic8r
     configure_tmux_plugin_manager
-    install_vim_plug
     install_asdf
+    install_vim_plug
     install_ctrlR
     install_parallel
     install_z
