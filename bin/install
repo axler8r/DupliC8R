@@ -169,7 +169,7 @@ install_duplic8r() {
 
     for _file in "${_FILES[@]}"; do
         _trace "Copying ${_file} from ${_SOURCE} to ${HOME}/.${_file}"
-        _copy_file "${_SOURCE}/${_file}" "${HOME}/.${_file}"
+        _link_file "${_SOURCE}/${_file}" "${HOME}/.${_file}"
     done
 
     local _CONFIGS=(
@@ -188,7 +188,7 @@ install_duplic8r() {
 
     for _config in "${_CONFIGS[@]}"; do
         _trace "Copying ${_config} from ${_SOURCE}/config to ${_XDG_CONFIG_DIR}"
-        _copy_file "${_SOURCE}/config/${_config}" "${_XDG_CONFIG_DIR}"
+        _link_file "${_SOURCE}/config/${_config}" "${_XDG_CONFIG_DIR}"
     done
 }
 
@@ -526,6 +526,22 @@ _copy_file() {
 
     _trace "Copying file from ${_SOURCE} to ${_TARGET}"
     rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
+}
+
+
+_link_file() {
+    local _SOURCE="$1"
+    local _TARGET="$2"
+    local _FLAGS=(
+        "--symbolic"
+        "--force"
+    )
+    _trace "Source: " "${_SOURCE}"
+    _trace "Target: " "${_TARGET}"
+    _trace "Link flags: " "${_FLAGS[*]}"
+
+    _trace "Linking file from ${_SOURCE} to ${_TARGET}"
+    ln "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
 }
 
 
