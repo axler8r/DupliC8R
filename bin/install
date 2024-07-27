@@ -696,6 +696,7 @@ install_all() {
 
     install_cli_tools
     [ -n "${_GUI_FLAG}" ] && install_gui_tools
+    install_python_packages
     install_duplic8r
     configure_tmux_plugin_manager
     install_asdf
