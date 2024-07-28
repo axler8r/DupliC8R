@@ -28,9 +28,9 @@ install_cli_tools() {
         "htop"
         "less"
         "lsof"
+        "ncdu"
         "openssh-server"
         "plocate"
-        "ncdu"
         "p7zip-full"
         "pv"
         "python3"
@@ -221,14 +221,12 @@ install_asdf() {
         "bat"
         "choose"
         "dive"
-        "duf"
         "exa"
         "fd"
         "fzf"
         "github-cli"
         "jq"
         "julia"
-        "just"
         "neovim"
         "nodejs"
         "pipx"
@@ -294,7 +292,7 @@ install_vim_plug() {
     fi
 
     _trace "Installing vim plug plugins"
-    nvim +'PlugInstall --sync' +'qa'
+    nvim +'PlugInstall --sync' +'qa!'
 }
 
 
