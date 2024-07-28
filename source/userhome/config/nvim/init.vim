@@ -31,7 +31,7 @@ map <Leader>ts :setlocal spell! spelllang=en<CR>
 " }}}
 
 " plugins {{{ {{{
-call plug#begin('~/.config/nvim/plugs')
+call plug#begin('~/.config/vim-plugs')
 Plug 'airblade/vim-gitgutter'
 Plug 'cespare/vim-toml'
 Plug 'elixir-editors/vim-elixir'
