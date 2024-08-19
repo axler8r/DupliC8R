@@ -497,6 +497,7 @@ _info() {
     echo "---- ${_MESSAGE}" | tee --append "${HOME}/duplic8r.log"
 }
 
+
 _trace() {
     if [ -n "${_TRACE_FLAG}" ]; then
         local _MESSAGE="${1}"
@@ -509,6 +510,7 @@ _trace() {
     fi
 
 }
+
 
 _copy_file() {
     local _SOURCE="$1"
