@@ -31,23 +31,25 @@ map <Leader>ts :setlocal spell! spelllang=en<CR>
 " }}}
 
 " plugins {{{ {{{
-call plug#begin('~/.config/vim_plugs')
+call plug#begin('~/.config/vim-plugs')
+Plug 'airblade/vim-gitgutter'
+Plug 'cespare/vim-toml'
+Plug 'elixir-editors/vim-elixir'
+Plug 'frazrepo/vim-rainbow'
+Plug 'github/copilot.vim'
+Plug 'godlygeek/tabular'
+Plug 'itchyny/lightline.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
-Plug 'github/copilot.vim'
-Plug 'airblade/vim-gitgutter'
-Plug 'cespare/vim-toml'
-Plug 'frazrepo/vim-rainbow'
-Plug 'itchyny/lightline.vim'
 Plug 'lifepillar/vim-solarized8'
-Plug 'preservim/tagbar'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'mengelbrecht/lightline-bufferline'
+Plug 'preservim/tagbar'
+Plug 'preservim/vim-markdown'
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
-Plug 'elixir-editors/vim-elixir'
+Plug 'tpope/vim-surround'
 Plug 'vim-erlang/vim-erlang-runtime'
 call plug#end()
 " }}}
@@ -67,20 +69,20 @@ nmap ga <Plug>(EasyAlign)
 
 " Align '\' characters at the end of the line
 let g:easy_align_delimiters = {
-  \ '\': {
-  \     'pattern': '\\$',
-  \ },
-  \ }
+    \ '\': {
+    \     'pattern': '\\$',
+    \ },
+    \ }
 " }}}
 
 "" LightLine {{{
 let g:lightline = {
-\   'theme': 'solarized',
-\   'active': {
-\       'left': [['mode', 'paste' ], ['gitbranch', 'readonly', 'filename', 'modified']],
-\       'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
-\   }
-\}
+    \   'theme': 'solarized',
+    \   'active': {
+    \       'left': [['mode', 'paste' ], ['gitbranch', 'readonly', 'filename', 'modified']],
+    \       'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+    \   }
+    \}
 let g:lightline.tabline = { 'left': [ ['buffers'] ] }
 let g:lightline.component_expand = {'buffers': 'lightline#bufferline#buffers'}
 let g:lightline.component_type   = {'buffers': 'tabsel'}

@@ -1,7 +1,7 @@
 {
   "common": {
     "term_truecolor": false,
-    "log_file": "~/.config/powerline/powerline.log"
+    "log_file": "/tmp/powerline.log"
   },
   "ext": {
     "shell": {
