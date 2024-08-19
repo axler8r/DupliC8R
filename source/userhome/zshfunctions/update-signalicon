@@ -1,0 +1,4 @@
+#!/bin/bash
+if [ -f /var/lib/snapd/desktop/applications/signal-desktop_signal-desktop.desktop ]; then
+    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/signal-desktop.svg|g' /var/lib/snapd/desktop/applications/signal-desktop_signal-desktop.desktop
+fi
