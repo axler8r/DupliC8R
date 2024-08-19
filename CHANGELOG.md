@@ -1,6 +1,39 @@
 # Changelog
 
 
+## 5.0.0
+**2024-08-19**
+
+### BREAKING CHANGES
+> [!WARNING]
+> Replace file copies with symlinks
+
+### Bug Fixes
++ Fix `pip` install functionality
++ Correct `asdf` plugin install functionality
++ Correct array expansion error
++ Correct syntax error
+
+### New & Updated Features
++ Add GUI tools functionality
++ Add ISO image management functionality
++ Add icon update script
++ Enhance `git cliff`
++ Enhance tests
++ Update `asdf` functionality
++ Update vim Plug path
+
+### Deprecations
++ Retire history list functionality
++ Retire original install script
+
+### Meta Files
++ Add `CODEOWNERS` file
+
+### Stylistic & Idiomatic Updates
++ Apply various stylistic updates
+
+
 ## 4.0.4
 **2024-04-22**
 
