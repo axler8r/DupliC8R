@@ -490,23 +490,6 @@ _trace() {
 }
 
 
-_copy_file() {
-    local _SOURCE="$1"
-    local _TARGET="$2"
-    local _FLAGS=(
-        "--archive"
-        "--checksum"
-        "--itemize-changes"
-    )
-    _trace "Source: " "${_SOURCE}"
-    _trace "Target: " "${_TARGET}"
-    _trace "Copy flags: " "${_FLAGS[*]}"
-
-    _trace "Copying file from ${_SOURCE} to ${_TARGET}"
-    rsync "${_FLAGS[@]}" "${_SOURCE}" "${_TARGET}"
-}
-
-
 _link_file() {
     local _SOURCE="$1"
     local _TARGET="$2"
