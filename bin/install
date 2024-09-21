@@ -415,13 +415,23 @@ install_fonts() {
 }
 
 
-install_numix_square_icons() {
-    _info "Installing numix square icons"
+install_icons() {
+    _info "Installing icons"
 
-    _trace "Adding numix ppa"
-    sudo add-apt-repository ppa:numix/ppa
-    _trace "Updating apt"
-    sudo apt update && sudo apt install numix-icon-theme-square
+    _UBUNTU_VERSION=$(lsb_release -rs)
+    _trace "Ubuntu version: " "${_UBUNTU_VERSION}"
+
+    if [ "${_UBUNTU_VERSION}" == "22.04" ]; then
+        _trace "Installing numix square icons for Ubuntu 22.04"
+        sudo add-apt-repository ppa:numix/ppa
+        sudo apt update && sudo apt install numix-icon-theme-square
+    elif [ "${_UBUNTU_VERSION}" == "24.04" ]; then
+        _trace "Installing papirus icons for Ubuntu 24.04"
+        sudo add-apt-repository ppa:papirus/papirus
+        sudo apt update && sudo apt install papirus-icon-theme
+    else
+        _trace "Unsupported Ubuntu version: " "${_UBUNTU_VERSION}"
+    fi
 }
 
 
@@ -669,13 +679,13 @@ install_all() {
     if [ -n "${_IN_CONTAINER_FLAG}" ]; then
         [ -n "${_SNAPS_FLAG}"  ] && install_snaps
         [ -n "${_FONTS_FLAG}"  ] && install_fonts
-        [ -n "${_ICONS_FLAG}"  ] && install_numix_square_icons
+        [ -n "${_ICONS_FLAG}"  ] && install_icons
         [ -n "${_KITTY_FLAG}"  ] && install_kitty
         [ -n "${_DOCKER_FLAG}" ] && install_docker_engine
     else
         install_snaps
         install_fonts
-        install_numix_square_icons
+        install_icons
         install_kitty
         install_docker_engine
     fi
