@@ -30,8 +30,10 @@ install_cli_tools() {
         "lsof"
         "ncdu"
         "openssh-server"
-        "plocate"
         "p7zip-full"
+        "plocate"
+        "powerline"
+        "powerline-gitstatus"
         "pv"
         "python3"
         "python3-pip"
@@ -96,30 +98,6 @@ install_gui_tools() {
     else
       echo "${_COMMAND}" | sudo --shell --
     fi
-}
-
-
-install_python_packages() {
-    _info "Installing python requirements"
-
-    local _FLAGS=(
-        "--user"
-        "--upgrade"
-    )
-    _trace "PIP flags: " "${_FLAGS[*]}"
-
-    local _PACKAGES=(
-        "pip"
-        "git-cliff"
-        "huggingface_hub[cli]"
-        "kaggle"
-        "powerline-gitstatus"
-        "powerline-status"
-    )
-    _trace "PIP packages: " "${_PACKAGES[*]}"
-
-    _trace "Running PIP"
-    pip3 install "${_FLAGS[@]}" "${_PACKAGES[@]}"
 }
 
 
@@ -696,7 +674,6 @@ install_all() {
 
     install_cli_tools
     [ -n "${_GUI_FLAG}" ] && install_gui_tools
-    install_python_packages
     install_duplic8r
     configure_tmux_plugin_manager
     install_asdf
