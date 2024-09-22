@@ -1,8 +1,8 @@
 [[ -f $HOME/.dircolors ]] && eval $(dircolors $HOME/.dircolors)
 
-if [[ -f $SITE_PACKAGE_HOME/powerline/bindings/zsh/powerline.zsh ]] {
+if [[ -f /usr/share/powerline/bindings/zsh/powerline.zsh ]] {
     powerline-daemon -q
-    source $SITE_PACKAGE_HOME/powerline/bindings/zsh/powerline.zsh
+    source /usr/share/powerline/bindings/zsh/powerline.zsh
 }
 
 
