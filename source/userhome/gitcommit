@@ -4,31 +4,30 @@
 
 [<footer>]
 
-# ----------- INSTRUCTIONS -------------------------------------- >8 -|
+# ----------- INSTRUCTIONS -------------------------------------- >8 -
 #             See https://www.conventionalcommits.org for details.
 #             Choose <type> from options below.
 #             Add an <id> or <context> for reference where relevant.
 #             Supply a <message> in <verb> <detail> message.
 #             When in doubt, use 'wip'.
-# ----------- MAJOR --------------------------------------------------|
-# feat!     : BREAKING CHANGES (change, refactor, retire)
-# feat      : major new feature (new)
-# ----------- MINOR --------------------------------------------------|
-# feat      : minor new feature (add, enchance, deprecate)
-# refactor  : change artefacts (move, rename, combine, separate)
-# defect    : correct a defect (stub, correct, revert)
-# ----------- PATCH --------------------------------------------------|
-# dep       : modify dependencies (add, update, remove)
-# doc       : documentation (add, update, refactor, remove)
-# perf      : performace enhancement (optimize, increase)
-# sec       : security (<verb> dependency, code, system)
-# style     : idiomatic and stylistic changes (format, implement)
-# ----------- NONE ---------------------------------------------------|
-# chore     : unclassified commit
-# cicd      : pipeline updates
-# build     : build system updates
-# merge     : merge branches
-# test      : test functionality (add, update, remove)
-# wip       : work in progress
-# ----------- END INSTRUCTIONS ---------------------------------- >8 -|
-
+# ----------- MAJOR --------------------------------------------------
+# feat!       BREAKING CHANGES (change, refactor, retire)
+# feat        major new feature (create, implement, introduce)
+# ----------- MINOR --------------------------------------------------
+# feat        minor new feature (add, enchance, deprecate)
+# defect      correct a defect (stub, correct, revert)
+# ----------- PATCH --------------------------------------------------
+# dep         modify dependencies (add, update, remove)
+# perf        performace enhancement (optimize, increase)
+# sec         security (<verb> dependency, code, system)
+# ----------- NONE ---------------------------------------------------
+# build       build system updates
+# chore       unclassified commit
+# cicd        pipeline updates
+# doc         documentation (add, update, refactor, remove)
+# merge       merge branches
+# refactor    change artefacts (move, rename, combine, separate)
+# style       idiomatic and stylistic changes (format, implement)
+# test        test functionality (add, update, remove)
+# wip         work in progress
+# ----------- END INSTRUCTIONS ---------------------------------- >8 -
