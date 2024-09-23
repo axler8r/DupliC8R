@@ -104,7 +104,6 @@ for Ubuntu Desktop and Server.
   + `bzip2`
   + `bzip2-doc`
   + `curl`
-  + `devilspie2`
   + `git`
   + `git-flow`
   + `tig`
@@ -152,7 +151,6 @@ for Ubuntu Desktop and Server.
   + `.zshrc`
 + `XDG_CONFIG_HOME` (`${HOME}/.config`) directories
   + `bat`
-  + `devilspie2`
   + `julia`
   + `kitty`
   + `nvim`

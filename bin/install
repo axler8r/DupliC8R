@@ -83,7 +83,6 @@ install_gui_tools() {
     _trace "APT flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
-        "devilspie2"
         "gnome-clocks"
         "meld"
     )
@@ -153,7 +152,6 @@ install_duplic8r() {
     local _CONFIGS=(
         "Code"
         "bat"
-        "devilspie2"
         "git-cliff"
         "julia"
         "kitty"
