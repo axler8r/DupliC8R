@@ -1,0 +1,10 @@
+docker run --detach                                  \
+  --name=taskd                                       \
+  --env CERT_ORGANIZATION="AxlER8R.IO"               \
+  --env CERT_CN=$(hostname -f)                       \
+  --env CERT_COUNTRY="NZ"                            \
+  --env CERT_STATE="Auckland"                        \
+  --env CERT_LOCALITY="Ōrewa"                        \
+  --publish 53589:53589                              \
+  --mount type=volume,source=taskd,target=/var/taskd \
+  ghcr.io/connectical/taskd
