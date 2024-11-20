@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+echo "HTTP:  " $(xdg-mime query default x-scheme-handler/http)
+echo "HTTPS: " $(xdg-mime query default x-scheme-handler/https)
+
