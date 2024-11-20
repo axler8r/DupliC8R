@@ -15,7 +15,6 @@ alias get-windowskey=' sudo strings /sys/firmware/acpi/tables/MSDM | command tai
 alias set-centernewwindow=' gsettings set org.gnome.mutter center-new-windows true '
 alias update-system=' sudo apt update && sudo apt upgrade --yes && sudo apt autoremove --yes && sudo apt autoclean --yes '
 
-
 if [[ "$(type -w asdf)" == "asdf: function" ]] {
     __ax_asdf_compare_plugin_version() {
         local __AX_YELLOW=$(tput setaf 3)
@@ -384,8 +383,10 @@ if [[ -x $(which zfs) ]] {
 alias -s {asc,cs,dart,erl,ex{s},fs,htm{l},java,json,py,rebar,rs,scala,txt,xml}=nvim
 alias -s {pdf,ps}=evince
 
-alias -g V="| nvim - "
-alias -g G="| grep "
-alias -g R="| rg "
+alias -g B="| bat "
 alias -g C="| wc --lines - "
+alias -g G="| grep "
 alias -g L="| less --line-numbers "
+alias -g R="| rg "
+alias -g S="| sed --expression "
+alias -g V="| nvim - "
