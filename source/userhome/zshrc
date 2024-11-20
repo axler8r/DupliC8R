@@ -74,6 +74,7 @@ zshaddhistory() {
 [[ -f ~/.fzf.zsh ]] && source ~/.fzf.zsh
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
 [[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
+[[ -f /opt/conda/etc/profile.d/conda.sh ]] && source /opt/conda/etc/profile.d/conda.sh
 
 
 # COMPLETIONS
