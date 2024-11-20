@@ -390,3 +390,8 @@ alias -g L="| less --line-numbers "
 alias -g R="| rg "
 alias -g S="| sed --expression "
 alias -g V="| nvim - "
+
+function ls() {
+	[[ -f ~/.hidden ]] && declare GLOBIGNORE=${GLOBIGNORE}:.*:$(tr '\n' ':' < ~/.hidden) ls "$@"
+}
+
