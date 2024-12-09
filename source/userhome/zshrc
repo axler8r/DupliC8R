@@ -26,6 +26,7 @@ setopt extended_history
 setopt hist_expire_dups_first
 setopt hist_find_no_dups
 setopt hist_ignore_space
+setopt hist_ignore_all_dups
 setopt multi_os
 setopt no_beep
 setopt pushd_ignore_dups
@@ -46,27 +47,18 @@ export GPG_TTY=$(tty)
 
 
 # ZSH CONFIGURATIONS
-# TODO: FIX! Figure out how to make this work!
+# Ignore specific commands from history
 zshaddhistory() {
-    # Don't add these commands to history
     emulate -L zsh
     setopt extendedglob
-    [[ ${1} != 'bat '* ]]
-    [[ ${1} != 'cat '* ]]
-    [[ ${1} != 'cd '* ]]
-    [[ ${1} != 'find '* ]]
-    [[ ${1} != 'exit'* ]]
-    [[ ${1} != 'history'* ]]
-    [[ ${1} != 'htop '* ]]
-    [[ ${1} != 'ls '* ]]
-    [[ ${1} != 'locate '* ]]
-    [[ ${1} != 'man '* ]]
-    [[ ${1} != 'pushd '* ]]
-    [[ ${1} != 'popd '* ]]
-    [[ ${1} != 'tail '* ]]
-    [[ ${1} != 'top '* ]]
-    [[ ${1} != 'tree '* ]]
-    [[ ${1} != 'updatedb'* ]]
+
+    if [[ $1 == (#b)(bat|btop|cat|cd|find|exit|history|htop|ls|locate|man|pushd|popd|tail|top|tree|updatedb)* ]]; then
+        # Do not add to history
+        return 1
+    fi
+
+    # Add to history
+    return 0
 }
 
 
