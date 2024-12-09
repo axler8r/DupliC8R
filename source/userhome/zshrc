@@ -69,17 +69,6 @@ zshaddhistory() {
 [[ -f /opt/conda/etc/profile.d/conda.sh ]] && source /opt/conda/etc/profile.d/conda.sh
 
 
-# COMPLETIONS
-# TODO: FIX! Doesn't work!
-# [[ -x $(which poetry 2> /dev/null) ]] && eval "$(poetry completions zsh)"
-# [[ -x $(which gh 2> /dev/null) ]] && eval "$(gh completion --shell zsh)"
-# [[ -x $(which just 2> /dev/null) ]] && eval "$(just --completions zsh)"
-# [[ -x $(which fd 2> /dev/null) ]] && eval "$(fd --gen-completions zsh)"
-# [[ -x $(which rg 2> /dev/null) ]] && eval "$(rg --generate complete-zsh)"
-# [[ -x $(which yq 2> /dev/null) ]] && eval "$(yq shell-completion zsh)"
-# [[ -x $(which parallel 2> /dev/null) ]] && eval "$(parallel --shell-completion auto)"
-
-
 # ASDF
 if [[ "$(type -w asdf)" == "asdf: function" ]] {
     # ENVIRONMENT VARIABLES AND EXPORTS
@@ -97,3 +86,4 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
+
