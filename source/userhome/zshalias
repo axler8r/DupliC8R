@@ -388,6 +388,7 @@ alias -s {asc,cs,dart,erl,ex{s},fs,htm{l},java,json,py,rebar,rs,scala,txt,xml}=n
 alias -s {pdf,ps}=evince
 
 
+alias -g B="| bat --paging=auto - "
 alias -g V="| nvim - "
 alias -g G="| grep "
 alias -g R="| rg "
