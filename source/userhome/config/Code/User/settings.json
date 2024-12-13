@@ -3,6 +3,11 @@
     "window.menuBarVisibility": "toggle",
     // workbench
     "workbench.colorTheme": "Solarized Dark",
+    "workbench.colorCustomizations": {
+        "editor.findMatchBackground": "#d33682",
+        "editor.findMatchForeground":"#002b36",
+        "editor.findMatchBorder":  "#fdf6e3",
+    },
     "workbench.tree.renderIndentGuides": "none",
     "workbench.iconTheme": "material-icon-theme",
     "workbench.editorAssociations": {
@@ -138,5 +143,7 @@
     },
     "terminal.integrated.defaultProfile.linux": "zsh",
     "markdown-preview-enhanced.liveUpdate": false,
-    "scm.experimental.showHistoryGraph": true
+    "scm.experimental.showHistoryGraph": true,
+    "workbench.preferredDarkColorTheme": "Solarized Dark",
+    "workbench.preferredLightColorTheme": "Solarized Light",
 }
