@@ -69,7 +69,6 @@ if [[ -x $(which bat) ]] {
 }
 
 if [[ -x $(which docker) ]] {
-    # Maintenance
     __ax_docker_update_image() {
         local __AX_ALL=$(docker image list --format="{{.Repository}}:{{.Tag}}")
         local __AX_RELEVANT=$(echo "${__AX_ALL}" | sed --expression='/^vsc/d' | sed --expression='/^axler8r/d' | sed --expression='/\<none\>/d')
@@ -121,7 +120,6 @@ if [[ -x $(which docker) ]] {
         '--detach'
     )
 
-    # Elixir Livebook in Docker
     __ax_docker_start_elixirlivebook() {
         [[ -f /tmp/livebook*(.) ]] && rm /tmp/livebook*
 
@@ -153,7 +151,6 @@ if [[ -x $(which docker) ]] {
     }
     alias start-dockerelixirlivebookcuda=' __ax_docker_start_elixirlivebookcuda '
 
-    # Julia Pluto Notebook in Docker
     __ax_docker_start_juliaplutonotebook() {
         [[ -f /tmp/plutonotebook*(.) ]] && rm /tmp/plutonotebook*
 
@@ -170,7 +167,6 @@ if [[ -x $(which docker) ]] {
     }
     alias start-dockerjuliaplutonotebook=" __ax_docker_start_juliaplutonotebook "
 
-    # Jupyter Notebook in Docker
     __ax_docker_start_jupyternotebook() {
         [[ -f /tmp/jupyternotebook*(.) ]] && rm /tmp/jupyternotebook*
 
@@ -200,7 +196,6 @@ if [[ -x $(which docker) ]] {
     alias connect-dockerzshubuntubash=' docker exec --interactive --tty zsh-ubuntu bash '
     alias remove-dockerzshubuntu=' docker rm zsh-ubuntu && docker volume rm ZSHUbuntu '
 
-    # Azure CLI in Docker
     __ax_docker_start_azurecli() {
         local __AX_NAME="azcli-$(date +%Y%m%d%H%M%S)"
 
@@ -223,7 +218,6 @@ if [[ -x $(which docker) ]] {
     }
     alias start-dockerazpwsh=' __ax_docker_start_azurepowershell '
 
-    # Tesseract in Docker
     __ax_docker_invoke_tesseract() {
         [[ -f /tmp/tesseract*(.) ]] && rm /tmp/tesseract*
 
@@ -394,4 +388,3 @@ alias -g V="| nvim - "
 function ls() {
 	[[ -f ~/.hidden ]] && declare GLOBIGNORE=${GLOBIGNORE}:.*:$(tr '\n' ':' < ~/.hidden) ls "$@"
 }
-
