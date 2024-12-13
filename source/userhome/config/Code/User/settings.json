@@ -1,4 +1,6 @@
 {
+    // window
+    "window.menuBarVisibility": "toggle",
     // workbench
     "workbench.colorTheme": "Solarized Dark",
     "workbench.colorCustomizations": {
@@ -45,6 +47,8 @@
         "**/.metals": true,
         "**/.ammonite": true
     },
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.cursorBlinking": "phase",
     // markdown
     "markdown.extension.toc.updateOnSave": false,
     // terminal
@@ -134,7 +138,6 @@
     "vim.cursorStylePerMode.visual": "block-outline",
     "vim.cursorStylePerMode.normal": "block",
     "vim.cursorStylePerMode.visualblock": "block-outline",
-    "editor.cursorSmoothCaretAnimation": "on",
     "files.associations": {
         "*.livemd": "markdown"
     },
