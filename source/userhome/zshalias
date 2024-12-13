@@ -59,6 +59,7 @@ if [[ -x $(which bat) ]] {
         tail --follow "${1}" | bat --file-name "${1}" --paging=never --language=log
     }
     alias read-log=' __ax_bat_read_log '
+    compdef _tail __ax_bat_read_log
 
     [[ -x $(which fzf-tmux) ]] && \
         alias fzf=' fzf-tmux --height 40% --reverse --preview "bat --color=always {}" '
