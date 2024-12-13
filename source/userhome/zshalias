@@ -48,7 +48,7 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
         alias tokei=' tokei --exclude .github --exclude .git --compact --sort code '
 }
 
-if [[ -x $(which bat) ]] {
+if [[ -x $(which bat 2> /dev/null) ]] {
     __ax_bat_format_help() {
         "$@" --help | bat --plain --language=help
     }
@@ -69,7 +69,7 @@ if [[ -x $(which bat) ]] {
     }
 }
 
-if [[ -x $(which docker) ]] {
+if [[ -x $(which docker 2> /dev/null) ]] {
     # Maintenance
     __ax_docker_update_image() {
         local __AX_ALL=$(docker image list --format="{{.Repository}}:{{.Tag}}")
@@ -295,7 +295,7 @@ if [[ -x $(which exa) ]] {
     alias ls=' lsi $__AX_COMMON '
 }
 
-if [[ -x $(which git) ]] {
+if [[ -x $(which git 2> /dev/null) ]] {
     __ax_git_resolve_path_to_repository() {
         local __AX_PWD=$(pwd)
         local __AX_PWD_NAME=$(basename "${__AX_PWD}")
@@ -323,7 +323,7 @@ if [[ -x $(which git) ]] {
         alias update-gitrepository=' parallel cd {} ";" pwd ";" git pull ";" git submodule update ";"  echo ::: *(/) '
 }
 
-if [[ -x $(which kitty) ]] {
+if [[ -x $(which kitty 2> /dev/null) ]] {
     local __AX_KITTY=(
         '--title=kiTTY'
         '--detach'
@@ -339,13 +339,13 @@ if [[ -x $(which kitty) ]] {
     alias okl=" open-kittysolarizedlight "
 }
 
-if [[ -x $(which lynx) ]] {
+if [[ -x $(which lynx 2> /dev/null) ]] {
     [[ -f ~/.config/lynx/solarized.lss ]] && \
         alias lynx=' lynx -lss ~/.config/lynx/solarized.lss ' || \
         alias lynx='lynx '
 }
 
-if [[ -x $(which powerline-daemon) ]] {
+if [[ -x $(which powerline-daemon 2> /dev/null) ]] {
     __ax_powerline_hide_k8s() {
         POWERLINE_K8S_SHOW=0 POWERLINE_K8S_SHOW_NS=0 powerline-daemon --replace
     }
@@ -357,13 +357,13 @@ if [[ -x $(which powerline-daemon) ]] {
     alias show-powerlinek8s=' __ax_powerline_show_k8s '
 }
 
-if [[ -x $(which tmux) ]] {
+if [[ -x $(which tmux 2> /dev/null) ]] {
     alias split-tmuxwindow=' tmux split-window '
     alias tmsw=' split-tmuxwindow '
     alias tma=' tmux attach '
 }
 
-if [[ -x $(which zfs) ]] {
+if [[ -x $(which zfs 2> /dev/null) ]] {
     __ax_zfs_remove_snapshot() {
         zsysctl state remove "${1}" --system
         printf "\n"
@@ -373,16 +373,20 @@ if [[ -x $(which zfs) ]] {
     alias get-zfssnapshot=' zfs list -r -t snapshot -S creation -o name,used,referenced,creation '
 }
 
-[[ -x $(which ncdu) ]] && alias ncdu=' ncdu --exclude ".git" '
-[[ -x $(which nvidia-settings) ]] && alias get-nvidiacudacores=' nvidia-settings -q CUDACores -t '
-[[ -x $(which stress-ng) ]] && alias measure-performance=' stress-ng '
-[[ -x $(which task) ]] && alias task=' clear && task '
-[[ -x $(which thefuck) ]] && eval $(thefuck --alias)
-[[ -x $(which tree) ]] && alias tree=' tree -I snap --dirsfirst '
-[[ -x $(which xclip) ]] && alias copy-selection=' xclip -selection clipboard '
+
+[[ -x $(which gh 2> /dev/null) ]] && eval "$(gh copilot alias -- zsh)"
+[[ -x $(which ncdu 2> /dev/null) ]] && alias ncdu=' ncdu --exclude ".git" '
+[[ -x $(which nvidia-settings 2> /dev/null) ]] && alias get-nvidiacudacores=' nvidia-settings -q CUDACores -t '
+[[ -x $(which stress-ng 2> /dev/null) ]] && alias measure-performance=' stress-ng '
+[[ -x $(which task 2> /dev/null) ]] && alias task=' clear && task '
+[[ -x $(which thefuck 2> /dev/null) ]] && eval $(thefuck --alias)
+[[ -x $(which tree 2> /dev/null) ]] && alias tree=' tree -I snap --dirsfirst '
+[[ -x $(which xclip 2> /dev/null) ]] && alias copy-selection=' xclip -selection clipboard '
+
 
 alias -s {asc,cs,dart,erl,ex{s},fs,htm{l},java,json,py,rebar,rs,scala,txt,xml}=nvim
 alias -s {pdf,ps}=evince
+
 
 alias -g V="| nvim - "
 alias -g G="| grep "
