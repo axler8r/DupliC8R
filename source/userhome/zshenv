@@ -47,14 +47,3 @@ fpath=(${ASDF_DIR}/completions $fpath)
 
 
 # MANPATH
-if [[ "$(type -w asdf)" == "asdf: function" ]] {
-    # TODO:
-    #   implement manpath for asdf installed utilities
-    #echo "ASDF man dirs" > zshenv.startup
-    #local __Ax_ASDF_MAN_DIRS=$(printf "%s\n" .asdf/**/man(/) | grep -v "python")
-    #foreach __man_dir in ${__Ax_ASDF_MAN_DIRS}
-    #do
-    #    manpath+=( ${__man_dir} )
-    #    echo ${__man_dir} >> zshenv.startup
-    #done
-}
