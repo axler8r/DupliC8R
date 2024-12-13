@@ -1,64 +1,82 @@
+# FEATURES
+autoload -Uz zmv                # Load zmv function
+autoload -Uz compinit           # Load compinit function
+compinit                        # Initialize completion system
+autoload -Uz edit-command-line  # Load edit-command-line function
+zle -N edit-command-line        # Bind edit-command-line to zle
+
+
 # COMPLETIONS
+#
+# zstyle ':completion:*' completer _complete _ignored
+#   + Defines the order of completion functions to be used.
+#   + _complete: The standard completion function.
+#   + _ignored: Ignores certain completions based on previous settings.
+# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+#   + Sets the colors for the completion list using the LS_COLORS environment variable.
+#   + ${(s.:.)LS_COLORS}: Splits the LS_COLORS variable by ':' and applies the colors.
+# zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
+#   + Defines matching rules for completion.
+#   + 'm:{[:lower:]}={[:upper:]}': Case-insensitive matching.
+#   + '+r:|[._-]=* r:|=*': Allows matching across certain characters like '.', '_', and '-'.
+# zstyle :compinstall filename '/home/axl/.zshrc'
+#   + Specifies the file where the completion configuration is saved.
 zstyle ':completion:*' completer _complete _ignored
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
 zstyle :compinstall filename '/home/axl/.zshrc'i
-autoload -Uz compinit
-compinit
 
 
-# FEATURES
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey -M vicmd v edit-command-line
-autoload -Uz zmv
+# KEY BINDINGS
+bindkey -v                           # Enable vi keybindings in zsh
+bindkey -M vicmd e edit-command-line # Map 'e' to edit command line
 
 
 # OPTIONS
-setopt append_history
-setopt auto_cd
-setopt auto_list
-setopt auto_menu
-setopt bang_hist
-setopt complete_in_word
-setopt correct
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_find_no_dups
-setopt hist_ignore_space
-setopt hist_ignore_all_dups
-setopt multi_os
-setopt no_beep
-setopt pushd_ignore_dups
-setopt pushd_silent
-setopt pushd_to_home
-setopt share_history
-setopt short_loops
-bindkey -v
+setopt append_history          # Append to history file
+setopt auto_cd                 # Change to directory without 'cd'
+setopt auto_list               # List choices on ambiguous completion
+setopt auto_menu               # Autoselect from completion list
+setopt bang_hist               # Enable '!' history expansion
+setopt complete_in_word        # Complete in the middle of words
+setopt correct                 # Correct command spelling
+setopt extended_history        # Save timestamp in history
+setopt hist_expire_dups_first  # Expire duplicate history entries first
+setopt hist_find_no_dups       # No duplicates in history search
+setopt hist_ignore_all_dups    # Ignore all duplicate history entries
+setopt hist_ignore_space       # Ignore commands starting with space
+setopt multi_os                # Enable multi-OS compatibility
+setopt no_beep                 # Disable beep sound
+setopt pushd_ignore_dups       # No duplicate directories in stack
+setopt pushd_silent            # No output for pushd/popd
+setopt pushd_to_home           # 'pushd' with no args to home
+setopt share_history           # Share history across sessions
+setopt short_loops             # Shorten loops with 'do' keyword
 
 
 # ENVIRONMENT VARIABLES AND EXPORTS
-HISTFILE=${HOME}/.zsh_history
-HISTSIZE=49999
-SAVEHIST=49949
-export SAVEHIST
-export GPG_TTY=$(tty)
+HISTFILE=${HOME}/.zsh_history  # History file location
+HISTSIZE=5000                  # Max history entries in memory
+SAVEHIST=2500                  # Max history entries on disk
+export SAVEHIST                # Export SAVEHIST variable
+export GPG_TTY=$(tty)          # Read GPG password from current terminal
+# - Enable Erlang shell history if the erl command is available
 [[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
 
 
 # ZSH CONFIGURATIONS
-# Ignore specific commands from history
+#
+# This zsh hook is called before a command is added to the history.
 zshaddhistory() {
-    emulate -L zsh
-    setopt extendedglob
+    emulate -L zsh             # Emulate zsh, local scope
+    setopt extendedglob        # Enable extended globbing
 
-    if [[ $1 == (#b)(bat|btop|cat|cd|find|exit|history|htop|ls|locate|man|pushd|popd|tail|top|tree|updatedb)* ]]; then
-        # Do not add to history
-        return 1
+    # Ignore specific commands from history
+    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|ls|locate|man|nvtop|popd|pushd|pwd|tail|top|tree|who)* ]]; then
+        return 1               # Do not add to history
     fi
 
-    # Add to history
-    return 0
+    return 0                   # Add to history
 }
 
 
@@ -86,4 +104,3 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
-
