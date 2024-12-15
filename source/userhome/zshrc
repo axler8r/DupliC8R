@@ -72,7 +72,7 @@ zshaddhistory() {
     setopt extendedglob        # Enable extended globbing
 
     # Ignore specific commands from history
-    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|ls|locate|man|nvtop|popd|pushd|pwd|tail|top|tree|who)* ]]; then
+    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|ls|locate|man|nvtop|popd|pushd|pwd|tail|top|tree|which|who)* ]]; then
         return 1               # Do not add to history
     fi
 
