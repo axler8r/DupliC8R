@@ -11,6 +11,7 @@ path=(${HOME}/.local/bin $path)
 
 
 # FPATH
+typeset -aU fpath # prevent duplicates
 fpath=(${ASDF_DIR}/completions $fpath)
 
 
