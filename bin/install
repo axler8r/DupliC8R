@@ -20,6 +20,7 @@ install_cli_tools() {
         "make-doc"
         "bzip2"
         "bzip2-doc"
+        "clamav"
         "curl"
         "git"
         "git-flow"
@@ -28,7 +29,9 @@ install_cli_tools() {
         "htop"
         "less"
         "lsof"
+        "mpv"
         "ncdu"
+        "nvtop"
         "openssh-server"
         "p7zip-full"
         "plocate"
@@ -37,6 +40,10 @@ install_cli_tools() {
         "pv"
         "python3"
         "python3-pip"
+        "python3-poetry"
+        "python3-powerline"
+        "python3-powerline-gitstatus"
+        "rsync"
         "socat"
         "software-properties-common"
         "strace"
@@ -47,6 +54,7 @@ install_cli_tools() {
         "universal-ctags"
         "unzip"
         "webp"
+        "wget"
         "zip"
         "zsh"
         "zsh-autosuggestions"
@@ -83,6 +91,7 @@ install_gui_tools() {
     _trace "APT flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
+        "cheese"
         "gnome-clocks"
         "meld"
     )
@@ -716,3 +725,4 @@ unset _FONTS_FLAG
 unset _ICONS_FLAG
 unset _KITTY_FLAG
 unset _DOCKER_FLAG
+
