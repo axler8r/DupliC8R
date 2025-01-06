@@ -146,4 +146,5 @@
     "scm.experimental.showHistoryGraph": true,
     "workbench.preferredDarkColorTheme": "Solarized Dark",
     "workbench.preferredLightColorTheme": "Solarized Light",
+    "terminal.integrated.inheritEnv": false,
 }
