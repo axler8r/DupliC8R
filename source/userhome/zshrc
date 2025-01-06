@@ -48,6 +48,12 @@ export SAVEHIST                # Export SAVEHIST variable
 export GPG_TTY=$(tty)          # Read GPG password from current terminal
 # - Enable Erlang shell history if the erl command is available
 [[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
+if [[ "$(type -w asdf)" == "asdf: function" ]] {
+    if [[ -x $(asdf which nvim 2> /dev/null) ]] {
+        EDITOR=$(asdf which nvim)
+        VISUAL=$(asdf which nvim)
+    }
+}
 
 
 # ZSH CONFIGURATIONS
@@ -73,20 +79,8 @@ zshaddhistory() {
 [[ -f /opt/conda/etc/profile.d/conda.sh ]] && source /opt/conda/etc/profile.d/conda.sh
 
 
-# ASDF
-if [[ "$(type -w asdf)" == "asdf: function" ]] {
-    # ENVIRONMENT VARIABLES AND EXPORTS
-    # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
-
-    # DEFAULTS
-    if [[ -x $(asdf which nvim 2> /dev/null) ]] {
-        EDITOR=$(asdf which nvim)
-        VISUAL=$(asdf which nvim)
-    }
-}
-
-
 # CONFIGURATIONS
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
+
