@@ -43,9 +43,26 @@ if [[ "$(type -w asdf)" == "asdf: function" ]] {
         printf "\n"
     }
     alias find-asdfplugin=' __ax_asdf_find_plugin '
+}
 
-    [[ -x $(asdf which tokei) ]] && \
-        alias tokei=' tokei --exclude .github --exclude .git --compact --sort code '
+if [[ -x "${HOME}/.anaconda3/bin/conda" ]] {
+    __ax_conda_mount() {
+        export CONDA_AUTO_ACTIVATE_BASE=false
+        __conda_setup="$('${HOME}/.anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+        if [[ $? -eq 0 ]] {
+            eval "$__conda_setup"
+        } else {
+            if [[ -f "${HOME}/.anaconda3/etc/profile.d/conda.sh" ]] {
+                source "${HOME}/.anaconda3/etc/profile.d/conda.sh"
+            } else {
+                export PATH="/home/axl/.anaconda3/bin:$PATH"
+            }
+        }
+        unset __conda_setup
+    }
+    alias mount-conda=' __ax_conda_mount '
+} else {
+    alias mount-conda=' printf "conda not found\n" '
 }
 
 if [[ -x $(which bat 2> /dev/null) ]] {
