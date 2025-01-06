@@ -7,34 +7,24 @@ zle -N edit-command-line        # Bind edit-command-line to zle
 
 
 # COMPLETIONS
-#
-# zstyle ':completion:*' completer _complete _ignored
-#   + Defines the order of completion functions to be used.
-#   + _complete: The standard completion function.
-#   + _ignored: Ignores certain completions based on previous settings.
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-#   + Sets the colors for the completion list using the LS_COLORS environment variable.
-#   + ${(s.:.)LS_COLORS}: Splits the LS_COLORS variable by ':' and applies the colors.
-# zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
-#   + Defines matching rules for completion.
-#   + 'm:{[:lower:]}={[:upper:]}': Case-insensitive matching.
-#   + '+r:|[._-]=* r:|=*': Allows matching across certain characters like '.', '_', and '-'.
-# zstyle :compinstall filename '/home/axl/.zshrc'
-#   + Specifies the file where the completion configuration is saved.
+# Define order of completion functions
 zstyle ':completion:*' completer _complete _ignored
+# Set completion colors as LS_COLORS
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# Define matching rules for completion
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
+# Completion configuration file
 zstyle :compinstall filename '/home/axl/.zshrc'i
 
 
 # KEY BINDINGS
 bindkey -v                           # Enable vi keybindings in zsh
-bindkey -M vicmd e edit-command-line # Map 'e' to edit command line
+bindkey -M vicmd E edit-command-line # Map 'E' to edit command line
 
 
 # OPTIONS
 setopt append_history          # Append to history file
-setopt auto_cd                 # Change to directory without 'cd'
+setopt auto_cd                 # Change directory without 'cd'
 setopt auto_list               # List choices on ambiguous completion
 setopt auto_menu               # Autoselect from completion list
 setopt bang_hist               # Enable '!' history expansion
@@ -60,21 +50,29 @@ HISTSIZE=5000                  # Max history entries in memory
 SAVEHIST=2500                  # Max history entries on disk
 export SAVEHIST                # Export SAVEHIST variable
 export GPG_TTY=$(tty)          # Read GPG password from current terminal
-# - Enable Erlang shell history if the erl command is available
-[[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
+if [[ -x $(which nvim 2> /dev/null) ]] {
+    EDITOR=$(which nvim)       # Set Neovim as default editor
+    VISUAL=${EDITOR}           # Set Neovim as default visual editor
+} elif [[ -x $(which vim 2> /dev/null) ]] {
+    EDITOR=$(which vim)        # Set Vim as default editor
+    VISUAL=${EDITOR}           # Set Vim as default visual editor
+} elif [[ -x $(which vi 2> /dev/null) ]] {
+    EDITOR=$(which vi)         # Set Vi as default editor
+    VISUAL=${EDITOR}           # Set Vi as default visual editor
+}
+[[ -x $(which erl > /dev/null 2> /dev/null) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
 
 
 # ZSH CONFIGURATIONS
-#
 # This zsh hook is called before a command is added to the history.
 zshaddhistory() {
     emulate -L zsh             # Emulate zsh, local scope
     setopt extendedglob        # Enable extended globbing
 
     # Ignore specific commands from history
-    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|ls|locate|man|nvtop|popd|pushd|pwd|tail|top|tree|which|who)* ]]; then
+    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|locate|man|nvtop|pwd|tail|top|which|who)* ]] {
         return 1               # Do not add to history
-    fi
+    }
 
     return 0                   # Add to history
 }
@@ -85,22 +83,12 @@ zshaddhistory() {
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
 [[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
 [[ -f /opt/conda/etc/profile.d/conda.sh ]] && source /opt/conda/etc/profile.d/conda.sh
-
-
-# ASDF
-if [[ "$(type -w asdf)" == "asdf: function" ]] {
-    # ENVIRONMENT VARIABLES AND EXPORTS
-    # [[ -x $(asdf which java) ]] && source ~/.asdf/plugins/java/set-java-home.zsh
-
-    # DEFAULTS
-    if [[ -x $(asdf which nvim 2> /dev/null) ]] {
-        EDITOR=$(asdf which nvim)
-        VISUAL=$(asdf which nvim)
-    }
-}
+[[ -x $(which uv 2> /dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
+[[ -x $(which uvx 2> /dev/null) ]] && eval "$(uvx --generate-shell-completion zsh)"
 
 
 # CONFIGURATIONS
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
+
