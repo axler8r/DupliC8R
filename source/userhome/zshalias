@@ -14,7 +14,7 @@ alias get-ipaddress=' printf "%s\n" "$(curl --silent --get https://api.ipify.org
 alias get-terminaldimensions=' echo $LINES × $COLUMNS '
 alias get-windowskey=' sudo strings /sys/firmware/acpi/tables/MSDM | command tail --lines=1 '
 alias set-centernewwindow=' gsettings set org.gnome.mutter center-new-windows true '
-alias update-system=' sudo apt update && sudo apt upgrade --yes && sudo apt autoremove --yes && sudo apt autoclean --yes '
+alias update-system=' sudo apt update && sudo apt upgrade --yes && sudo apt autoremove --yes && sudo apt autoclean --yes && sudo snap refresh '
 
 if [[ "$(type -w asdf)" == "asdf: function" ]] {
     __ax_asdf_compare_plugin_version() {
@@ -260,7 +260,7 @@ if [[ -x $(which eza 2> /dev/null) ]] {
     local __AX_EZA_ARGS_DETAIL=(
         '--accessed'
         '--binary'
-        '--blocks'
+        '--blocksize'
         '--created'
         '--inode'
         '--links'
