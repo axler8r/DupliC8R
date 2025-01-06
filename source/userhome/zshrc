@@ -7,24 +7,10 @@ zle -N edit-command-line        # Bind edit-command-line to zle
 
 
 # COMPLETIONS
-#
-# zstyle ':completion:*' completer _complete _ignored
-#   + Defines the order of completion functions to be used.
-#   + _complete: The standard completion function.
-#   + _ignored: Ignores certain completions based on previous settings.
-# zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-#   + Sets the colors for the completion list using the LS_COLORS environment variable.
-#   + ${(s.:.)LS_COLORS}: Splits the LS_COLORS variable by ':' and applies the colors.
-# zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
-#   + Defines matching rules for completion.
-#   + 'm:{[:lower:]}={[:upper:]}': Case-insensitive matching.
-#   + '+r:|[._-]=* r:|=*': Allows matching across certain characters like '.', '_', and '-'.
-# zstyle :compinstall filename '/home/axl/.zshrc'
-#   + Specifies the file where the completion configuration is saved.
-zstyle ':completion:*' completer _complete _ignored
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*'
-zstyle :compinstall filename '/home/axl/.zshrc'i
+zstyle ':completion:*' completer _complete _ignored                                 # Order of completion functions
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}                               # Colors for completion from LS_COLORS
+zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]}' '+r:|[._-]=* r:|=*' # Matching rules for completion
+zstyle :compinstall filename '/home/axl/.zshrc'i                                    # Completion configuration file
 
 
 # KEY BINDINGS
