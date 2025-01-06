@@ -79,7 +79,7 @@ if [[ -x $(which bat 2> /dev/null) ]] {
     alias read-log=' __ax_bat_read_log '
     compdef _tail __ax_bat_read_log
 
-    [[ -x $(which fzf-tmux) ]] && \
+    [[ -x $(which fzf-tmux 2> /dev/null) ]] && \
         alias fzf=' fzf-tmux --height 40% --reverse --preview "bat --color=always {}" '
     man() {
         local __AX_WIDTH="$(( COLUMNS > 93 ? 90 : COLUMNS - 3 ))"
@@ -332,7 +332,7 @@ if [[ -x $(which git 2> /dev/null) ]] {
 
     alias confirm-gituntrackedcache=' git update-index --test-untracked-cache '
     alias set-gituntrackedcache=' git update-index --split-index --untracked-cache '
-    [[ -x $(which parallel) ]] && \
+    [[ -x $(which parallel 2> /dev/null) ]] && \
         alias update-gitrepository=' parallel cd {} ";" pwd ";" git pull ";" git submodule update ";"  echo ::: *(/) '
 }
 
@@ -395,7 +395,7 @@ if [[ -x $(which zfs 2> /dev/null) ]] {
 [[ -x $(which thefuck 2> /dev/null) ]] && eval $(thefuck --alias)
 [[ -x $(which tree 2> /dev/null) ]] && alias tree=' tree -I snap --dirsfirst '
 [[ -x $(which xclip 2> /dev/null) ]] && alias copy-selection=' xclip -selection clipboard '
-
+[[ -x $(which tokei 2> /dev/null) ]] && alias tokei=' tokei --exclude .github --exclude .git --compact --sort code '
 
 alias -s {asc,cs,dart,erl,ex{s},fs,htm{l},java,json,py,rebar,rs,scala,txt,xml}=nvim
 alias -s {pdf,ps}=evince
@@ -412,3 +412,4 @@ alias -g V="| nvim - "
 function ls() {
 	[[ -f ~/.hidden ]] && declare GLOBIGNORE=${GLOBIGNORE}:.*:$(tr '\n' ':' < ~/.hidden) ls "$@"
 }
+
