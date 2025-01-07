@@ -15,12 +15,12 @@ zstyle :compinstall filename '/home/axl/.zshrc'i                                
 
 # KEY BINDINGS
 bindkey -v                           # Enable vi keybindings in zsh
-bindkey -M vicmd e edit-command-line # Map 'e' to edit command line
+bindkey -M vicmd E edit-command-line # Map 'E' to edit command line
 
 
 # OPTIONS
 setopt append_history          # Append to history file
-setopt auto_cd                 # Change to directory without 'cd'
+setopt auto_cd                 # Change directory without 'cd'
 setopt auto_list               # List choices on ambiguous completion
 setopt auto_menu               # Autoselect from completion list
 setopt bang_hist               # Enable '!' history expansion
@@ -46,27 +46,29 @@ HISTSIZE=5000                  # Max history entries in memory
 SAVEHIST=2500                  # Max history entries on disk
 export SAVEHIST                # Export SAVEHIST variable
 export GPG_TTY=$(tty)          # Read GPG password from current terminal
-# - Enable Erlang shell history if the erl command is available
-[[ -x $(which erl > /dev/null 2>&1) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
-if [[ "$(type -w asdf)" == "asdf: function" ]] {
-    if [[ -x $(asdf which nvim 2> /dev/null) ]] {
-        EDITOR=$(asdf which nvim)
-        VISUAL=$(asdf which nvim)
-    }
+if [[ -x $(which nvim 2> /dev/null) ]] {
+    EDITOR=$(which nvim)       # Set Neovim as default editor
+    VISUAL=${EDITOR}           # Set Neovim as default visual editor
+} elif [[ -x $(which vim 2> /dev/null) ]] {
+    EDITOR=$(which vim)        # Set Vim as default editor
+    VISUAL=${EDITOR}           # Set Vim as default visual editor
+} elif [[ -x $(which vi 2> /dev/null) ]] {
+    EDITOR=$(which vi)         # Set Vi as default editor
+    VISUAL=${EDITOR}           # Set Vi as default visual editor
 }
+[[ -x $(which erl > /dev/null 2> /dev/null) ]] && export ERL_AFLAGS="-kernel shell_history enabled"
 
 
 # ZSH CONFIGURATIONS
-#
 # This zsh hook is called before a command is added to the history.
 zshaddhistory() {
     emulate -L zsh             # Emulate zsh, local scope
     setopt extendedglob        # Enable extended globbing
 
     # Ignore specific commands from history
-    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|ls|locate|man|nvtop|popd|pushd|pwd|tail|top|tree|which|who)* ]]; then
+    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|exit|head|history|htop|ipython|jupyter|locate|man|nvtop|pwd|tail|top|which|who)* ]] {
         return 1               # Do not add to history
-    fi
+    }
 
     return 0                   # Add to history
 }
@@ -77,6 +79,8 @@ zshaddhistory() {
 [[ -f $HOME/.asdf/asdf.sh ]] && source $HOME/.asdf/asdf.sh
 [[ -f $HOME/.local/bin/z.sh ]] && source $HOME/.local/bin/z.sh
 [[ -f /opt/conda/etc/profile.d/conda.sh ]] && source /opt/conda/etc/profile.d/conda.sh
+[[ -x $(which uv 2> /dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
+[[ -x $(which uvx 2> /dev/null) ]] && eval "$(uvx --generate-shell-completion zsh)"
 
 
 # CONFIGURATIONS
