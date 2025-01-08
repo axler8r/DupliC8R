@@ -1,0 +1,4 @@
+#! /usr/bin/env zsh
+
+sudo resolvectl flush-caches
+
