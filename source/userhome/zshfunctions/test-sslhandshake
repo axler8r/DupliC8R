@@ -1,0 +1,10 @@
+#! /usr/bin/env zsh
+
+function synopsis() {
+    echo "Usage: $0 <site>"
+}
+
+[[ $# -eq 1 && -n $1 ]] && local _site=$1 || { synopsis; exit 1; }
+
+openssl s_client -connect "${_site}":443 <<< "Q"
+
