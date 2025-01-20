@@ -258,6 +258,7 @@ if [[ -x $(which eza 2> /dev/null) ]] {
         '--color=always'
         '--group'
         '--sort=extension'
+        '--ignore-glob="tags*"'
     )
     local __AX_EZA_ARGS_PARAMS=(
         '--classify'
