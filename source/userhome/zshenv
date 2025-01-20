@@ -8,6 +8,7 @@ if [[ -x $(which python3) ]] {
 # PATH
 typeset -aU path # prevent duplicates
 path=(${HOME}/.local/bin $path)
+path+=("${HOME}/".zshfunctions)
 
 
 # FPATH
