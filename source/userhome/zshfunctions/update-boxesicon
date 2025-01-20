@@ -1,7 +1,0 @@
-#!/bin/bash
-
-[ ! -d /usr/share/icons/Numix-Square ] && exit
-
-if [ -f /var/lib/snapd/desktop/applications/gnome-boxes_gnome-boxes.desktop ]; then
-    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/boxes.svg|g' /var/lib/snapd/desktop/applications/gnome-boxes_gnome-boxes.desktop
-fi

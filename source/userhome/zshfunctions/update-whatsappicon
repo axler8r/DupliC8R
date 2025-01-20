@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-[ ! -d /usr/share/icons/Numix-Square ] && exit
-
-if [ -f /var/lib/snapd/desktop/applications/whatsapp-for-linux_whatsapp-for-linux.desktop ]; then
-    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/web-whatsapp.svg|g' /var/lib/snapd/desktop/applications/whatsapp-for-linux_whatsapp-for-linux.desktop
-fi

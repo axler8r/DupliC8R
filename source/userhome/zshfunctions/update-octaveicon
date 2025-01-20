@@ -1,7 +1,0 @@
-#!/usr/bin/env zsh
-
-[ ! -d /usr/share/icons/Numix-Square ] && exit
-
-if [ -f /var/lib/snapd/desktop/applications/octave_octave.desktop ]; then
-    sed -i 's|Icon=.*|Icon=/usr/share/icons/Numix-Square/48/apps/octave.svg|g' /var/lib/snapd/desktop/applications/octave_octave.desktop
-fi
