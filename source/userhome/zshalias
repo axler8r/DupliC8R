@@ -284,11 +284,11 @@ if [[ -x $(which eza 2> /dev/null) ]] {
         '--links'
         '--modified'
     )
+    alias ls=' eza $__AX_EZA_ARGS_COMMON $__AX_EZA_ARGS_PARAMS '
     alias l=' ls --git-ignore --oneline '
-    alias la=' eza $__AX_EZA_ARGS_COMMON $__AX_EZA_ARGS_LONG $__AX_EZA_ARGS_DETAIL '
     alias ll=' ls $__AX_EZA_ARGS_LONG '
     alias llm=' ll --sort=modified '
-    alias ls=' eza $__AX_EZA_ARGS_COMMON $__AX_EZA_ARGS_PARAMS '
+    alias la=' eza $__AX_EZA_ARGS_COMMON $__AX_EZA_ARGS_LONG $__AX_EZA_ARGS_DETAIL '
     alias lt=' eza --tree $__AX_EZA_ARGS_COMMON $__AX_EZA_ARGS_PARAMS '
     alias lx=' la --extended '
 } else {
