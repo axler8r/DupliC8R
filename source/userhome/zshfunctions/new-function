@@ -1,0 +1,105 @@
+#! /usr/bin/env zsh
+
+
+local _synopsis="Synopsis:
+    ${0} [args] [opts]
+
+See also:
+    ${0} --help
+"
+local _help="Description:
+    Generate a new zsh script following the specified template.
+
+Usage:
+    ${0} [--help] [--dry-run]
+
+Options:
+    --help      Show this help message.
+    --dry-run   Output the template without any placeholders replaced.
+
+Examples:
+    ${0} new-dockercontainer
+    ${0} read-aptpackage
+"
+
+# Generate the template for a new script
+function generate_template() {
+    cat <<'EOF'
+#! /usr/bin/env zsh
+
+local _synopsis="Synopsis:
+    ${0} [args] [opts]
+
+See also:
+    ${0} --help
+"
+local _help="Description:
+    [Add a brief description of what this script does.]
+
+Usage:
+    ${0} [args] [opts]
+
+Options:
+    --help      Show this help message.
+    [Add other options here]
+
+Examples:
+    [Provide examples of usage here]
+"
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --help)
+            echo "${_help}"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+# Driver function
+#
+# [Add a brief description of what this function does.]
+function <verb_noun>() {
+    # [Add function logic here]
+    echo "Executing <verb_noun>"
+}
+
+<verb_noun>
+
+unfunction <verb_noun>
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --help)
+            echo "${_help}"
+            exit 0
+            ;;
+        --dry-run)
+            generate_template
+            exit 0
+            ;;
+        *)
+            script_name="$1"
+            if [[ ! "$script_name" =~ ^[a-z]+-[a-z]+$ ]]; then # Check naming convention
+                echo "Error: Invalid script name. Must follow PowerShell verb-noun naming convention." >&2
+                exit 1
+            fi
+            generate_template                            \
+            | sed "s/<verb-noun>/${script_name}/g" \
+            | sed "s/<verb_noun>/$(echo "$script_name" | tr '-' '_')/g"
+            exit 0
+            ;;
+    esac
+    shift
+done
+
+# If no arguments are provided, show the synopsis
+echo "${_synopsis}"
+
