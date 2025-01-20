@@ -391,6 +391,7 @@ if [[ -x $(which zfs 2> /dev/null) ]] {
 [[ -x $(which gh 2> /dev/null) ]] && eval "$(gh copilot alias -- zsh)"
 [[ -x $(which ncdu 2> /dev/null) ]] && alias ncdu=' ncdu --exclude ".git" '
 [[ -x $(which nvidia-settings 2> /dev/null) ]] && alias get-nvidiacudacores=' nvidia-settings -q CUDACores -t '
+[[ -x $(which pipx 2> /dev/null) ]] && eval "$(register-python-argcomplete pipx)"
 [[ -x $(which stress-ng 2> /dev/null) ]] && alias measure-performance=' stress-ng '
 [[ -x $(which task 2> /dev/null) ]] && alias task=' clear && task '
 [[ -x $(which thefuck 2> /dev/null) ]] && eval $(thefuck --alias)
