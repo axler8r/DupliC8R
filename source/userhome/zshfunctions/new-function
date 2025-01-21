@@ -7,19 +7,20 @@ local _synopsis="Synopsis:
 See also:
     ${0} --help
 "
-local _help="Description:
-    Generate a new zsh script following the specified template.
+local _help="Usage:
+    ${0} [opts] [args]
 
-Usage:
-    ${0} [--help] [--dry-run]
+Description:
+    Generate a new zsh script following the specified template.
 
 Options:
     --help      Show this help message.
-    --dry-run   Output the template without any placeholders replaced.
+    [--opt1]    [Description of option 1]
+    [--opt2]    [Description of option 2]
+
 
 Examples:
-    ${0} new-dockercontainer
-    ${0} read-aptpackage
+    ${0} [example_opt] [example_arg]
 "
 
 # Generate the template for a new script
@@ -27,6 +28,8 @@ function generate_template() {
     cat <<'EOF'
 #! /usr/bin/env zsh
 
+
+# Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:
     ${0} [args] [opts]
 
@@ -47,30 +50,57 @@ Examples:
     [Provide examples of usage here]
 "
 
+
+# Functions --------------------------------------------------------------------
+_synopsis() {
+    echo "${_synopsis}" | tail --lines=+2
+}
+
+_help() {
+    echo "${_help}" | tail --lines=+2
+}
+
+_opt1() {
+    echo "Executing opt1"
+}
+
+_opt2() {
+    echo "Executing opt2"
+}
+
+
+# Options ----------------------------------------------------------------------
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --help)
-            echo "${_help}"
-            exit 0
-            ;;
-        *)
-            echo "Unknown option: $1" >&2
-            exit 1
-            ;;
+        --help)     _help_flag=true ;;
+        --opt1)     _opt1_flag=true ;;
+        --opt2)     _opt2_flag=true ;;
+        *)          _arg=$1         ;;
     esac
     shift
 done
 
-# Driver function
-#
-# [Add a brief description of what this function does.]
+
+# Main -------------------------------------------------------------------------
+[[ -n $_help_flag ]] && _help && exit 0
+[[ -n $_opt1_flag ]] && _opt1 && exit 0
+[[ -n $_opt2_flag ]] && _opt2 && exit 0
+
+
+# Driver -----------------------------------------------------------------------
 function <verb_noun>() {
     # [Add function logic here]
     echo "Executing <verb_noun>"
 }
 
+
 <verb_noun>
 
+
+unfunction _synopsis
+unfunction _help
+unfunction _opt1
+unfunction _opt2
 unfunction <verb_noun>
 EOF
 }
