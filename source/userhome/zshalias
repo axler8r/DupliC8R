@@ -399,6 +399,7 @@ if [[ -x $(which zfs 2> /dev/null) ]] {
 [[ -x $(which xclip 2> /dev/null) ]] && alias copy-selection=' xclip -selection clipboard '
 [[ -x $(which tokei 2> /dev/null) ]] && alias tokei=' tokei --exclude .github --exclude .git --compact --sort code '
 
+
 alias -s {asc,cs,dart,erl,ex{s},fs,htm{l},java,json,py,rebar,rs,scala,txt,xml}=nvim
 alias -s {pdf,ps}=evince
 
