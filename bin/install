@@ -260,6 +260,21 @@ install_asdf() {
 }
 
 
+configure_app_completion() {
+    _info "Configuring asdf completion"
+
+    # bat
+    # docker
+    # fd
+    # gh
+    # gh copilot    <-- done
+    # pipx          <-- requires argcomplete
+    # poetry
+    # rg
+    # yq
+}
+
+
 install_vim_plug() {
     _info "Installing vim plug"
 
@@ -700,6 +715,7 @@ install_all() {
         install_kitty
         install_docker_engine
     fi
+    configure_app_completion
 
     _destroy_sandbox
 }
