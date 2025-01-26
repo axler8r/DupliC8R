@@ -375,6 +375,9 @@ set_default_shell() {
 }
 
 
+## TODO: link ../source/userhome/zshfunctions to ~/.zshfunctions
+
+
 # Extended installation --------------------------------------------------------
 install_snaps() {
     _info "Installing snaps"
