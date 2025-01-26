@@ -14,6 +14,7 @@ install_cli_tools() {
     _trace "APT flags: " "${_FLAGS[*]}"
 
     local _PACKAGES=(
+        "apt-file"
         "attr"
         "btop"
         "build-essential"
@@ -21,7 +22,9 @@ install_cli_tools() {
         "bzip2"
         "bzip2-doc"
         "clamav"
+        "clamd"
         "curl"
+        "fdupes"
         "git"
         "git-flow"
         "git-lfs"
@@ -31,6 +34,7 @@ install_cli_tools() {
         "lsof"
         "mpv"
         "ncdu"
+        "net-tools"
         "nvtop"
         "openssh-server"
         "p7zip-full"
