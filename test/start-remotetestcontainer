@@ -1,6 +1,5 @@
 #! /usr/bin/env zsh
 
-
 local _FLAGS=(
     "--name=duplic8r-test"
     "--interactive"
@@ -11,5 +10,3 @@ local _FLAGS=(
 )
 
 docker run "${_FLAGS[@]}" axler8r/duplic8r-test:latest
-
-unset _FLAGS

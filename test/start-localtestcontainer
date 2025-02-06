@@ -16,7 +16,3 @@ local _MOUNTS=(
 )
 
 docker run "${_FLAGS[@]}" "${_MOUNTS[@]}" axler8r/duplic8r-test:latest
-
-unset _MOUNTS
-unset _FLAGS
-unset _PARENT_DIR
