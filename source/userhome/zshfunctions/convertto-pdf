@@ -1,0 +1,18 @@
+#! /usr/bin/env zsh
+
+if [[ -z $1 || $1 != *.md ]]; then
+    echo "Please provide a markdown file as the first argument"
+    exit 1
+fi
+
+local _path=$(dirname $1)
+_path=$(cd $_path && pwd)
+local _pwd=$(pwd)
+local _filename=$(basename $1 .md)
+
+docker run                                                        \
+    --rm                                                          \
+    --mount type=bind,source="${_path}",target=/data              \
+    --mount type=bind,source="${_pwd}",target=/data/output        \
+    pandoc/latex --from=gfm --to=pdf "${_filename}".md --output=/data/output/"${_filename}".pdf
+
