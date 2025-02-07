@@ -1,0 +1,29 @@
+- name: Clone and symlink dotfiles
+  hosts: localhost
+  tasks:
+    - name: Clone dotfiles repository
+      git:
+        repo: 'https://github.com/axler8r/duplic8r.git'
+        dest: '~/.dotfiles'
+        version: 'stable'
+
+    - name: Create symlinks for dotfiles
+      file:
+        src: '~/.dotfiles/source/userhome/{{ item.src }}'
+        dest: '{{ item.dest }}'
+        state: link
+      with_items:
+        - { src: 'ctags', dest: '~/.ctags' }
+        - { src: 'dircolors', dest: '~/.dircolors' }
+        - { src: 'gitcommit', dest: '~/.gitcommit' }
+        - { src: 'gitconfig', dest: '~/.gitconfig' }
+        - { src: 'gitignore', dest: '~/.gitignore' }
+        # - { src: 'taskrc', dest: '~/.taskrc' }
+        - { src: 'tigrc', dest: '~/.tigrc' }
+        - { src: 'XCompose', dest: '~/.XCompose' }
+        - { src: 'zshalias', dest: '~/.zshalias' }
+        - { src: 'zshenv', dest: '~/.zshenv' }
+        - { src: 'zshprompt', dest: '~/.zshprompt' }
+        - { src: 'zshrc', dest: '~/.zshrc' }
+        - { src: 'tmux.conf', dest: '~/.tmux.conf'}
+        - { src: 'tmux_extend.zsh', dest: '~/.tmux_extend.zsh'}

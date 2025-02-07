@@ -1,0 +1,21 @@
+- name: Configure tmux plugin manager
+  hosts: localhost
+  become: false  # No need for sudo as it's a user configuration
+  tasks:
+    - name: Ensure tmux plugins directory exists
+      file:
+        path: "{{ ansible_env.HOME }}/.tmux/plugins"
+        state: directory
+        mode: '0755'
+
+    - name: Check if tmux plugin manager exists in /usr/share
+      stat:
+        path: /usr/share/tmux-plugin-manager
+      register: tpm_check
+
+    - name: Symlink tmux plugin manager if it exists
+      file:
+        src: /usr/share/tmux-plugin-manager
+        dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+        state: link
+      when: tpm_check.stat.exists

@@ -1,0 +1,8 @@
+- name: Upgrade Ubuntu
+  hosts: localhost
+  become: true
+  tasks:
+    - name: Update and upgrade system packages
+      apt:
+        update_cache: yes
+        upgrade: dist

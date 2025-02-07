@@ -1,0 +1,62 @@
+- name: Install CLI applications and utilities
+  hosts: localhost
+  tasks:
+    - name: Install packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-file
+        - attr
+        - autoconf
+        - btop
+        - build-essential
+        - bzip2
+        - bzip2-doc
+        - clamav
+        - clamav-daemon
+        - curl
+        - fdupes
+        - git
+        - git-flow
+        - git-lfs
+        - htop
+        - less
+        - libncurses5-dev
+        - libncursesw5-dev
+        - libssl-dev
+        - lsof
+        - make-doc
+        - ncdu
+        - ncurses-dev
+        - net-tools
+        - nvtop
+        - openssh-server
+        - p7zip-full
+        - plocate
+        - powerline
+        - powerline-gitstatus
+        - pv
+        - python3
+        - python3-pip
+        - python3-poetry
+        - python3-powerline
+        - python3-powerline-gitstatus
+        - rsync
+        - socat
+        - software-properties-common
+        - strace
+        - taskwarrior
+        - tig
+        - tmux
+        - tmux-plugin-manager
+        - tree
+        - universal-ctags
+        - unzip
+        - webp
+        - wget
+        - zip
+        - zsh
+        - zsh-autosuggestions
+        - zsh-doc
+        - zsh-syntax-highlighting

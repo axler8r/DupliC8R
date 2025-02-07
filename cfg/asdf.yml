@@ -1,0 +1,73 @@
+- name: Install asdf version manager and plugins
+  hosts: localhost
+  become: false  # Runs as the current user
+  tasks:
+    - name: Ensure ~/.local/bin exists
+      file:
+        path: "{{ ansible_env.HOME }}/.local/bin"
+        state: directory
+        mode: '0755'
+
+    - name: Download asdf binary
+      get_url:
+        url: "https://github.com/asdf-vm/asdf/releases/download/v0.16.1/asdf-v0.16.1-linux-amd64.tar.gz"
+        dest: "{{ ansible_env.HOME }}/asdf-v0.16.1-linux-amd64.tar.gz"
+        mode: '0644'
+
+    - name: Extract asdf binary
+      ansible.builtin.unarchive:
+        src: "{{ ansible_env.HOME }}/asdf-v0.16.1-linux-amd64.tar.gz"
+        dest: "{{ ansible_env.HOME }}/"
+        remote_src: yes
+
+    - name: Move asdf binary to ~/.local/bin
+      command: mv "{{ ansible_env.HOME }}/asdf" "{{ ansible_env.HOME }}/.local/bin/"
+
+    - name: Ensure asdf binary is executable
+      file:
+        path: "{{ ansible_env.HOME }}/.local/bin/asdf"
+        mode: '0755'
+
+    - name: Remove asdf archive after extraction
+      file:
+        path: "{{ ansible_env.HOME }}/asdf-v0.16.1-linux-amd64.tar.gz"
+        state: absent
+
+    - name: Ensure asdf is in PATH
+      lineinfile:
+        path: "{{ ansible_env.HOME }}/.bashrc"
+        line: |
+          export PATH="$HOME/.local/bin:$PATH"
+          export PATH="$HOME/.asdf/shims:$PATH"
+        create: yes
+
+    - name: Install asdf plugins
+      shell: |
+        set -o pipefail
+        export PATH="$HOME/.local/bin:$PATH"
+        export PATH="$HOME/.asdf/shims:$PATH"
+        asdf plugin add {{ item }} || true
+        asdf install {{ item }} latest
+        asdf global {{ item }} latest
+      args:
+        executable: /bin/bash
+      loop:
+        - bat
+        - choose
+        - elixir
+        - erlang
+        - eza
+        - fd
+        - fzf
+        - github-cli
+        - jq
+        - julia
+        - neovim
+        - nodejs
+        - pipx
+        - ripgrep
+        - ruff
+        - shellcheck
+        - tokei
+        - uv
+        - yq

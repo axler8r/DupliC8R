@@ -1,0 +1,19 @@
+- name: Install CLI applications and utilities
+  hosts: localhost
+  tasks:
+    - name: Install packages
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apostrophe
+        - cheese
+        - gnome-builder
+        - gnome-calendar
+        - gnome-clocks
+        - gnome-shell-extension-manager
+        - gnome-tweaks
+        - gnome-weather
+        - meld
+        - mpv
+        - papirus-icon-theme
