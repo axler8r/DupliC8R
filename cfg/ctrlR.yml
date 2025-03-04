@@ -1,0 +1,10 @@
+- name: Install ctrl+r (history-search-multi-word)
+  hosts: localhost
+  become: false
+  gather_facts: true
+  tasks:
+    - name: Ensure history-search-multi-word is installed or updated
+      git:
+        repo: "https://github.com/zdharma-continuum/history-search-multi-word.git"
+        dest: "{{ ansible_env.HOME }}/.zsh-hsmw"
+        update: true
