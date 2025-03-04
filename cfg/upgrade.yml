@@ -4,5 +4,5 @@
   tasks:
     - name: Update and upgrade system packages
       apt:
-        update_cache: yes
+        update_cache: true
         upgrade: dist

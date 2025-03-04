@@ -1,5 +1,6 @@
 - name: Install CLI applications and utilities
   hosts: localhost
+  become: true
   tasks:
     - name: Install packages
       apt:
@@ -46,7 +47,7 @@
         - socat
         - software-properties-common
         - strace
-        - taskwarrior
+        # - taskwarrior
         - tig
         - tmux
         - tmux-plugin-manager

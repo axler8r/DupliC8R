@@ -17,11 +17,13 @@
     - name: Extract asdf binary
       ansible.builtin.unarchive:
         src: "{{ ansible_env.HOME }}/asdf-v0.16.1-linux-amd64.tar.gz"
-        dest: "{{ ansible_env.HOME }}/"
-        remote_src: yes
+        dest: "{{ ansible_env.HOME }}/.local/bin/"
+        remote_src: false
 
-    - name: Move asdf binary to ~/.local/bin
-      command: mv "{{ ansible_env.HOME }}/asdf" "{{ ansible_env.HOME }}/.local/bin/"
+    - name: Move asdf binary to local bin # '~/.local/bin'
+      command: mv "{{ ansible_env.HOME }}/.local/bin/asdf-v0.16.1/asdf" "{{ ansible_env.HOME | default('/home/axl') }}/.local/bin/"
+      args:
+        creates: "{{ ansible_env.HOME }}/.local/bin/asdf"
 
     - name: Ensure asdf binary is executable
       file:
@@ -39,7 +41,8 @@
         line: |
           export PATH="$HOME/.local/bin:$PATH"
           export PATH="$HOME/.asdf/shims:$PATH"
-        create: yes
+        create: true
+        mode: '0644'
 
     - name: Install asdf plugins
       shell: |
@@ -48,18 +51,22 @@
         export PATH="$HOME/.asdf/shims:$PATH"
         asdf plugin add {{ item }} || true
         asdf install {{ item }} latest
-        asdf global {{ item }} latest
+        asdf set --home {{ item }} latest
       args:
         executable: /bin/bash
+      register: asdf_plugin_install
+      changed_when: asdf_plugin_install.rc != 0
       loop:
         - bat
         - choose
+        - dive
         - elixir
         - erlang
         - eza
         - fd
         - fzf
         - github-cli
+        # - java
         - jq
         - julia
         - neovim
@@ -68,6 +75,6 @@
         - ripgrep
         - ruff
         - shellcheck
-        - tokei
+        # - tokei
         - uv
         - yq

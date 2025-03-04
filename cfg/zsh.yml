@@ -1,5 +1,6 @@
 - name: Set ZSH as the default shell
   hosts: all
+  become: true
   tasks:
     - name: Ensure ZSH is installed
       apt:

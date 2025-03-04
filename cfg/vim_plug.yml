@@ -15,6 +15,6 @@
         mode: '0644'
 
     - name: Install plugins using vim-plug
-      command: nvim +PlugInstall --sync +qa!
+      command: nvim +PlugInstall +qa!  # this fails becuase nvim is not in the PATH
       args:
         creates: "{{ ansible_env.HOME }}/.local/share/nvim/plugged"
