@@ -3,5 +3,13 @@
 	"image": "mcr.microsoft.com/devcontainers/base:jammy",
 	"containerEnv": {
 		"IN_CONTAINER": "true"
+	},
+	"features": {
+		"ghcr.io/devcontainers-extra/features/apt-packages:1": {
+			"packages": [
+				"ansible-core",
+				"ansible-lint"
+			]
+		}
 	}
 }

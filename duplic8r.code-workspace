@@ -36,7 +36,12 @@
         },
         "material-icon-theme.files.associations": {
             "dircolors": "settings",
-            "xcompose": "settings"
-        }
+            "xcompose": "settings",
+        },
+    },
+    "extensions": {
+        "recommendations": [
+            "redhat.ansible",
+        ]
     }
 }
