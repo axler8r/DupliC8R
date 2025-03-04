@@ -10,7 +10,8 @@ RUN apt update                                       \
     && apt autoremove --yes                          \
     && apt autoclean                                 \
     && rm --recursive --force /var/lib/apt/lists/*
+RUN /usr/sbin/usermod --login duplic8r --move-home --home /home/duplic8r ubuntu
+RUN /usr/sbin/groupmod --new-name duplic8r ubuntu
 RUN echo 'duplic8r ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/duplic8r
-RUN /usr/sbin/useradd --uid 1010 --create-home duplic8r
 
 USER duplic8r
