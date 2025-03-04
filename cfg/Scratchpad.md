@@ -10,18 +10,10 @@
     sudo DEBIAN_FRONTEND=noninteractive apt-get install -y ansible
     ```
 
-```bash
-wget https://github.com/asdf-vm/asdf/releases/download/v0.16.1/asdf-v0.16.1-linux-amd64.tar.gz
-tar -zxvf asdf-v0.16.1-linux-amd64.tar.gz
-mv asdf .local/bin
-chmod u+x .local/bin/asdf
-rm asdf-v0.16.1-linux-amd64.tar.gz
-export PATH=/home/duplic8r/.local/bin:$PATH
-export PATH=/home/duplic8r/.asdf/shims:$PATH
-asdf plugin add bat
-asdf install bat latest
-asdf set bat latest
-asdf plugin add choose
-asdf install choose latest
-asdf set choose latest
+## Install `asdf`
+```zsh
+foreach app in bat eza fd fzf jq neovim ripgrep yq; do asdf plugin add $app; done
+foreach app in bat eza fd fzf jq neovim ripgrep yq; do asdf install $app latest; done
+foreach app in bat eza fd fzf jq neovim ripgrep yq; do asdf set --home $app latest; done
+path+=/home/duplic8r/.asdf/shims
 ```
