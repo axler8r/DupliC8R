@@ -1,3 +1,0 @@
-#! /usr/bin/env zsh
-
-docker exec --interactive --tty --env="SHELL=/usr/bin/zsh" --user duplic8r duplic8r-test zsh

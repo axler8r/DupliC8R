@@ -7,11 +7,12 @@ RUN apt update                                       \
     && apt upgrade --yes --no-install-recommends     \
     && apt install --yes --no-install-recommends     \
         ca-certificates curl openssl rsync sudo wget \
+        ansible-core ansible-lint                    \
     && apt autoremove --yes                          \
     && apt autoclean                                 \
     && rm --recursive --force /var/lib/apt/lists/*
-RUN /usr/sbin/usermod --login duplic8r --move-home --home /home/duplic8r ubuntu
-RUN /usr/sbin/groupmod --new-name duplic8r ubuntu
-RUN echo 'duplic8r ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/duplic8r
+RUN /usr/sbin/usermod --login dotfile --move-home --home /home/dotfile ubuntu
+RUN /usr/sbin/groupmod --new-name dotfile ubuntu
+RUN echo 'dotfile ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/dotfile
 
-USER duplic8r
+USER dotfile
