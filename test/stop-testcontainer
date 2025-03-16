@@ -1,3 +1,0 @@
-#! /usr/bin/env zsh
-
-docker stop axler8r/duplic8r-test

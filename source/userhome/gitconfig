@@ -46,3 +46,9 @@
     develop = development
 [gitflow "prefix"]
     versiontag = v
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/axl/.asdf/installs/github-cli/2.68.1/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/axl/.asdf/installs/github-cli/2.68.1/bin/gh auth git-credential

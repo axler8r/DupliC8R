@@ -1,16 +1,18 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV IN_CONTAINER=true
 
-RUN apt update \
-    && apt upgrade --yes --no-install-recommends \
-    && apt install --yes --no-install-recommends \
+RUN apt update                                       \
+    && apt upgrade --yes --no-install-recommends     \
+    && apt install --yes --no-install-recommends     \
         ca-certificates curl openssl rsync sudo wget \
-    && apt autoremove --yes \
-    && apt autoclean \
+        ansible-core ansible-lint                    \
+    && apt autoremove --yes                          \
+    && apt autoclean                                 \
     && rm --recursive --force /var/lib/apt/lists/*
-RUN echo 'duplic8r ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/duplic8r
-RUN useradd -u 1000 -m duplic8r
+RUN /usr/sbin/usermod --login dotfile --move-home --home /home/dotfile ubuntu
+RUN /usr/sbin/groupmod --new-name dotfile ubuntu
+RUN echo 'dotfile ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/dotfile
 
-USER duplic8r
+USER dotfile

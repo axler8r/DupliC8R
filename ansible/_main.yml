@@ -1,0 +1,10 @@
+- import_playbook: upgrade.yml      # sudo
+- import_playbook: cli.yml          # sudo
+# - import_playbook: gui.yml        # sudo
+- import_playbook: dotfile.yml
+- import_playbook: tpm.yml
+- import_playbook: asdf.yml
+- import_playbook: vim_plug.yml
+- import_playbook: ctrlR.yml
+# - import_playbook: parallel.yml
+- import_playbook: zsh.yml

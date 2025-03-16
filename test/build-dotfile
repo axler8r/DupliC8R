@@ -1,0 +1,5 @@
+#! /usr/bin/env zsh
+
+local _THIS_DIR=${0:a:h}
+
+docker build --tag axler8r/dotfile-test:latest - < "${_THIS_DIR}"/Dockerfile

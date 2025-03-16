@@ -67,7 +67,7 @@ if [[ -x "${HOME}/.anaconda3/bin/conda" ]] {
 
 if [[ -x $(which bat 2> /dev/null) ]] {
     __ax_bat_format_help() {
-        "$@" --help | bat --plain --language=help
+        "${@}" --help | bat --plain --language=help
     }
     alias get-help=' __ax_bat_format_help '
     alias help=' get-help '
