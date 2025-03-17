@@ -2,12 +2,6 @@
     // window
     "window.menuBarVisibility": "toggle",
     // workbench
-    "workbench.colorTheme": "Solarized Dark",
-    "workbench.colorCustomizations": {
-        "editor.findMatchBackground": "#d33682",
-        "editor.findMatchForeground":"#002b36",
-        "editor.findMatchBorder":  "#fdf6e3",
-    },
     "workbench.tree.renderIndentGuides": "none",
     "workbench.iconTheme": "material-icon-theme",
     "workbench.editorAssociations": {
@@ -52,7 +46,7 @@
     // markdown
     "markdown.extension.toc.updateOnSave": false,
     // terminal
-    "terminal.integrated.fontFamily": "'Cascadia Code PL', 'Victor Mono', 'Cartograph CF', 'Consolas'",
+    "terminal.integrated.fontFamily": "'Cascadia Code NF', 'Cascadia Code PL', 'Victor Mono', 'Cartograph CF', 'Consolas'",
     "terminal.integrated.fontWeight": "500",
     "terminal.integrated.fontSize": 16,
     "terminal.integrated.lineHeight": 1,
