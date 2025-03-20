@@ -1,0 +1,17 @@
+#! /usr/bin/env zsh
+
+local _PARENT_DIR="${0:a:h:h}"
+local _FLAGS=(
+    "--name=dotfile-test"
+    "--hostname=dotfile-test"
+    "--interactive"
+    "--tty"
+    "--rm"
+    "--user=dotfile"
+    "--env=IN_CONTAINER=true"
+)
+local _MOUNTS=(
+    "--mount=type=bind,source=${_PARENT_DIR}/ansible,target=/home/dotfile/ansible,readonly"
+)
+
+docker run "${_FLAGS[@]}" "${_MOUNTS[@]}" axler8r/dotfile-test:latest
