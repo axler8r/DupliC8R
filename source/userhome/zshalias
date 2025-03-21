@@ -16,55 +16,6 @@ alias get-windowskey=' sudo strings /sys/firmware/acpi/tables/MSDM | command tai
 alias set-centernewwindow=' gsettings set org.gnome.mutter center-new-windows true '
 alias update-system=' sudo apt update && sudo apt upgrade --yes && sudo apt autoremove --yes && sudo apt autoclean --yes && sudo snap refresh '
 
-if [[ "$(type -w asdf)" == "asdf: function" ]] {
-    __ax_asdf_compare_plugin_version() {
-        local __AX_YELLOW=$(tput setaf 3)
-        local __AX_NORMAL=$(tput sgr0)
-        local __AX_COLUMNS="%-15s %-15s %s\n"
-        local __AX_PLUGIN=""
-
-        printf "${__AX_COLUMNS}" "Plugin" "Current" "Latest"
-        foreach __AX_PLUGIN in $(asdf plugin list)
-        do
-            [[ "${__AX_PLUGIN}" == "java" ]] && continue
-            local __AX_CURRENT=$(asdf current "${__AX_PLUGIN}" | tr -s " " | cut -d" " -f2)
-            local __AX_LATEST=$(asdf latest "${__AX_PLUGIN}")
-            [[ "${__AX_CURRENT}" != "${__AX_LATEST}" ]] && __AX_LATEST="${__AX_YELLOW}${__AX_LATEST}${__AX_NORMAL}"
-            printf "${__AX_COLUMNS}" "${__AX_PLUGIN}" "${__AX_CURRENT}" "${__AX_LATEST}"
-        done
-        printf "\n"
-    }
-    alias compare-asdfpluginversion=' __ax_asdf_compare_plugin_version '
-
-    __ax_asdf_find_plugin() {
-        local __AX_TERM=${1}
-        [[ -z ${__AX_TERM} ]] && __AX_TERM=""
-        asdf plugin list all | grep "${__AX_TERM}"
-        printf "\n"
-    }
-    alias find-asdfplugin=' __ax_asdf_find_plugin '
-}
-
-if [[ -x "${HOME}/.anaconda3/bin/conda" ]] {
-    __ax_conda_mount() {
-        export CONDA_AUTO_ACTIVATE_BASE=false
-        __conda_setup="$('${HOME}/.anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-        if [[ $? -eq 0 ]] {
-            eval "$__conda_setup"
-        } else {
-            if [[ -f "${HOME}/.anaconda3/etc/profile.d/conda.sh" ]] {
-                source "${HOME}/.anaconda3/etc/profile.d/conda.sh"
-            } else {
-                export PATH="/home/axl/.anaconda3/bin:$PATH"
-            }
-        }
-        unset __conda_setup
-    }
-    alias mount-conda=' __ax_conda_mount '
-} else {
-    alias mount-conda=' printf "conda not found\n" '
-}
-
 if [[ -x $(which bat 2> /dev/null) ]] {
     __ax_bat_format_help() {
         "${@}" --help | bat --plain --language=help
@@ -88,35 +39,6 @@ if [[ -x $(which bat 2> /dev/null) ]] {
 }
 
 if [[ -x $(which docker 2> /dev/null) ]] {
-    __ax_docker_update_image() {
-        local __AX_ALL=$(docker image list --format="{{.Repository}}:{{.Tag}}")
-        local __AX_RELEVANT=$(echo "${__AX_ALL}" | sed --expression='/^vsc/d' | sed --expression='/^axler8r/d' | sed --expression='/\<none\>/d')
-        echo "${__AX_RELEVANT}" | xargs -L1 docker pull
-        printf "\n"
-    }
-    alias update-dockerimage=' __ax_docker_update_image '
-
-    __ax_docker_get_image() {
-        local __AX_HEADER="REPOSITORY:TAG:CREATED:ID"
-        local __AX_IMAGE=$(docker image list --format="{{.Repository}}:{{.Tag}}:{{.CreatedSince}}:{{.ID}}" --filter="dangling=false" | sort)
-        echo "${__AX_HEADER}\n${__AX_IMAGE}" | column -t -s":"
-        printf "\n"
-    }
-    alias get-dockerimage=' __ax_docker_get_image '
-
-    __ax_docker_get_dangling_image() {
-        local __AX_HEADER="REPOSITORY|TAG|CREATED|SIZE|ID"
-        local __AX_IMAGE=$(docker image list --format="{{.Repository}}|{{.Tag}}|{{.CreatedSince}}|{{.Size}}|{{.ID}}" --filter="dangling=true" | sort)
-        echo "${__AX_HEADER}\n${__AX_IMAGE}" | column --table --separator="|"
-        printf "\n"
-    }
-    alias get-dockerdanglingimage=' __ax_docker_get_dangling_image '
-
-    __ax_docker_log() {
-        docker logs "${1}" 2>&1
-    }
-    alias read-dockerlog=' __ax_docker_log '
-
     alias get-dockerdanglingvolume=' docker volume list --quiet --filter="dangling=true" '
     alias get-dockerdanglingimageid=' docker image list --filter="dangling=true" --format="{{.ID}}"'
     alias remove-dockerdanglingimage=' docker image list --filter="dangling=true" --format="{{.ID}}" | xargs -L1 docker rmi '
@@ -310,27 +232,6 @@ if [[ -x $(which eza 2> /dev/null) ]] {
 }
 
 if [[ -x $(which git 2> /dev/null) ]] {
-    __ax_git_resolve_path_to_repository() {
-        local __AX_PWD=$(pwd)
-        local __AX_PWD_NAME=$(basename "${__AX_PWD}")
-        if [[ "${__AX_PWD_NAME}" == "GitHub" ]] {
-            foreach __AX_DIRECTORY in *(/)
-            do
-                pushd $__AX_DIRECTORY
-                git remote --verbose | grep fetch
-                pwd
-                popd
-            done \
-            | sed --expression="s/origin//" \
-            | sed --expression="s/ (fetch)//" \
-            | paste --delimiters=" " - - \
-            | column --table
-        } else {
-            printf "No repositories found in ${__AX_PWD}\n"
-        }
-    }
-    alias resolve-gitpathrepository=' __ax_git_resolve_path_to_repository '
-
     alias confirm-gituntrackedcache=' git update-index --test-untracked-cache '
     alias set-gituntrackedcache=' git update-index --split-index --untracked-cache '
     [[ -x $(which parallel 2> /dev/null) ]] && \
@@ -357,18 +258,6 @@ if [[ -x $(which lynx 2> /dev/null) ]] {
     [[ -f ~/.config/lynx/solarized.lss ]] && \
         alias lynx=' lynx -lss ~/.config/lynx/solarized.lss ' || \
         alias lynx='lynx '
-}
-
-if [[ -x $(which powerline-daemon 2> /dev/null) ]] {
-    __ax_powerline_hide_k8s() {
-        POWERLINE_K8S_SHOW=0 POWERLINE_K8S_SHOW_NS=0 powerline-daemon --replace
-    }
-    alias hide-powerlinek8s=' __ax_powerline_hide_k8s '
-
-    __ax_powerline_show_k8s() {
-        POWERLINE_K8S_SHOW=1 POWERLINE_K8S_SHOW_NS=1 powerline-daemon --replace
-    }
-    alias show-powerlinek8s=' __ax_powerline_show_k8s '
 }
 
 if [[ -x $(which tmux 2> /dev/null) ]] {
@@ -415,4 +304,3 @@ alias -g V="| nvim - "
 function ls() {
 	[[ -f ~/.hidden ]] && declare GLOBIGNORE=${GLOBIGNORE}:.*:$(tr '\n' ':' < ~/.hidden) ls "$@"
 }
-

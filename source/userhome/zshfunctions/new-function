@@ -2,13 +2,13 @@
 
 
 local _synopsis="Synopsis:
-    ${0} [args] [opts]
+    ${0:t} [args] [opts]
 
 See also:
-    ${0} --help
+    ${0:t} --help
 "
 local _help="Usage:
-    ${0} [opts] [args]
+    ${0:t} [opts] [args]
 
 Description:
     Generate a new zsh script following the specified template.
@@ -20,7 +20,7 @@ Options:
 
 
 Examples:
-    ${0} [example_opt] [example_arg]
+    ${0:t} [example_opt] [example_arg]
 "
 
 # Generate the template for a new script
@@ -31,16 +31,16 @@ function generate_template() {
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:
-    ${0} [args] [opts]
+    ${0:t} [args] [opts]
 
 See also:
-    ${0} --help
+    ${0:t} --help
 "
 local _help="Description:
     [Add a brief description of what this script does.]
 
 Usage:
-    ${0} [args] [opts]
+    ${0:t} [args] [opts]
 
 Options:
     --help      Show this help message.
@@ -58,14 +58,6 @@ _synopsis() {
 
 _help() {
     echo "${_help}" | tail --lines=+2
-}
-
-_opt1() {
-    echo "Executing opt1"
-}
-
-_opt2() {
-    echo "Executing opt2"
 }
 
 
@@ -121,7 +113,7 @@ while [[ $# -gt 0 ]]; do
                 echo "Error: Invalid script name. Must follow PowerShell verb-noun naming convention." >&2
                 exit 1
             fi
-            generate_template                            \
+            generate_template                      \
             | sed "s/<verb-noun>/${script_name}/g" \
             | sed "s/<verb_noun>/$(echo "$script_name" | tr '-' '_')/g"
             exit 0
