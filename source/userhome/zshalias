@@ -232,27 +232,6 @@ if [[ -x $(which eza 2> /dev/null) ]] {
 }
 
 if [[ -x $(which git 2> /dev/null) ]] {
-    __ax_git_resolve_path_to_repository() {
-        local __AX_PWD=$(pwd)
-        local __AX_PWD_NAME=$(basename "${__AX_PWD}")
-        if [[ "${__AX_PWD_NAME}" == "GitHub" ]] {
-            foreach __AX_DIRECTORY in *(/)
-            do
-                pushd $__AX_DIRECTORY
-                git remote --verbose | grep fetch
-                pwd
-                popd
-            done \
-            | sed --expression="s/origin//" \
-            | sed --expression="s/ (fetch)//" \
-            | paste --delimiters=" " - - \
-            | column --table
-        } else {
-            printf "No repositories found in ${__AX_PWD}\n"
-        }
-    }
-    alias resolve-gitpathrepository=' __ax_git_resolve_path_to_repository '
-
     alias confirm-gituntrackedcache=' git update-index --test-untracked-cache '
     alias set-gituntrackedcache=' git update-index --split-index --untracked-cache '
     [[ -x $(which parallel 2> /dev/null) ]] && \
