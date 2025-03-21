@@ -87,4 +87,3 @@ zshaddhistory() {
 [[ -f $HOME/.zshfunction ]] && source $HOME/.zshfunction
 [[ -f $HOME/.zshalias ]] && source $HOME/.zshalias
 [[ -f $HOME/.zshprompt ]] && source $HOME/.zshprompt
-
