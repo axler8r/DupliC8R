@@ -13,6 +13,5 @@ local _filename=$(basename $1 .md)
 docker run                                                        \
     --rm                                                          \
     --mount type=bind,source="${_path}",target=/data              \
-    --mount type=bind,source="${_pwd}",target=/data/output        \
-    pandoc/latex --from=gfm --to=pdf "${_filename}".md --output=/data/output/"${_filename}".pdf
+    pandoc/latex --from=gfm --to=pdf "${_filename}".md --output="${_filename}".pdf
 
