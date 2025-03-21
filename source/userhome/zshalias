@@ -16,35 +16,6 @@ alias get-windowskey=' sudo strings /sys/firmware/acpi/tables/MSDM | command tai
 alias set-centernewwindow=' gsettings set org.gnome.mutter center-new-windows true '
 alias update-system=' sudo apt update && sudo apt upgrade --yes && sudo apt autoremove --yes && sudo apt autoclean --yes && sudo snap refresh '
 
-if [[ "$(type -w asdf)" == "asdf: function" ]] {
-    __ax_asdf_compare_plugin_version() {
-        local __AX_YELLOW=$(tput setaf 3)
-        local __AX_NORMAL=$(tput sgr0)
-        local __AX_COLUMNS="%-15s %-15s %s\n"
-        local __AX_PLUGIN=""
-
-        printf "${__AX_COLUMNS}" "Plugin" "Current" "Latest"
-        foreach __AX_PLUGIN in $(asdf plugin list)
-        do
-            [[ "${__AX_PLUGIN}" == "java" ]] && continue
-            local __AX_CURRENT=$(asdf current "${__AX_PLUGIN}" | tr -s " " | cut -d" " -f2)
-            local __AX_LATEST=$(asdf latest "${__AX_PLUGIN}")
-            [[ "${__AX_CURRENT}" != "${__AX_LATEST}" ]] && __AX_LATEST="${__AX_YELLOW}${__AX_LATEST}${__AX_NORMAL}"
-            printf "${__AX_COLUMNS}" "${__AX_PLUGIN}" "${__AX_CURRENT}" "${__AX_LATEST}"
-        done
-        printf "\n"
-    }
-    alias compare-asdfpluginversion=' __ax_asdf_compare_plugin_version '
-
-    __ax_asdf_find_plugin() {
-        local __AX_TERM=${1}
-        [[ -z ${__AX_TERM} ]] && __AX_TERM=""
-        asdf plugin list all | grep "${__AX_TERM}"
-        printf "\n"
-    }
-    alias find-asdfplugin=' __ax_asdf_find_plugin '
-}
-
 if [[ -x "${HOME}/.anaconda3/bin/conda" ]] {
     __ax_conda_mount() {
         export CONDA_AUTO_ACTIVATE_BASE=false
