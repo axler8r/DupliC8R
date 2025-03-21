@@ -260,18 +260,6 @@ if [[ -x $(which lynx 2> /dev/null) ]] {
         alias lynx='lynx '
 }
 
-if [[ -x $(which powerline-daemon 2> /dev/null) ]] {
-    __ax_powerline_hide_k8s() {
-        POWERLINE_K8S_SHOW=0 POWERLINE_K8S_SHOW_NS=0 powerline-daemon --replace
-    }
-    alias hide-powerlinek8s=' __ax_powerline_hide_k8s '
-
-    __ax_powerline_show_k8s() {
-        POWERLINE_K8S_SHOW=1 POWERLINE_K8S_SHOW_NS=1 powerline-daemon --replace
-    }
-    alias show-powerlinek8s=' __ax_powerline_show_k8s '
-}
-
 if [[ -x $(which tmux 2> /dev/null) ]] {
     alias split-tmuxwindow=' tmux split-window '
     alias tmsw=' split-tmuxwindow '
@@ -316,4 +304,3 @@ alias -g V="| nvim - "
 function ls() {
 	[[ -f ~/.hidden ]] && declare GLOBIGNORE=${GLOBIGNORE}:.*:$(tr '\n' ':' < ~/.hidden) ls "$@"
 }
-
