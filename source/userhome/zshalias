@@ -59,35 +59,6 @@ if [[ -x $(which bat 2> /dev/null) ]] {
 }
 
 if [[ -x $(which docker 2> /dev/null) ]] {
-    __ax_docker_update_image() {
-        local __AX_ALL=$(docker image list --format="{{.Repository}}:{{.Tag}}")
-        local __AX_RELEVANT=$(echo "${__AX_ALL}" | sed --expression='/^vsc/d' | sed --expression='/^axler8r/d' | sed --expression='/\<none\>/d')
-        echo "${__AX_RELEVANT}" | xargs -L1 docker pull
-        printf "\n"
-    }
-    alias update-dockerimage=' __ax_docker_update_image '
-
-    __ax_docker_get_image() {
-        local __AX_HEADER="REPOSITORY:TAG:CREATED:ID"
-        local __AX_IMAGE=$(docker image list --format="{{.Repository}}:{{.Tag}}:{{.CreatedSince}}:{{.ID}}" --filter="dangling=false" | sort)
-        echo "${__AX_HEADER}\n${__AX_IMAGE}" | column -t -s":"
-        printf "\n"
-    }
-    alias get-dockerimage=' __ax_docker_get_image '
-
-    __ax_docker_get_dangling_image() {
-        local __AX_HEADER="REPOSITORY|TAG|CREATED|SIZE|ID"
-        local __AX_IMAGE=$(docker image list --format="{{.Repository}}|{{.Tag}}|{{.CreatedSince}}|{{.Size}}|{{.ID}}" --filter="dangling=true" | sort)
-        echo "${__AX_HEADER}\n${__AX_IMAGE}" | column --table --separator="|"
-        printf "\n"
-    }
-    alias get-dockerdanglingimage=' __ax_docker_get_dangling_image '
-
-    __ax_docker_log() {
-        docker logs "${1}" 2>&1
-    }
-    alias read-dockerlog=' __ax_docker_log '
-
     alias get-dockerdanglingvolume=' docker volume list --quiet --filter="dangling=true" '
     alias get-dockerdanglingimageid=' docker image list --filter="dangling=true" --format="{{.ID}}"'
     alias remove-dockerdanglingimage=' docker image list --filter="dangling=true" --format="{{.ID}}" | xargs -L1 docker rmi '
