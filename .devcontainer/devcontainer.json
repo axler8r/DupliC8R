@@ -11,5 +11,14 @@
 				"ansible-lint"
 			]
 		}
+	},
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"redhat.ansible",
+				"ms-python.python",
+				"redhat.vscode-yaml"
+			]
+		}
 	}
 }
