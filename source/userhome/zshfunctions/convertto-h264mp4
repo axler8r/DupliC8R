@@ -1,0 +1,20 @@
+#! /usr/bin/env zsh
+
+local _input="$1"
+local -output=$(date +%Y%m%d%H%M%S).mp4
+
+if [[ -z "$_input" ]]; then
+  echo "Usage: $0 <input_file>"
+  exit 1
+fi
+if [[ ! -f "$_input" ]]; then
+  echo "File not found: $_input"
+  exit 1
+fi
+if [[ ! -x "$(command -v ffmpeg)" ]]; then
+  echo "ffmpeg is not installed. Please install it first."
+  exit 1
+fi
+
+ffmpeg -i "${_input}" -c:v libx264 -c:a copy "${_output}" -y
+

@@ -1,0 +1,3 @@
+#! /usr/bin/env zsh
+
+[[ -f /var/run/reboot-required ]] && echo "Reboot required!" || echo "No reboot required."

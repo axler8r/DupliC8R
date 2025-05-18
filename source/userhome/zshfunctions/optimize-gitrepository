@@ -1,0 +1,17 @@
+#! /usr/bin/env zsh
+
+local _dirs=("$@")
+local _git_dirs=()
+foreach _dir in "${_dirs[@]}" {
+    [[ -d "$_dir" && -d "$_dir/.git" ]] && _git_dirs+=("${_dir}")
+}
+
+local _command=$(cat << EOL
+git -C {} fetch --prune \
+&& git -C {} fsck --full \
+&& git -C {} reflog expire --expire=90.days.ago \
+&& git -C {} gc --prune=90.days.ago
+EOL
+)
+
+parallel --jobs 4 --progress --joblog git-repo.log "${_command}" ::: "${_git_dirs[@]}"
