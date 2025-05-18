@@ -32,12 +32,13 @@ setopt hist_find_no_dups       # No duplicates in history search
 setopt hist_ignore_all_dups    # Ignore all duplicate history entries
 setopt hist_ignore_space       # Ignore commands starting with space
 setopt multi_os                # Enable multi-OS compatibility
-setopt no_beep                 # Disable beep sound
 setopt pushd_ignore_dups       # No duplicate directories in stack
 setopt pushd_silent            # No output for pushd/popd
 setopt pushd_to_home           # 'pushd' with no args to home
 setopt share_history           # Share history across sessions
 setopt short_loops             # Shorten loops with 'do' keyword
+
+unsetopt beep                  # Disable beep sound
 
 
 # ENVIRONMENT VARIABLES AND EXPORTS

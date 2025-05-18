@@ -9,12 +9,12 @@ if [[ -x $(which python3) ]] {
 typeset -aU path # prevent duplicates
 path=(${HOME}/.local/bin $path)
 path=(${HOME}/.asdf/shims $path)
-path+=("${HOME}/".zshfunctions)
+path+=("${HOME}/".zsh/functions)
 
 
 # FPATH
 typeset -aU fpath # prevent duplicates
-fpath=(${ASDF_DIR}/completions $fpath)
+fpath=(${HOME}/.zsh/completions $fpath)
 
 
 # MANPATH
