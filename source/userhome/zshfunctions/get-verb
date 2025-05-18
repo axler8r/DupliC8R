@@ -2,12 +2,13 @@
 
 
 # Variables --------------------------------------------------------------------
+local _self="${0:A}"
 local _synopsis="
 Synopsis:
-    ${0} [opts] [args]
+    ${_self} [opts] [args]
 
 See also:
-    ${0} --help
+    ${_self} --help
 "
 local _help="
 Usage:
@@ -22,8 +23,8 @@ Options:
     --describe      Show descrip description of the sepcified verb.
 
 Examples:
-    ${0} --group
-    ${0} --describe Add
+    ${_self} --group
+    ${_self} --describe Add
 "
 # Verb        Group          Description
 local _verbs="
@@ -171,25 +172,20 @@ _describe() {
 
 
 # Options ----------------------------------------------------------------------
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --help)         _help_flag=true         ;;
-        --group)        _group_flag=true        ;;
-        --describe)     _describe_flag=true     ;;
-        *)              _command=$1             ;;
-    esac
-    shift
-done
+zparseopts -D -E {h,-help}=_help_flag {d,-describe}=_describe_flag
+local _command="${1}"
 
 
 # Main -------------------------------------------------------------------------
+[[ -n $_synopsis_flag ]]    && _synopsis        && exit 0
 [[ -n $_help_flag ]]        && _help            && exit 0
-[[ -n $_group_flag ]]       && _group           && exit 0
 [[ -n $_describe_flag ]]    && _describe        && exit 0
+_group && exit 0
 
 
 # Unset ------------------------------------------------------------------------
 unfunction _describe
 unfunction _group
 unfunction _help
+unfunction _synopsis
 
