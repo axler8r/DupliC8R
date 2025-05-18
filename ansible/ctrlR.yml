@@ -7,4 +7,5 @@
       git:
         repo: "https://github.com/zdharma-continuum/history-search-multi-word.git"
         dest: "{{ ansible_env.HOME }}/.zsh-hsmw"
+        version: "c4dcddc1cd17e7e0909471703f3526170db0f475"
         update: true
