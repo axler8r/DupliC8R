@@ -12,7 +12,7 @@
     "explorer.sortOrder": "type",
     // editor
     "editor.cursorStyle": "block",
-    "editor.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Victor Mono', 'Cartograph CF', 'Consolas'",
+    "editor.fontFamily": "'Cascadia Code NF', 'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Victor Mono', 'Cartograph CF', 'Consolas'",
     "editor.fontWeight": "500",
     "editor.fontLigatures": "'calt', 'ss01', 'ss19'",
     "editor.fontSize": 16,
@@ -46,7 +46,7 @@
     // markdown
     "markdown.extension.toc.updateOnSave": false,
     // terminal
-    "terminal.integrated.fontFamily": "'CaskaydiaCove Nerd Font', 'Cascadia Code PL', 'Victor Mono', 'Cartograph CF', 'Consolas'",
+    "terminal.integrated.fontFamily": "'Cascadia Code NF', 'CaskaydiaCove Nerd Font', 'Cascadia Code PL', 'Victor Mono', 'Cartograph CF', 'Consolas'",
     "terminal.integrated.fontWeight": "500",
     "terminal.integrated.fontSize": 16,
     "terminal.integrated.lineHeight": 1,
