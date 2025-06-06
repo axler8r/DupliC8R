@@ -2,9 +2,9 @@
 
 local _dirs=("$@")
 local _git_dirs=()
-foreach _dir in "${_dirs[@]}" {
+foreach _dir in "${_dirs[@]}"; do
     [[ -d "$_dir" && -d "$_dir/.git" ]] && _git_dirs+=("${_dir}")
-}
+done
 
 local _command=$(cat << EOL
 git -C {} fetch --prune \
@@ -14,4 +14,4 @@ git -C {} fetch --prune \
 EOL
 )
 
-parallel --jobs 4 --progress --joblog git-repo.log "${_command}" ::: "${_git_dirs[@]}"
+parallel --jobs 4 --progress --joblog optimize-gitrepository-$(date +%Y%m%d%H%M%S).log "${_command}" ::: "${_git_dirs[@]}"
