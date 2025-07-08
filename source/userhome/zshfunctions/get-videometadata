@@ -1,0 +1,6 @@
+#! /usr/bin/env zsh
+
+videofile=${1}
+
+ffprobe -v quiet -show_format -print_format json ${videofile} | yq --prettyPrint
+
