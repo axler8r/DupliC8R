@@ -88,7 +88,7 @@ if [[ -x $(which docker 2> /dev/null) ]] {
             --publish 8081:8081 \
             --mount type=bind,source="$(pwd)",target="/data" \
             $__AX_DOCKER_ARGS_BACKGROUND $__AX_DOCKER_ARGS_ONE_TIME $__AX_DOCKER_ARGS_UP_TO_DATE $__AX_DOCKER_ARGS_RUN_AS_ME \
-            ghcr.io/livebook-dev/livebook:latest-cuda12.1 > "/tmp/${__AX_NAME}.log"
+            ghcr.io/livebook-dev/livebook:0.16.4-cuda12 > "/tmp/${__AX_NAME}.log"
     }
     alias start-dockerelixirlivebookcuda=' __ax_docker_start_elixirlivebookcuda '
 
@@ -235,7 +235,7 @@ if [[ -x $(which git 2> /dev/null) ]] {
     alias confirm-gituntrackedcache=' git update-index --test-untracked-cache '
     alias set-gituntrackedcache=' git update-index --split-index --untracked-cache '
     [[ -x $(which parallel 2> /dev/null) ]] && \
-        alias update-gitrepository=' parallel cd {} ";" pwd ";" git pull ";" git submodule update ";"  echo ::: *(/) '
+        alias sync-gitrepository=' parallel cd {} ";" pwd ";" git pull ";" git submodule update ";"  echo ::: *(/) '
 }
 
 if [[ -x $(which kitty 2> /dev/null) ]] {
