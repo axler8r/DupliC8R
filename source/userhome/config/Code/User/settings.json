@@ -144,4 +144,6 @@
     "workbench.preferredDarkColorTheme": "Solarized Dark",
     "workbench.preferredLightColorTheme": "Solarized Light",
     "terminal.integrated.inheritEnv": false,
+    "python.analysis.typeCheckingMode": "standard",
+    "editor.minimap.size": "fit"
 }
