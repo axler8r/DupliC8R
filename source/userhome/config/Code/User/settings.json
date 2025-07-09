@@ -1,6 +1,7 @@
 {
     // window
     "window.menuBarVisibility": "toggle",
+    "window.zoomLevel": 0.4,
     // workbench
     "workbench.tree.renderIndentGuides": "none",
     "workbench.iconTheme": "material-icon-theme",
@@ -15,8 +16,8 @@
     "editor.fontFamily": "'Cascadia Code NF', 'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Victor Mono', 'Cartograph CF', 'Consolas'",
     "editor.fontWeight": "500",
     "editor.fontLigatures": "'calt', 'ss01', 'ss19'",
-    "editor.fontSize": 16,
-    "editor.lineHeight": 17,
+    "editor.fontSize": 15,
+    "editor.lineHeight": 16,
     "editor.lineNumbers": "relative",
     "editor.renderFinalNewline": "on",
     "editor.tabCompletion": "on",
@@ -48,7 +49,7 @@
     // terminal
     "terminal.integrated.fontFamily": "'Cascadia Code NF', 'CaskaydiaCove Nerd Font', 'Cascadia Code PL', 'Victor Mono', 'Cartograph CF', 'Consolas'",
     "terminal.integrated.fontWeight": "500",
-    "terminal.integrated.fontSize": 16,
+    "terminal.integrated.fontSize": 15,
     "terminal.integrated.lineHeight": 1,
     "terminal.integrated.suggest.enabled": true,
     "terminal.integrated.fontLigatures.enabled": true,
@@ -143,4 +144,6 @@
     "workbench.preferredDarkColorTheme": "Solarized Dark",
     "workbench.preferredLightColorTheme": "Solarized Light",
     "terminal.integrated.inheritEnv": false,
+    "python.analysis.typeCheckingMode": "standard",
+    "editor.minimap.size": "fit"
 }
