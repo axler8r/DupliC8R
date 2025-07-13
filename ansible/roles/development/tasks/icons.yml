@@ -5,6 +5,7 @@
   changed_when: false
 
 - name: Install Numix Square icons (Ubuntu 22.04)
+  when: ubuntu_version.stdout == "22.04"
   block:
     - name: Add Numix PPA
       ansible.builtin.apt_repository:
@@ -18,9 +19,9 @@
         state: present
         update_cache: true
       become: true
-  when: ubuntu_version.stdout == "22.04"
 
 - name: Install Papirus icons (Ubuntu 24.04)
+  when: ubuntu_version.stdout == "24.04"
   block:
     - name: Add Papirus PPA
       ansible.builtin.apt_repository:
@@ -34,4 +35,3 @@
         state: present
         update_cache: true
       become: true
-  when: ubuntu_version.stdout == "24.04"

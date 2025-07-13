@@ -1,6 +1,12 @@
 ---
+- name: Download kitty terminal installer script
+  ansible.builtin.get_url:
+    url: https://sw.kovidgoyal.net/kitty/installer.sh
+    dest: /tmp/install-kitty.sh
+    mode: '0755'
+
 - name: Install kitty terminal
-  ansible.builtin.shell: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+  ansible.builtin.shell: /tmp/install-kitty.sh
   args:
     creates: "{{ ansible_env.HOME }}/.local/kitty.app/bin/kitty"
 

@@ -6,13 +6,14 @@
         path: "{{ ansible_env.HOME }}/.tmux/plugins"
         state: directory
         mode: '0755'
-        
+      failed_when: false
+
     - name: Clone tmux plugin manager
       ansible.builtin.git:
         repo: https://github.com/tmux-plugins/tpm
         dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
         force: true
-  failed_when: false
+      failed_when: false
 
 - name: Install vim-plug for neovim
   block:
@@ -21,6 +22,7 @@
         path: "{{ ansible_env.HOME }}/.local/share/nvim/site/autoload"
         state: directory
         mode: '0755'
+      failed_when: false
 
     - name: Download vim-plug
       ansible.builtin.get_url:
@@ -28,7 +30,7 @@
         dest: "{{ ansible_env.HOME }}/.local/share/nvim/site/autoload/plug.vim"
         mode: '0644'
         force: false
-  failed_when: false
+      failed_when: false
 
 # - name: Install neovim plugins
 #   ansible.builtin.command: nvim +'PlugInstall --sync' +'qa!'
@@ -66,8 +68,8 @@
     force: false
 
 - name: Change default shell to zsh
+  when: ansible_env.HOME is defined
   ansible.builtin.user:
     name: "{{ ansible_user_id }}"
     shell: /usr/bin/zsh
   become: true
-  when: ansible_env.HOME is defined

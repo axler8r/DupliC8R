@@ -7,7 +7,7 @@ duplic8r:
 # System package installation flags
 apt_flags:
   - "--no-install-recommends"
-  - "--no-show-upgraded" 
+  - "--no-show-upgraded"
   - "--quiet"
   - "--yes"
 
