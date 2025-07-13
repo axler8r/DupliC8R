@@ -1,0 +1,24 @@
+# Global variables for all hosts
+duplic8r:
+  repo: "https://github.com/axler8r/duplic8r.git"
+  home: "{{ ansible_env.HOME }}/.duplic8r"
+  branch: "stable"  # Override with --extra-vars "duplic8r.branch=development"
+
+# System package installation flags
+apt_flags:
+  - "--no-install-recommends"
+  - "--no-show-upgraded"
+  - "--quiet"
+  - "--yes"
+
+# Environment detection
+in_container: "{{ ansible_env.IN_CONTAINER | default(false) }}"
+
+# Feature toggles (can be overridden via --extra-vars)
+features:
+  gui: false
+  snaps: "{{ not in_container }}"
+  fonts: "{{ not in_container }}"
+  icons: "{{ not in_container }}"
+  kitty: "{{ not in_container }}"
+  docker: "{{ not in_container }}"

@@ -1,0 +1,38 @@
+---
+# Manual snap package installation playbook
+# Run this separately: ansible-playbook snap-packages.yml
+- name: "Install Snap Packages (Manual)"
+  hosts: localhost
+  become: false
+  gather_facts: true
+
+  pre_tasks:
+    - name: Check if snapd is available
+      ansible.builtin.command: which snap
+      register: snap_check
+      failed_when: false
+      changed_when: false
+
+    - name: Fail if snapd is not available
+      ansible.builtin.fail:
+        msg: "Snapd is not installed. Install with: sudo apt install snapd"
+      when: snap_check.rc != 0
+
+  tasks:
+    - name: Install snap packages
+      community.general.snap:
+        name: "{{ item.name }}"
+        classic: "{{ item.classic | default(false) }}"
+        state: present
+      loop: "{{ snap_packages }}"
+      become: true
+      when: snap_packages is defined and snap_packages | length > 0
+
+    - name: Display installed snap packages
+      ansible.builtin.command: snap list
+      register: snap_list
+      changed_when: false
+
+    - name: Show snap packages
+      ansible.builtin.debug:
+        var: snap_list.stdout_lines

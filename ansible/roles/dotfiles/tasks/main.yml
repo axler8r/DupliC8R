@@ -1,0 +1,73 @@
+---
+- name: Check if we're in a test container
+  ansible.builtin.stat:
+    path: "{{ duplic8r.home }}/ansible"
+  register: container_check
+
+- name: Clone duplic8r repository
+  when: not container_check.stat.exists
+  ansible.builtin.git:
+    repo: "{{ duplic8r.repo }}"
+    dest: "{{ duplic8r.home }}"
+    version: "{{ duplic8r.branch }}"
+    force: true
+
+- name: Display container test mode message
+  when: container_check.stat.exists
+  ansible.builtin.debug:
+    msg: "Running in test container - skipping repository clone"
+
+- name: Check if setup script exists
+  ansible.builtin.stat:
+    path: "{{ duplic8r.home }}/setup-dotfiles-structure.sh"
+  register: setup_script_check
+
+- name: Ensure setup script is executable
+  when: setup_script_check.stat.exists
+  ansible.builtin.file:
+    path: "{{ duplic8r.home }}/setup-dotfiles-structure.sh"
+    mode: '0755'
+
+- name: Generate dotfiles structure with symlinks
+  when: setup_script_check.stat.exists
+  ansible.builtin.command:
+    cmd: "{{ duplic8r.home }}/setup-dotfiles-structure.sh"
+    chdir: "{{ duplic8r.home }}"
+  register: setup_result
+  changed_when: "'Setup complete!' in setup_result.stdout"
+
+- name: Check if dotfiles directory exists
+  ansible.builtin.stat:
+    path: "{{ duplic8r.home }}/dotfiles"
+  register: dotfiles_check
+
+- name: Install dotfiles using Stow
+  when: dotfiles_check.stat.exists
+  ansible.builtin.command:
+    cmd: "stow --target={{ ansible_env.HOME }} {{ item }}"
+    chdir: "{{ duplic8r.home }}/dotfiles"
+  loop:
+    - bat
+    - dev
+    - git
+    - monitor
+    - nvim
+    - system
+    - terminal
+    - tmux
+    - zsh
+  register: stow_result
+  changed_when: stow_result.rc == 0
+  failed_when: stow_result.rc != 0
+
+- name: Ensure .config directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.config"
+    state: directory
+    mode: '0755'
+
+- name: Create .local/bin directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: '0755'

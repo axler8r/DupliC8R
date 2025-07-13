@@ -38,6 +38,7 @@
             "dircolors": "settings",
             "xcompose": "settings",
         },
+        "ansible.python.interpreterPath": "/home/axl/Projects/AxlER8R/DuplIC8R/.venv/bin/python",
     },
     "extensions": {
         "recommendations": [

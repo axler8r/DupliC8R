@@ -32,7 +32,6 @@
     "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
     "editor.wordWrap": "off",
     "editor.inlineSuggest.enabled": true,
-    "editor.minimap.scale": 2,
     //"editor.wordWrapColumn": 110,
     "editor.guides.indentation": false,
     // files
@@ -145,5 +144,6 @@
     "workbench.preferredLightColorTheme": "Solarized Light",
     "terminal.integrated.inheritEnv": false,
     "python.analysis.typeCheckingMode": "standard",
-    "editor.minimap.size": "fit"
+    "ansible.lightspeed.enabled": false,
+    "ansible.lightspeed.suggestions.enabled": false
 }

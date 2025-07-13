@@ -1,5 +1,0 @@
-#! /bin/bash
-
-echo "Pacific/Auckland" > /etc/timezone
-apt update && apt upgrade --yes
-sudo DEBIAN_FRONTEND=noninteractive apt-get install --yes ansible

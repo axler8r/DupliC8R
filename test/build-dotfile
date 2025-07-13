@@ -1,5 +1,8 @@
 #! /usr/bin/env zsh
 
 local _THIS_DIR=${0:a:h}
+local _PROJECT_ROOT=${_THIS_DIR:h}
 
-docker build --tag axler8r/dotfile-test:latest - < "${_THIS_DIR}"/Dockerfile
+# Build from project root with test/Dockerfile and include all needed files
+cd "${_PROJECT_ROOT}"
+docker build --tag axler8r/dotfile-test:latest --file test/Dockerfile .

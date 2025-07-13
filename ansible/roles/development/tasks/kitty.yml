@@ -1,0 +1,57 @@
+---
+- name: Download kitty terminal installer script
+  ansible.builtin.get_url:
+    url: https://sw.kovidgoyal.net/kitty/installer.sh
+    dest: /tmp/install-kitty.sh
+    mode: '0755'
+
+- name: Install kitty terminal
+  ansible.builtin.shell: /tmp/install-kitty.sh
+  args:
+    creates: "{{ ansible_env.HOME }}/.local/kitty.app/bin/kitty"
+
+- name: Create symlinks for kitty
+  ansible.builtin.file:
+    src: "{{ ansible_env.HOME }}/.local/kitty.app/bin/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/bin/{{ item }}"
+    state: link
+    force: true
+  loop:
+    - kitty
+    - kitten
+
+- name: Ensure applications directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/share/applications"
+    state: directory
+    mode: '0755'
+
+- name: Copy kitty desktop files
+  ansible.builtin.copy:
+    src: "{{ ansible_env.HOME }}/.local/kitty.app/share/applications/{{ item }}"
+    dest: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
+    mode: '0644'
+  loop:
+    - kitty.desktop
+    - kitty-open.desktop
+  failed_when: false
+
+- name: Update kitty desktop files for icon path
+  ansible.builtin.replace:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
+    regexp: 'Icon=kitty'
+    replace: 'Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg'
+  loop:
+    - kitty.desktop
+    - kitty-open.desktop
+  failed_when: false
+
+- name: Update kitty desktop files for executable path
+  ansible.builtin.replace:
+    path: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
+    regexp: 'Exec=kitty'
+    replace: "Exec={{ ansible_env.HOME }}/.local/kitty.app/bin/kitty"
+  loop:
+    - kitty.desktop
+    - kitty-open.desktop
+  failed_when: false

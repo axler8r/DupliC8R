@@ -3,21 +3,26 @@
 
 
 ## About
-`duplic8r` is a collection of my personal dotfiles and a little more. It is
-primarily focussed on setting up my command line environment and tools I access
-from the command line. It is designed to be installed on a fresh, Ubuntu-based
-distribution. It has an intall script with a few options. It can be installed as
-a regular user in a single user environment, but can be installed as root as
-well.
+`duplic8r` is a comprehensive collection of my personal dotfiles and development
+environment setup. It is primarily focused on setting up a modern command line
+environment and development tools. The project is designed to be installed on
+fresh Ubuntu-based distributions using Ansible for automated configuration
+management.
 
-For more information about the install script see the
-[detailed installation instructions](documentation/INSTALL.md).
+> [!IMPORTANT]
+> **Migration Notice**: The legacy shell-based install script (`bin/install`)
+> has been deprecated in favor of Ansible playbooks for better maintainability and
+> configurability. Please use the Ansible installation method below.
+
+For more information about installation options see the
+[detailed installation instructions](docs/INSTALL.md).
 
 
 ## Table of Contents
 + [Install](#install)
-  + [Requirements](#requirements)
-  + [Targets](#targets)
+  + [Prerequisites](#prerequisites)
+  + [Ansible Installation (Recommended)](#ansible-installation-recommended)
+  + [Legacy Install Script (Deprecated)](#legacy-install-script-deprecated)
 + [After Install](#after-install)
 + [Test](#test)
 + [Contribute](#contribute)
@@ -25,20 +30,18 @@ For more information about the install script see the
 
 
 ## Install
-Install is kept simple. The install script is a single command that can be piped
-to `bash`.
+The project has migrated from shell scripts to Ansible for better configuration
+management and maintainability.
 
-
-### Requirements
-Copy and paste the following code block into your terminal to install the
-dependencies.
+### Prerequisites
+Install basic system dependencies before running the Ansible playbooks:
 
 ```bash
 install_duplic8r_dependencies() {
     _COMMANDS=(
         'apt update'
         '&& apt upgrade --yes --no-install-recommends'
-        '&& apt install --yes --no-install-recommends ca-certificates curl openssl rsync wget' 
+        '&& apt install --yes --no-install-recommends ca-certificates curl openssl rsync wget git python3 python3-pip' 
         '&& apt autoremove --yes'
         '&& apt autoclean'
     )
@@ -51,46 +54,65 @@ install_duplic8r_dependencies() {
 } && install_duplic8r_dependencies && unset -f install_duplic8r_dependencies
 ```
 
+### Ansible Installation (Recommended)
+The modern way to install `duplic8r` using Ansible for automated configuration:
 
-### Targets
-To install the **stable** version of `duplic8r`, run the following command.
+```bash
+# Clone the repository
+git clone https://github.com/axler8r/duplic8r.git
+cd duplic8r
+
+# Run the Ansible installation
+cd ansible
+chmod +x install.sh
+./install.sh
+```
+
+For development installation:
+```bash
+git clone -b development https://github.com/axler8r/duplic8r.git
+cd duplic8r/ansible
+./install.sh
+```
+
+### Legacy Install Script (Deprecated)
+> [!WARNING]
+> The shell-based install script is **deprecated** and will be removed in a
+> future release. Please migrate to the Ansible installation method above.
+
+<details>
+<summary>Legacy installation commands (click to expand)</summary>
+
+To install the **stable** version using the legacy script:
 ```bash
 curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install | bash /dev/stdin  
 ```
 
-To install the **development** version of `duplic8r`, run the following command.
+To install the **development** version using the legacy script:
 ```bash
 curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/stable/bin/install | bash -s /dev/stdin --development
 ```
 
-To run the **development** version of `duplic8r`'s `install`er, and to install
-the **development** version of `duplic8r` run the following command.
+To run the **development** version of the installer:
 ```bash
 curl --silent https://raw.githubusercontent.com/axler8r/duplic8r/development/bin/install | bash -s /dev/stdin --development
 ```
-
-> [!NOTE]
-> This will run the installer from the `development` branch, and install the
-> `development` branch of `duplic8r`.
-
-> [!WARNING]
-> The `development` version of the installer may not be stable.
+</details>
 
 
 ## After Install
-After the install script has completed, you will need to log out and log back in
-to see the changes take effect. Alternatively you can just start `zsh` if you
-want to postpone logging out.
+After the Ansible playbooks have completed, you will need to log out and log
+back in to see the changes take effect. Alternatively you can start `zsh` to see
+most changes immediately.
 
-To complete the installation of 'vim-plug' NeoVim plugins, run the follwoing
-command.
+To complete the installation of NeoVim plugins, run the following command:
 ```bash
 nvim --headless +'PlugInstall --sync' +qall
 ```
 
 
 ## Test
-For more information on testing, see the [detailed test](documentation/TEST.md)
+For more information on testing, see the [detailed test](docs/TEST.md)
 documentation.
 
 

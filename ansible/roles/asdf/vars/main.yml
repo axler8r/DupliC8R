@@ -1,0 +1,18 @@
+# asdf plugins to install (from your install script)
+asdf_plugins:
+  - bat
+  - choose
+  - dive
+  - eza
+  - fd
+  - fzf
+  - github-cli
+  - jq
+  - julia
+  - neovim
+#  - nodejs
+#  - pipx
+  - ripgrep
+#  - shellcheck
+  - tokei
+  - yq
