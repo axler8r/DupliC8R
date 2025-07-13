@@ -1,0 +1,16 @@
+---
+- name: Install fonts
+  ansible.builtin.include_tasks: fonts.yml
+  when: features.fonts | default(false)
+
+- name: Install icons
+  ansible.builtin.include_tasks: icons.yml
+  when: features.icons | default(false)
+
+- name: Install kitty terminal
+  ansible.builtin.include_tasks: kitty.yml
+  when: features.kitty | default(false)
+
+- name: Install docker engine
+  ansible.builtin.include_tasks: docker.yml
+  when: features.docker | default(false)

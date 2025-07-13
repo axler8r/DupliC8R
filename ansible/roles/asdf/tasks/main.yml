@@ -1,0 +1,76 @@
+---
+- name: Get latest asdf version from GitHub API
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/asdf-vm/asdf/releases/latest
+    return_content: true
+  register: asdf_latest_release
+
+- name: Set asdf version from API response
+  ansible.builtin.set_fact:
+    asdf_version: "{{ asdf_latest_release.json.tag_name }}"
+
+- name: Ensure .local/bin directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.local/bin"
+    state: directory
+    mode: '0755'
+
+- name: Check if asdf binary is already installed
+  ansible.builtin.stat:
+    path: "{{ ansible_env.HOME }}/.local/bin/asdf"
+  register: asdf_binary_check
+
+- name: Download and install asdf binary
+  when: not asdf_binary_check.stat.exists
+  block:
+    - name: Create temporary directory for asdf installation
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: asdf
+      register: asdf_temp_dir
+
+    - name: Download asdf tarball
+      ansible.builtin.get_url:
+        url: "https://github.com/asdf-vm/asdf/releases/download/{{ asdf_version }}/asdf-{{ asdf_version }}-linux-amd64.tar.gz"
+        dest: "{{ asdf_temp_dir.path }}/asdf.tar.gz"
+        mode: '0644'
+
+    - name: Extract asdf binary from tarball
+      ansible.builtin.unarchive:
+        src: "{{ asdf_temp_dir.path }}/asdf.tar.gz"
+        dest: "{{ asdf_temp_dir.path }}"
+        remote_src: true
+
+    - name: Copy asdf binary to .local/bin
+      ansible.builtin.copy:
+        src: "{{ asdf_temp_dir.path }}/asdf"
+        dest: "{{ ansible_env.HOME }}/.local/bin/asdf"
+        mode: '0755'
+        remote_src: true
+
+    - name: Clean up temporary directory
+      ansible.builtin.file:
+        path: "{{ asdf_temp_dir.path }}"
+        state: absent
+
+- name: Add asdf plugins
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.local/bin/asdf plugin add {{ item }}"
+  loop: "{{ asdf_plugins }}"
+  register: plugin_add_result
+  failed_when: plugin_add_result.rc != 0 and 'already exists' not in plugin_add_result.stderr
+  changed_when: plugin_add_result.rc == 0
+
+- name: Install latest version of each plugin
+  ansible.builtin.command: "{{ ansible_env.HOME }}/.local/bin/asdf install {{ item }} latest"
+  loop: "{{ asdf_plugins }}"
+  register: plugin_install_result
+  failed_when: plugin_install_result.rc != 0 and 'already installed' not in plugin_install_result.stdout
+  changed_when: plugin_install_result.rc == 0
+  ignore_errors: true  # Some plugins might fail in certain environments
+
+# - name: Set global version for each plugin
+#   command: "{{ ansible_env.HOME }}/.local/bin/asdf -set home {{ item }} latest"
+#   loop: "{{ asdf_plugins }}"
+#   register: global_set_result
+#   changed_when: global_set_result.rc == 0
+#   ignore_errors: true

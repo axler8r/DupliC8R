@@ -1,0 +1,73 @@
+---
+- name: Configure tmux plugin manager
+  block:
+    - name: Create tmux plugins directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.tmux/plugins"
+        state: directory
+        mode: '0755'
+        
+    - name: Clone tmux plugin manager
+      ansible.builtin.git:
+        repo: https://github.com/tmux-plugins/tpm
+        dest: "{{ ansible_env.HOME }}/.tmux/plugins/tpm"
+        force: true
+  failed_when: false
+
+- name: Install vim-plug for neovim
+  block:
+    - name: Create neovim autoload directory
+      ansible.builtin.file:
+        path: "{{ ansible_env.HOME }}/.local/share/nvim/site/autoload"
+        state: directory
+        mode: '0755'
+
+    - name: Download vim-plug
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        dest: "{{ ansible_env.HOME }}/.local/share/nvim/site/autoload/plug.vim"
+        mode: '0644'
+        force: false
+  failed_when: false
+
+# - name: Install neovim plugins
+#   ansible.builtin.command: nvim +'PlugInstall --sync' +'qa!'
+#   register: nvim_result
+#   changed_when: "'Already up to date' not in nvim_result.stdout"
+#   failed_when: false
+
+- name: Clone history-search-multi-word for zsh
+  ansible.builtin.git:
+    repo: https://github.com/zdharma-continuum/history-search-multi-word.git
+    dest: "{{ ansible_env.HOME }}/.zsh-hsmw"
+    force: true
+
+- name: Install GNU parallel
+  ansible.builtin.shell: |
+    if ! command -v parallel >/dev/null 2>&1; then
+      cd /tmp
+      wget -q https://ftpmirror.gnu.org/parallel/parallel-latest.tar.bz2
+      tar -xjf parallel-latest.tar.bz2
+      cd parallel-*
+      ./configure --prefix="{{ ansible_env.HOME }}/.local"
+      make && make install
+      rm -rf /tmp/parallel*
+    fi
+  args:
+    executable: /bin/bash
+  register: parallel_result
+  changed_when: parallel_result.rc == 0
+
+- name: Install z script for directory jumping
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/rupa/z/master/z.sh
+    dest: "{{ ansible_env.HOME }}/.local/bin/z.sh"
+    mode: '0755'
+    force: false
+
+- name: Change default shell to zsh
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    shell: /usr/bin/zsh
+  become: true
+  when: ansible_env.HOME is defined

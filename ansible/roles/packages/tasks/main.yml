@@ -1,0 +1,35 @@
+---
+- name: Update package cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Upgrade system packages
+  ansible.builtin.apt:
+    upgrade: true
+    autoremove: true
+    autoclean: true
+
+- name: Install core CLI packages
+  ansible.builtin.apt:
+    name: "{{ cli_packages }}"
+    state: present
+    install_recommends: false
+
+- name: Install GUI packages
+  ansible.builtin.apt:
+    name: "{{ gui_packages }}"
+    state: present
+    install_recommends: false
+  when: features.gui | default(false)
+
+- name: Display snap packages for manual installation
+  ansible.builtin.debug:
+    msg:
+      - "Snap packages are available for manual installation:"
+      - "{% for package in snap_packages %}sudo snap install {{ package.name }}{% if package.classic | default(false) %} --classic{% endif %}{% endfor %}"
+      - "Run these commands manually if you want snap packages installed."
+  when:
+    - features.snaps | default(false)
+    - snap_packages is defined
+    - snap_packages | length > 0

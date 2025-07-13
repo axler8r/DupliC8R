@@ -1,0 +1,46 @@
+---
+- name: "Duplic8r: Complete Environment Setup"
+  hosts: localhost
+  become: false
+  gather_facts: true
+
+  pre_tasks:
+    - name: Display environment information
+      ansible.builtin.debug:
+        msg:
+          - "Setting up duplic8r environment"
+          - "User: {{ ansible_user_id }}"
+          - "Home: {{ ansible_env.HOME }}"
+          - "In container: {{ in_container }}"
+          - "Branch: {{ duplic8r.branch }}"
+
+  roles:
+    # Core system packages
+    - role: packages
+      become: true
+      tags: [packages, system]
+
+    # Clone repository and setup dotfiles with Stow
+    - role: dotfiles
+      tags: [dotfiles, config]
+
+    # Development tools and version managers
+    - role: asdf
+      tags: [asdf, development]
+
+    # Shell configuration and enhancements
+    - role: shell
+      tags: [shell, zsh]
+
+    # Optional roles based on environment
+    - role: development
+      when: not in_container
+      tags: [development, optional]
+
+  post_tasks:
+    - name: Installation complete
+      ansible.builtin.debug:
+        msg:
+          - "🎉 Duplic8r installation complete!"
+          - "Log out and back in to use zsh as default shell"
+          - "Or run: exec zsh"

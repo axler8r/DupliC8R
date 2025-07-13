@@ -1,0 +1,19 @@
+---
+- name: Check if docker is already installed
+  ansible.builtin.command: which docker
+  register: docker_check
+  failed_when: false
+  changed_when: false
+
+- name: Install docker engine
+  ansible.builtin.shell: curl -fsSL https://get.docker.com | bash
+  when: docker_check.rc != 0
+  become: true
+
+- name: Add user to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: true
+  become: true
+  when: docker_check.rc != 0

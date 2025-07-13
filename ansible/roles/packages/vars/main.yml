@@ -1,0 +1,68 @@
+# Core CLI packages (from your install script)
+packages_cli_packages:
+  - apt-file
+  - attr
+  - btop
+  - build-essential
+  - make-doc
+  - bzip2
+  - bzip2-doc
+  - clamav
+  - curl
+  - fdupes
+  - git
+  - git-flow
+  - git-lfs
+  - tig
+  - htop
+  - less
+  - lsof
+  - mpv
+  - ncdu
+  - net-tools
+  - nvtop
+  - openssh-server
+  - p7zip-full
+  - plocate
+  - powerline
+  - powerline-gitstatus
+  - pv
+  - python3
+  - python3-pip
+  - python3-powerline
+  - python3-powerline-gitstatus
+  - rsync
+  - socat
+  - software-properties-common
+  - stow  # Essential for dotfiles management
+  - strace
+  - tmux
+  - tmux-plugin-manager
+  - tree
+  - universal-ctags
+  - unzip
+  - webp
+  - wget
+  - zip
+  - zsh
+  - zsh-autosuggestions
+  - zsh-doc
+  - zsh-syntax-highlighting
+
+# GUI packages (optional)
+packages_gui_packages:
+  - cheese
+  - gnome-clocks
+  - meld
+
+# Snap packages
+packages_snap_packages:
+  - name: brave
+  - name: chromium
+  - name: code
+    classic: true
+  - name: gnome-boxes
+  - name: obsidian
+    classic: true
+  - name: slack
+  - name: slides
