@@ -1,7 +1,6 @@
 !doc/
 !bin/
 plugs/
-**/.ansible*
+.ansible*
 *.code-workspace
 copilot-instructions.md
-
