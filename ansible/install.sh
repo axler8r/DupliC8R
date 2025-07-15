@@ -11,22 +11,22 @@ readonly BLUE='\033[0;34m'
 readonly YELLOW='\033[1;33m'
 readonly NC='\033[0m'
 
-info() {
+_info() {
     echo -e "${BLUE}[INFO]${NC} $*"
 }
 
-success() {
+_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $*"
 }
 
-warning() {
+_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $*"
 }
 
 # Detect environment
 if [[ "${IN_CONTAINER:-}" == "true" ]]; then
     EXTRA_VARS="features.snaps=false features.fonts=false features.icons=false features.kitty=false features.docker=false"
-    info "Container environment detected - disabling GUI features"
+    _info "Container environment detected - disabling GUI features"
 else
     EXTRA_VARS=""
 fi
@@ -67,7 +67,7 @@ EOF
             exit 0
             ;;
         *)
-            warning "Unknown option: $1"
+            _warning "Unknown option: $1"
             shift
             ;;
     esac
@@ -84,7 +84,7 @@ fi
 
 # Ensure ansible is installed
 if ! command -v ansible-playbook &> /dev/null; then
-    info "Installing Ansible..."
+    _info "Installing Ansible..."
     if command -v apt-get &> /dev/null; then
         sudo apt-get update
         sudo apt-get install -y ansible
@@ -95,8 +95,8 @@ if ! command -v ansible-playbook &> /dev/null; then
 fi
 
 # Run the playbook
-info "Starting duplic8r installation with Ansible..."
-info "Extra vars: ${EXTRA_VARS}"
+_info "Starting duplic8r installation with Ansible..."
+_info "Extra vars: ${EXTRA_VARS}"
 
 cd "$(dirname "$0")"
 
@@ -106,6 +106,6 @@ else
     ansible-playbook site.yml
 fi
 
-success "Installation complete!"
-info "Log out and back in to use zsh as your default shell"
-info "Or run: exec zsh"
+_success "Installation complete!"
+_info "Log out and back in to use zsh as your default shell"
+_info "Or run: exec zsh"
