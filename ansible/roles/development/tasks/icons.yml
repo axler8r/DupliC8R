@@ -4,22 +4,6 @@
   register: ubuntu_version
   changed_when: false
 
-- name: Install Numix Square icons (Ubuntu 22.04)
-  when: ubuntu_version.stdout == "22.04"
-  block:
-    - name: Add Numix PPA
-      ansible.builtin.apt_repository:
-        repo: ppa:numix/ppa
-        state: present
-      become: true
-
-    - name: Install Numix Square icon theme
-      ansible.builtin.apt:
-        name: numix-icon-theme-square
-        state: present
-        update_cache: true
-      become: true
-
 - name: Install Papirus icons (Ubuntu 24.04)
   when: ubuntu_version.stdout == "24.04"
   block:

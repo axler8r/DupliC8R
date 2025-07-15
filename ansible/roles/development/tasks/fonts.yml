@@ -7,7 +7,7 @@
 
 - name: Download and install Cascadia Code fonts
   ansible.builtin.unarchive:
-    src: https://github.com/microsoft/cascadia-code/releases/download/v2111.01/CascadiaCode-2111.01.zip
+    src: https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip
     dest: /tmp
     remote_src: true
     creates: /tmp/ttf
@@ -19,24 +19,6 @@
     mode: '0644'
   with_fileglob:
     - "/tmp/ttf/CascadiaCode*.ttf"
-  failed_when: false
-
-- name: Download and install Caskaydia Cove Nerd Font
-  ansible.builtin.unarchive:
-    src: https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.0/CascadiaCode.zip
-    dest: /tmp
-    remote_src: true
-
-- name: Install Caskaydia Cove Nerd Font
-  ansible.builtin.copy:
-    src: "/tmp/{{ item }}"
-    dest: "{{ ansible_env.HOME }}/.fonts/"
-    mode: '0644'
-  with_items:
-    - CaskaydiaCoveNerdFont-Regular.ttf
-    - CaskaydiaCoveNerdFont-Italic.ttf
-    - CaskaydiaCoveNerdFont-Bold.ttf
-    - CaskaydiaCoveNerdFont-BoldItalic.ttf
   failed_when: false
 
 - name: Update font cache

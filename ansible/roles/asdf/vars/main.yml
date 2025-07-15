@@ -3,16 +3,20 @@ asdf_plugins:
   - bat
   - choose
   - dive
+#  - dotnet
+#  - elixir
+#  - erlang
   - eza
   - fd
   - fzf
   - github-cli
+#  - java
   - jq
-  - julia
+#  - julia
   - neovim
 #  - nodejs
-#  - pipx
   - ripgrep
 #  - shellcheck
   - tokei
+  - uv
   - yq

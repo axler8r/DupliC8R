@@ -40,7 +40,7 @@
   ansible.builtin.replace:
     path: "{{ ansible_env.HOME }}/.local/share/applications/{{ item }}"
     regexp: 'Icon=kitty'
-    replace: 'Icon=/usr/share/icons/Numix-Square/48/apps/kitty.svg'
+    replace: 'Icon=/usr/share/icons/Papirus/48x48/apps/kitty.svg'
   loop:
     - kitty.desktop
     - kitty-open.desktop

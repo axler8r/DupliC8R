@@ -28,13 +28,12 @@ packages_cli_packages:
   - powerline-gitstatus
   - pv
   - python3
-  - python3-pip
   - python3-powerline
   - python3-powerline-gitstatus
   - rsync
   - socat
   - software-properties-common
-  - stow  # Essential for dotfiles management
+  - stow
   - strace
   - tmux
   - tmux-plugin-manager
@@ -57,12 +56,16 @@ packages_gui_packages:
 
 # Snap packages
 packages_snap_packages:
+  - name: blender
   - name: brave
+  - name: canonical-livepatch
   - name: chromium
   - name: code
     classic: true
   - name: gnome-boxes
+  - name: inkscape
   - name: obsidian
     classic: true
+  - name: shortwave
   - name: slack
   - name: slides
