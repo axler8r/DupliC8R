@@ -2,3 +2,6 @@
 !bin/
 plugs/
 **/.ansible*
+*.code-workspace
+copilot-instructions.md
+
