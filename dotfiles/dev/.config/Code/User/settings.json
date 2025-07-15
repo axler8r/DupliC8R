@@ -1,74 +1,115 @@
 {
+    // VSCODE
     // window
     "window.menuBarVisibility": "toggle",
-    "window.zoomLevel": 0.4,
+    "window.zoomLevel": 0.45,
     // workbench
-    "workbench.tree.renderIndentGuides": "none",
-    "workbench.iconTheme": "material-icon-theme",
+    "workbench.colorTheme": "Solarized Light",
     "workbench.editorAssociations": {
         "*.ipynb": "jupyter-notebook"
     },
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.preferredDarkColorTheme": "Solarized Dark",
+    "workbench.preferredLightColorTheme": "Solarized Light",
+    "workbench.tree.renderIndentGuides": "none",
     // explorer
     "explorer.compactFolders": false,
     "explorer.sortOrder": "type",
     // editor
+    "editor.cursorBlinking": "phase",
+    "editor.cursorSmoothCaretAnimation": "on",
     "editor.cursorStyle": "block",
-    "editor.fontFamily": "'Cascadia Code NF', 'CaskaydiaCove Nerd Font', 'Cascadia Code', 'Victor Mono', 'Cartograph CF', 'Consolas'",
-    "editor.fontWeight": "500",
+    "editor.fontFamily": "'Cascadia Code NF', 'Cascadia Code', 'Consolas'",
     "editor.fontLigatures": "'calt', 'ss01', 'ss19'",
-    "editor.fontSize": 15,
+    "editor.fontSize": 14.75,
+    "editor.fontWeight": "500",
+    "editor.guides.indentation": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.insertSpaces": true,
     "editor.lineHeight": 16,
     "editor.lineNumbers": "relative",
+    "editor.minimap.renderCharacters": false,
+    "editor.minimap.showSlider": "always",
     "editor.renderFinalNewline": "on",
-    "editor.tabCompletion": "on",
     "editor.rulers": [
         70,
         80,
         110
     ],
     "editor.suggestSelection": "first",
+    "editor.tabCompletion": "on",
     "editor.tabSize": 4,
-    "editor.insertSpaces": true,
     "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
     "editor.wordWrap": "off",
-    "editor.inlineSuggest.enabled": true,
-    //"editor.wordWrapColumn": 110,
-    "editor.guides.indentation": false,
     // files
-    "files.insertFinalNewline": true,
-    "files.watcherExclude": {
-        "**/.bloop": true,
-        "**/.metals": true,
-        "**/.ammonite": true
+    "files.associations": {
+        "*.livemd": "markdown"
     },
-    "editor.cursorSmoothCaretAnimation": "on",
-    "editor.cursorBlinking": "phase",
+    "files.insertFinalNewline": true,
     // markdown
     "markdown.extension.toc.updateOnSave": false,
     // terminal
-    "terminal.integrated.fontFamily": "'Cascadia Code NF', 'CaskaydiaCove Nerd Font', 'Cascadia Code PL', 'Victor Mono', 'Cartograph CF', 'Consolas'",
-    "terminal.integrated.fontWeight": "500",
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "terminal.integrated.fontFamily": "'Cascadia Code NF', 'Cascadia Code PL', 'Consolas'",
+    "terminal.integrated.fontLigatures.enabled": true,
     "terminal.integrated.fontSize": 15,
+    "terminal.integrated.fontWeight": "500",
+    "terminal.integrated.inheritEnv": false,
     "terminal.integrated.lineHeight": 1,
     "terminal.integrated.suggest.enabled": true,
-    "terminal.integrated.fontLigatures.enabled": true,
-    // plugins
-    "vim.foldfix": true,
+    // theme
+    "material-icon-theme.files.associations": {
+        "CODEOWNERS": "Contributing",
+        "CONDUCT.md": "Conduct",
+        "CONTRIBUTE.md": "Contributing",
+        "UNLICENSE.md": "Certificate",
+        "WAIVER.md": "Contributing",
+    },
+    "material-icon-theme.folders.color": "#42a5f5",
+    "material-icon-theme.folders.associations": {
+        "Engineering": "Config",
+        "Pipeline": "Azure-Pipelines",
+        "Solution": "VSCode",
+    },
+    // copilot
+    "github.copilot.enable": {
+        "*": true,
+        "plaintext": true,
+        "markdown": true,
+        "scminput": false,
+        "yaml": true
+    },
+    // vim
     "vim.cursorStylePerMode.insert": "line",
+    "vim.cursorStylePerMode.normal": "block",
+    "vim.cursorStylePerMode.replace": "underline",
+    "vim.cursorStylePerMode.visual": "block-outline",
+    "vim.cursorStylePerMode.visualblock": "block-outline",
     "vim.cursorStylePerMode.visualline": "block-outline",
-    "vim.showMarksInGutter": true,
     "vim.enableNeovim": true,
+    "vim.foldfix": true,
+    "vim.showMarksInGutter": true,
+    // python
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.inlayHints.functionReturnTypes": true,
+    "python.analysis.inlayHints.variableTypes": true,
+    "python.analysis.typeCheckingMode": "standard",
     "python.languageServer": "Pylance",
-    "todohighlight.include": [
-        "**/*.txt",
-        "**/*.md",
-        "**/*.asciidoc",
-        "**/*.zsh",
-        "**/*.cs",
-        "**/*.rs",
-        "**/*.ex",
-        "**/*.exs"
-    ],
+    // ansible
+    "ansible.lightspeed.enabled": false,
+    "ansible.lightspeed.suggestions.enabled": false,
+    // file type preferences
+    "[ansible]": {
+        "editor.detectIndentation": true,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.quickSuggestions": {
+            "comments": true,
+            "other": true,
+            "strings": true
+        },
+        "editor.autoIndent": "advanced"
+    },
     "[json]": {
         "editor.detectIndentation": false,
         "editor.quickSuggestions": {
@@ -76,18 +117,6 @@
         },
         "editor.suggest.insertMode": "replace",
         "editor.tabSize": 2
-    },
-    "[yaml,yml]": {
-        "editor.detectIndentation": false,
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2,
-        "editor.autoIndent": "advanced"
-    },
-    "[sls]": {
-        "editor.detectIndentation": false,
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2,
-        "editor.autoIndent": "advanced"
     },
     "[markdown]": {
         "editor.unicodeHighlight.ambiguousCharacters": false,
@@ -100,50 +129,10 @@
             "other": "off"
         }
     },
-    // theme
-    "material-icon-theme.folders.color": "#42a5f5",
-    "material-icon-theme.folders.associations": {
-        "Pipeline": "Azure-Pipelines",
-        "Engineering": "Config",
-        "Solution": "VSCode",
+    "[yaml,yml]": {
+        "editor.detectIndentation": false,
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced"
     },
-    "material-icon-theme.files.associations": {
-        "CONDUCT.md": "Conduct",
-        "CONDUCT.asciidoc": "Conduct",
-        "CONTRIBUTE.md": "Contributing",
-        "CONTRIBUTE.asciidoc": "Contributing",
-        "UNLICENSE.md": "Lock",
-        "UNLICENSE.asciidoc": "Lock",
-        "WAIVER.md": "Key",
-        "WAIVER.asciidoc": "Key",
-        "*.sls": "YAML",
-    },
-    "github.copilot.enable": {
-        "*": true,
-        "plaintext": true,
-        "markdown": true,
-        "scminput": false,
-        "yaml": true
-    },
-    "python.analysis.completeFunctionParens": true,
-    "python.analysis.inlayHints.variableTypes": true,
-    "python.analysis.inlayHints.functionReturnTypes": true,
-    "editor.minimap.renderCharacters": false,
-    "editor.minimap.showSlider": "always",
-    "vim.cursorStylePerMode.replace": "underline",
-    "vim.cursorStylePerMode.visual": "block-outline",
-    "vim.cursorStylePerMode.normal": "block",
-    "vim.cursorStylePerMode.visualblock": "block-outline",
-    "files.associations": {
-        "*.livemd": "markdown"
-    },
-    "terminal.integrated.defaultProfile.linux": "zsh",
-    "markdown-preview-enhanced.liveUpdate": false,
-    "scm.experimental.showHistoryGraph": true,
-    "workbench.preferredDarkColorTheme": "Solarized Dark",
-    "workbench.preferredLightColorTheme": "Solarized Light",
-    "terminal.integrated.inheritEnv": false,
-    "python.analysis.typeCheckingMode": "standard",
-    "ansible.lightspeed.enabled": false,
-    "ansible.lightspeed.suggestions.enabled": false
 }
