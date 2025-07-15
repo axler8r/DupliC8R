@@ -25,7 +25,7 @@ warning() {
     echo -e "${YELLOW}[NOTE]${NC} $*"
 }
 
-echo "🚀 DuplIC8R Quick Test Runner"
+echo "DuplIC8R Quick Test Runner"
 echo "============================"
 echo
 
@@ -36,26 +36,26 @@ full_test() {
     
     info "Step 1: Building container image"
     if ! "${TEST_SCRIPT}" build; then
-        echo "❌ Build failed"
+        echo "!! Build failed"
         return 1
     fi
     echo
     
     info "Step 2: Starting test container"
     if ! "${TEST_SCRIPT}" run; then
-        echo "❌ Container start failed"
+        echo "!! Container start failed"
         return 1
     fi
     echo
     
     info "Step 3: Testing basic Ansible playbook"
     if ! "${TEST_SCRIPT}" test; then
-        echo "❌ Basic test failed"
+        echo "!! Basic test failed"
         return 1
     fi
     echo
     
-    success "✅ Full test sequence completed!"
+    success "🮱 Full test sequence completed!"
     echo
     warning "Container is still running. Use './full-test.sh stop' to clean up."
 }
@@ -66,11 +66,11 @@ dev_test() {
     echo
     
     if ! "${TEST_SCRIPT}" test --development --verbose; then
-        echo "❌ Development test failed"
+        echo "!! Development test failed"
         return 1
     fi
     
-    success "✅ Development test completed!"
+    success "🮱 Development test completed!"
 }
 
 # Interactive test
@@ -81,7 +81,7 @@ interactive_test() {
     if ! docker ps -q -f name="duplic8r-test" | grep -q .; then
         info "Starting container first..."
         if ! "${TEST_SCRIPT}" run; then
-            echo "❌ Failed to start container"
+            echo "!! Failed to start container"
             return 1
         fi
     fi
