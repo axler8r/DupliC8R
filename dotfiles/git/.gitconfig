@@ -2,51 +2,46 @@
     name = AxlER8R
     email = axl@axler8r.io
     signingkey = 1B5C4A4F10A770E3
-[init]
-    defaultBranch = stable
+[branch]
+    autosetuprebase = never
+[commit]
+    template = ~/.gitcommit
 [core]
     editor = nvim
     eol = lf
     excludesfile = ~/.gitignore
     pager = bat
-[mergetool "nvim"]
-    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
-[merge]
-    tool = nvim
-    guitool = meld
-[alias]
-    ffs = flow feature start
-    fff = flow feature finish
-    frs = flow release start
-    frf = flow release finish
-[branch]
-    autosetuprebase = never
-[push]
-    default = simple
-[gc]
-    autoDetach = false
-[pull]
-    rebase = false
+# [credential]
+# 	helper = /usr/local/share/gcm-core/git-credential-manager-core
+# 	credentialStore = secretservice
+# [credential "https://dev.azure.com"]
+#     useHttpPath = true
+[credential "https://github.com"]
+	helper = 
+	helper = !/home/axl/.asdf/installs/github-cli/2.75.0/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/home/axl/.asdf/installs/github-cli/2.75.0/bin/gh auth git-credential
 [filter "lfs"]
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
     required = true
-[commit]
-    template = ~/.gitcommit
-[credential]
-	helper = /usr/local/share/gcm-core/git-credential-manager-core
-	credentialStore = secretservice
-[credential "https://dev.azure.com"]
-    useHttpPath = true
-[smartgit "gui"]
-    signOff = false
+[gc]
+    autoDetach = false
 [gitflow "branch"]
 	master = stable
     develop = development
 [gitflow "prefix"]
     versiontag = v
-[credential "https://github.com"]
-	helper = 
-[credential "https://gist.github.com"]
-	helper = 
+[init]
+    defaultBranch = stable
+[merge]
+    tool = nvim
+    guitool = meld
+[mergetool "nvim"]
+    cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[pull]
+    rebase = false
+[push]
+    default = simple
