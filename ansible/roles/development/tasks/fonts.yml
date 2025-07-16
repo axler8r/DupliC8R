@@ -1,26 +1,54 @@
 ---
-- name: Create fonts directory
+- name: Ensure the .fonts directory exists
   ansible.builtin.file:
     path: "{{ ansible_env.HOME }}/.fonts"
     state: directory
     mode: '0755'
 
+- name: Get the latest Cascadia Code version from GitHub
+  anible.builtin.uri:
+    url: "https://api.github.com/repos/microsoft/cascadia-code/releases/latest"
+    return_content: true
+  register: cascadiacode_latest_release
+
+- name: Set Cascadia Code version from API response
+  ansible.builtin.set_fact:
+    cascadiacode_version: "{{ cascadiacode_latest_release.json.tag_name }}"
+
 - name: Download and install Cascadia Code fonts
-  ansible.builtin.unarchive:
-    src: https://github.com/microsoft/cascadia-code/releases/download/v2407.24/CascadiaCode-2407.24.zip
-    dest: /tmp
-    remote_src: true
-    creates: /tmp/ttf
+  block:
+    - name: Create temporary directory for Cascadia Code installation
+      ansible.builtin.tempfile:
+        state: directory
+        suffix: cascadia-code
+      register: cascadiacode_temp_dir
 
-- name: Install Cascadia Code fonts
-  ansible.builtin.copy:
-    src: "/tmp/ttf/{{ item }}"
-    dest: "{{ ansible_env.HOME }}/.fonts/"
-    mode: '0644'
-  with_fileglob:
-    - "/tmp/ttf/CascadiaCode*.ttf"
-  failed_when: false
+    - name: Download Cascadia Code zip file
+      ansible.builtin.get_url:
+        url: "https://github.com/microsoft/cascadia-code/releases/download/{{ cascadiacode_version }}/CascadiaCode-{{ cascadiacode_version }}.zip"
+        dest: "{{ cascadiacode_temp_dir.path }}/CascadiaCode.zip"
+        mode: '0644'
 
-- name: Update font cache
-  ansible.builtin.command: fc-cache -fv
-  changed_when: false
+    - name: Extract Cascadia Code fonts from zip file
+      ansible.builtin.unarchive:
+        src: "{{ cascadiacode_temp_dir.path }}/CascadiaCode.zip"
+        dest: "{{ cascadiacode_temp_dir.path }}"
+        remote_src: true
+
+    - name: Copy Cascadia Code fonts to .fonts directory
+      ansible.builtin.copy:
+        src: "{{ cascadiacode_temp_dir.path }}/ttf/{{ item }}"
+        dest: "{{ ansible_env.HOME }}/.fonts/"
+        mode: '0644'
+      with_fileglob:
+        - "{{ cascadiacode_temp_dir.path }}/ttf/CascadiaCode*.ttf"
+      failed_when: false
+
+    - name: Clean up temporary directory
+      ansible.builtin.file:
+        path: "{{ cascadiacode_temp_dir.path }}"
+        state: absent
+
+    - name: Update font cache
+      ansible.builtin.command: fc-cache -fv
+      changed_when: false

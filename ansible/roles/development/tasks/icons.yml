@@ -1,11 +1,5 @@
 ---
-- name: Detect Ubuntu version
-  ansible.builtin.command: lsb_release -rs
-  register: ubuntu_version
-  changed_when: false
-
-- name: Install Papirus icons (Ubuntu 24.04)
-  when: ubuntu_version.stdout == "24.04"
+- name: Install Papirus icons
   block:
     - name: Add Papirus PPA
       ansible.builtin.apt_repository:
