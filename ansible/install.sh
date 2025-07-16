@@ -9,18 +9,18 @@ set -euo pipefail
 readonly GREEN='\033[0;32m'
 readonly BLUE='\033[0;34m'
 readonly YELLOW='\033[1;33m'
-readonly NC='\033[0m'
+readonly RESET='\033[0m'
 
 _info() {
-    echo -e "${BLUE}[INFO]${NC} $*"
+    echo -e "${BLUE}[INFO]${RESET} $*"
 }
 
 _success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $*"
+    echo -e "${GREEN}[SUCCESS]${RESET} $*"
 }
 
 _warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $*"
+    echo -e "${YELLOW}[WARNING]${RESET} $*"
 }
 
 # Detect environment
