@@ -67,7 +67,7 @@ zshaddhistory() {
     setopt extendedglob        # Enable extended globbing
 
     # Ignore specific commands from history
-    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|git|exit|head|history|htop|ipython|jupyter|locate|man|nvtop|pwd|tail|tig|top|which|who)* ]] {
+    if [[ $1 == (#b)(alias|bat|btop|cat|cd|fd|find|git|exit|head|history|htop|ipython|jupyter|locate|man|nvtop|pass|pwd|tail|tig|top|which|who)* ]] {
         return 1               # Do not add to history
     }
 
@@ -82,6 +82,10 @@ zshaddhistory() {
 [[ -f /opt/conda/etc/profile.d/conda.sh ]] && source /opt/conda/etc/profile.d/conda.sh
 [[ -x $(which uv 2> /dev/null) ]] && eval "$(uv generate-shell-completion zsh)"
 [[ -x $(which uvx 2> /dev/null) ]] && eval "$(uvx --generate-shell-completion zsh)"
+if [[ -x $(which az 2> /dev/null) ]] {
+    autoload -U +X bashcompinit && bashcompinit
+    source /etc/bash_completion.d/azure-cli
+}
 
 
 # CONFIGURATIONS

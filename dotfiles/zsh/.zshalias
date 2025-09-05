@@ -61,6 +61,7 @@ if [[ -x $(which docker 2> /dev/null) ]] {
         '--detach'
     )
 
+    # Elixir Livebook in Docker
     __ax_docker_start_elixirlivebook() {
         [[ -f /tmp/livebook*(.) ]] && rm /tmp/livebook*
 
@@ -92,22 +93,7 @@ if [[ -x $(which docker 2> /dev/null) ]] {
     }
     alias start-dockerelixirlivebookcuda=' __ax_docker_start_elixirlivebookcuda '
 
-    __ax_docker_start_juliaplutonotebook() {
-        [[ -f /tmp/plutonotebook*(.) ]] && rm /tmp/plutonotebook*
-
-        local __AX_NAME="plutonotebook-$(date +%Y%m%d%H%M%S)"
-
-        docker run \
-            --name "${__AX_NAME}" \
-            --mount="type=volume,source=JuliaConfig,target=/root/.julia" \
-            --mount="type=bind,source=/home/axl/.config/julia/Solarized.jl,target=/root/.julia/Solarized.jl,readonly" \
-            --mount="type=volume,source=JuliaProjects,target=/root/projects" \
-            --publish target=1234,published=12345 \
-            $__AX_DOCKER_ARGS_ONE_TIME $__AX_DOCKER_ARGS_UP_TO_DATE $__AX_DOCKER_ARGS_INTERACTIVE \
-            julia > "/tmp/${__AX_NAME}.log"
-    }
-    alias start-dockerjuliaplutonotebook=" __ax_docker_start_juliaplutonotebook "
-
+    # Jupyter in Docker
     __ax_docker_start_jupyternotebook() {
         [[ -f /tmp/jupyternotebook*(.) ]] && rm /tmp/jupyternotebook*
 
@@ -116,11 +102,25 @@ if [[ -x $(which docker 2> /dev/null) ]] {
         docker run \
             --name "${__AX_NAME}" \
             --publish 8888:8888 \
-            --mount type=bind,source="$(pwd)",target="/data" \
+            --mount type=bind,source="$(pwd)",target="/home/jovyan/work" \
             $__AX_DOCKER_ARGS_BACKGROUND $__AX_DOCKER_ARGS_ONE_TIME $__AX_DOCKER_ARGS_UP_TO_DATE $__AX_DOCKER_ARGS_RUN_AS_ME \
-            jupyter/tensorflow-notebook:latest > "/tmp/${__AX_NAME}.log"
+            quay.io/jupyter/base-notebook > "/tmp/${__AX_NAME}.log"
     }
     alias start-dockerjupyternotebook=' __ax_docker_start_jupyternotebook '
+
+    __ax_docker_start_tesorflownotebook() {
+        [[ -f /tmp/tesorflownotebook*(.) ]] && rm /tmp/tesorflownotebook*
+
+        local __AX_NAME="tesorflownotebook-$(date +%Y%m%d%H%M%S)"
+
+        docker run \
+            --name "${__AX_NAME}" \
+            --publish 8888:8888 \
+            --mount type=bind,source="$(pwd)",target="/home/jovyan/work" \
+            $__AX_DOCKER_ARGS_BACKGROUND $__AX_DOCKER_ARGS_ONE_TIME $__AX_DOCKER_ARGS_UP_TO_DATE $__AX_DOCKER_ARGS_RUN_AS_ME \
+            quay.io/jupyter/tensorflow-notebook > "/tmp/${__AX_NAME}.log"
+    }
+    alias start-dockertesorflownotebook=' __ax_docker_start_tesorflownotebook '
 
     # ZSH in Docker
     __ax_docker_newzshubuntu() {
@@ -235,7 +235,7 @@ if [[ -x $(which git 2> /dev/null) ]] {
     alias confirm-gituntrackedcache=' git update-index --test-untracked-cache '
     alias set-gituntrackedcache=' git update-index --split-index --untracked-cache '
     [[ -x $(which parallel 2> /dev/null) ]] && \
-        alias sync-gitrepository=' parallel cd {} ";" pwd ";" git pull ";" git submodule update ";"  echo ::: *(/) '
+        alias update-gitrepository=' parallel cd {} ";" pwd ";" git pull ";" git submodule update ";"  echo ::: *(/) '
 }
 
 if [[ -x $(which kitty 2> /dev/null) ]] {
