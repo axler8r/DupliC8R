@@ -1,0 +1,8 @@
+#! /usr/bin/zsh
+
+local version_info=$(wget -qO- 'https://api.github.com/repos/asdf-vm/asdf/releases/latest' | jq '.|{"version": .tag_name, "at": .created_at}')
+echo "version:" $(echo "${version_info}" | jq '.version' | sed -e 's/"//g')
+echo "date:   " $(echo "${version_info}" | jq '.at'      | sed -e 's/"//g')
+
+# wget -qO- 'https://api.github.com/repos/kovidgoyal/kitty/releases/latest' | jq '.tag_name' | sed -e 's/"//g'
+

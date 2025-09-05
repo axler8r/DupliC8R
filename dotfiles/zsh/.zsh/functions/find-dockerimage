@@ -1,0 +1,23 @@
+#! /usr/bin/env zsh
+
+# There must be at least one argument
+# If not, print usage and exit
+if [ $# -lt 1 ]; then
+  echo "Usage: $0 <search-term>"
+  exit 1
+fi
+
+# Join all arguments into a single search term
+search_term="$*"
+echo "Searching for Docker images matching: '$search_term'"
+
+# Search for Docker images matching the search term
+# Format the output to show name and star count
+# Sort by name and star count (descending)
+# Print the results in a table format
+docker search "${search_term}" --format '{{.Name}} {{.StarCount}}' \
+| awk -F'/' '{print $1, $2, $3}' \
+| sort -k1,1 -k3,3nr \
+| awk '{printf "%s/%s %s\n", $1, $2, $3}' \
+| column -t
+

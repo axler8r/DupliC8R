@@ -1,8 +1,8 @@
 <type>['('(<id>|<context>)')']: <message>
 
-# [<body>]
+# [body]
 
-# [<footer>]
+# [footer]
 
 # ----------- INSTRUCTIONS -------------------------------------- >8 -
 #             See https://www.conventionalcommits.org for details.

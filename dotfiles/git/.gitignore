@@ -31,7 +31,6 @@ tags.temp
 
 # directories
 .eunit/
-.idea/
 .rebar/
 .settings/
 _build/
@@ -44,3 +43,18 @@ ebin/
 private/
 t[e]mp/
 target/
+
+# sensitive files
+*.key
+*.p12
+*.pem
+*.pfx
+*.pub
+.env
+
+# ide files
+.idea/
+.vscode/
+*.code-workspace
+copilot-instructions.md
+
