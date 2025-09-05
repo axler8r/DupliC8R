@@ -75,6 +75,10 @@ let g:easy_align_delimiters = {
     \ }
 " }}}
 
+" Toggle spell checking {{{
+map <Leader>sp :setlocal spell! spelllang=en<CR>
+"  }}}
+
 "" LightLine {{{
 let g:lightline = {
     \   'theme': 'solarized',
