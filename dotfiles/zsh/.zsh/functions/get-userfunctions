@@ -1,0 +1,90 @@
+#! /usr/bin/env zsh
+
+# get-userfunctions: List all user functions following PowerShell naming conventions
+
+# Variables --------------------------------------------------------------------
+local _help="Description:
+    Lists all user functions that follow PowerShell naming conventions
+    (<verb>-<noun>) with their descriptions.
+
+Usage:
+    ${0:t} [options]
+
+Options:
+    --help      Show this help message
+
+Examples:
+    ${0:t}
+"
+
+# Functions --------------------------------------------------------------------
+_help() {
+    echo "${_help}" | tail --lines=+2
+}
+
+_extract_function_description() {
+    local func_file="$1"
+    local func_name="${func_file:t}"
+    
+    # Read the file and extract the description from the comment line
+    local description=""
+    while IFS= read -r line; do
+        # Look for lines like: # function-name: Description text
+        if [[ "$line" =~ ^#[[:space:]]*${func_name}:[[:space:]]*(.+)$ ]]; then
+            description="${match[1]}"
+            break
+        fi
+    done < "$func_file"
+    
+    echo "$description"
+}
+
+_list_function_files() {
+    # Use funcfiletrace to get the actual source file path when autoloaded
+    local functions_dir
+    if [[ -n "${funcfiletrace[1]}" ]]; then
+        functions_dir="${funcfiletrace[1]%:*}"
+        functions_dir="${functions_dir:A:h}"
+    else
+        functions_dir="${0:A:h}"
+    fi
+    
+    if [[ ! -d "$functions_dir" ]]; then
+        return 1
+    fi
+    
+    # Find all files in the functions directory that match <verb>-<noun> pattern
+    for func_file in "${functions_dir}"/*(-.:t); do
+        if [[ "$func_file" =~ ^[a-z]+-[a-z0-9]+$ ]]; then
+            local description=$(_extract_function_description "${functions_dir}/${func_file}")
+            if [[ -n "$description" ]]; then
+                printf "%-30s %s\n" "$func_file" "$description"
+            else
+                printf "%-30s %s\n" "$func_file" "(no description)"
+            fi
+        fi
+    done
+}
+
+# Options ----------------------------------------------------------------------
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --help) _help && return 0 ;;
+        *) echo "Error: Unknown option: $1" >&2 && return 1 ;;
+    esac
+    shift
+done
+
+# Main -------------------------------------------------------------------------
+# Get the functions directory path
+local functions_dir
+if [[ -n "${funcfiletrace[1]}" ]]; then
+    functions_dir="${funcfiletrace[1]%:*}"
+    functions_dir="${functions_dir:A:h}"
+else
+    functions_dir="${0:A:h}"
+fi
+
+echo "User Functions (from ${functions_dir}):"
+echo "========================================="
+_list_function_files | sort
