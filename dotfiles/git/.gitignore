@@ -22,6 +22,7 @@
 .classpath
 .coverage
 .project
+.python-version
 _INFO
 _[Tt][Oo][Dd][Oo]
 mix.lock
