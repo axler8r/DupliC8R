@@ -1,4 +1,8 @@
 #! /usr/bin/env zsh
 
-sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches
+# clear-fscache: Clear filesystem caches
 
+[[ "$1" == "--help" ]] && echo "Usage: clear-fscache" && return 0
+
+# Sync and drop caches
+sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches

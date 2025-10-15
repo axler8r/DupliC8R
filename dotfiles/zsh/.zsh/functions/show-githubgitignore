@@ -1,9 +1,11 @@
 #! /usr/bin/env zsh
 
-# Get the Language from the command line. The default is Python.
-LANGUAGE=${1:-Python}
+# show-githubgitignore: Display GitHub gitignore template for a language
 
+[[ "$1" == "--help" ]] && echo "Usage: show-githubgitignore [language]" && return 0
+
+# Get language gitignore (default: Python)
+LANGUAGE=${1:-Python}
 curl -s -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/gitignore/templates/${LANGUAGE} | jq -r '.source'
-

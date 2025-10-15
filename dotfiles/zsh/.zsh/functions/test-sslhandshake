@@ -1,10 +1,15 @@
 #! /usr/bin/env zsh
 
-function synopsis() {
-    echo "Usage: $0 <site>"
-}
+# test-sslhandshake: Test SSL/TLS handshake with a site
 
-[[ $# -eq 1 && -n $1 ]] && local _site=$1 || { synopsis; exit 1; }
+[[ "$1" == "--help" ]] && echo "Usage: test-sslhandshake <site>" && return 0
 
+# Validate argument
+if [[ $# -lt 1 || -z "$1" ]]; then
+    echo "Error: Missing site argument"
+    return 1
+fi
+
+# Test SSL connection
+local _site=$1
 openssl s_client -connect "${_site}":443 <<< "Q"
-

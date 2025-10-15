@@ -1,8 +1,11 @@
 #! /usr/bin/env zsh
 
-LICENSE=${1:-mit}
+# show-githublicense: Display GitHub license text
 
+[[ "$1" == "--help" ]] && echo "Usage: show-githublicense [license-key]" && return 0
+
+# Get license (default: mit)
+LICENSE=${1:-mit}
 curl -s -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
     https://api.github.com/licenses/${LICENSE} | jq -r '.body'
-

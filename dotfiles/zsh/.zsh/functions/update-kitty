@@ -1,4 +1,9 @@
 #! /usr/bin/env zsh
 
+# update-kitty: Update Kitty terminal to latest version
+
+[[ "$1" == "--help" ]] && echo "Usage: update-kitty" && return 0
+
+# Download and run installer script
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 

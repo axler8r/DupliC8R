@@ -1,11 +1,14 @@
 #! /usr/bin/env zsh
 
-# if fastfetch is not installed, exit
-if ! command -v fastfetch &> /dev/null
-then
+# get-systeminformation: Display system information using fastfetch
+
+[[ "$1" == "--help" ]] && echo "Usage: get-systeminformation" && return 0
+
+# Check if fastfetch is installed
+if ! command -v fastfetch &> /dev/null; then
     echo "fastfetch could not be found"
-    exit
+    return 1
 fi
 
+# Display system information
 fastfetch
-

@@ -1,4 +1,8 @@
 #! /usr/bin/env zsh
 
-gnome-shell --replace && disown
+# reset-gnome: Restart GNOME Shell
 
+[[ "$1" == "--help" ]] && echo "Usage: reset-gnome" && return 0
+
+# Restart GNOME Shell and disown
+gnome-shell --replace && disown
