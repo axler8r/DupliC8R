@@ -12,7 +12,7 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
-from typing import NoReturn
+from typing import NoReturn, Optional
 
 
 class Colors:
@@ -77,8 +77,6 @@ def generate_wrapper_template(name: str) -> str:
 echo "Executing {func_name}"
 '''
 
-
-from typing import Optional
 
 def generate_function_template(name: str, description: Optional[str] = None) -> str:
     """Generate a function template - structured zsh function (16-80 lines)"""
@@ -154,8 +152,6 @@ unfunction _help
 unfunction {func_name}
 '''
 
-
-from typing import Optional
 
 def generate_script_template(
         name: str,
