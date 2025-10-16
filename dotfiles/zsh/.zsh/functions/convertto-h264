@@ -3,7 +3,7 @@
 # convertto-h264mp4: Convert video file to H.264 MP4 format
 
 local _input="$1"
-local -output=$(date +%Y%m%d%H%M%S).mp4
+local _output=$(date +%Y%m%d%H%M%S).mp4
 
 if [[ -z "$_input" ]]; then
   echo "Usage: $0 <input_file>"
@@ -19,4 +19,3 @@ if [[ ! -x "$(command -v ffmpeg)" ]]; then
 fi
 
 ffmpeg -i "${_input}" -c:v libx264 -c:a copy "${_output}" -y
-
