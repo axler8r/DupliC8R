@@ -1,5 +1,6 @@
 #! /usr/bin/env zsh
 
+# update-dockerimage: Update Docker images to their latest versions
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:

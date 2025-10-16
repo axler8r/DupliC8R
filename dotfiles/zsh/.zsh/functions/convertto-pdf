@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# convertto-pdf: Convert markdown file to PDF using pandoc
+
 if [[ -z $1 || $1 != *.md ]]; then
     echo "Please provide a markdown file as the first argument"
     exit 1

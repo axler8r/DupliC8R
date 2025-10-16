@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# optimize-gitrepository: Optimize git repository by running gc and prune
+
 local _dirs=("$@")
 local _git_dirs=()
 foreach _dir in "${_dirs[@]}"; do

@@ -1,5 +1,6 @@
 #! /usr/bin/env zsh
 
+# get-verb: Display PowerShell-style approved verbs for function naming
 
 # Variables --------------------------------------------------------------------
 local _self="${0:A}"

@@ -1,5 +1,6 @@
 #! /usr/bin/env zsh
 
+# get-dockerdanglingimage: List all dangling Docker images
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:

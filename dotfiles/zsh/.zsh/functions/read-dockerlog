@@ -1,5 +1,6 @@
 #! /usr/bin/env zsh
 
+# read-dockerlog: Read and follow Docker container logs
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:

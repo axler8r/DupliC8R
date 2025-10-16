@@ -1,5 +1,6 @@
 #! /usr/bin/env zsh
 
+# resolve-gitpathrepository: Resolve and display git repository path information
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:

@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# read-aptpackage: Display detailed information about an APT package
+
 local _synopsis="Synopsis:
     ${0} <package-name>
 

@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# find-dockerimage: Search for Docker images by name pattern
+
 # There must be at least one argument
 # If not, print usage and exit
 if [ $# -lt 1 ]; then

@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# convertto-h264mp4: Convert video file to H.264 MP4 format
+
 local _input="$1"
 local -output=$(date +%Y%m%d%H%M%S).mp4
 

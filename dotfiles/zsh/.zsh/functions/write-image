@@ -1,5 +1,7 @@
 #! /usr/bin/env zsh
 
+# write-image: Write disk image to target device using dd
+
 _source=$1
 _target=${2:-/dev/sda}
 

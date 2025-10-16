@@ -1,5 +1,6 @@
 #! /usr/bin/env zsh
 
+# find-asdfplugin: Find an asdf plugin by name or pattern
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:
