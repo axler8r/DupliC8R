@@ -3,6 +3,12 @@
 # get-userfunctions: List all user functions following PowerShell naming conventions
 
 # Variables --------------------------------------------------------------------
+local _synopsis="Synopsis:
+    ${0:t} [opts]
+
+See also:
+    ${0:t} --help
+"
 local _help="Description:
     Lists all user functions that follow PowerShell naming conventions
     (<verb>-<noun>) with their descriptions.
@@ -18,8 +24,23 @@ Examples:
 "
 
 # Functions --------------------------------------------------------------------
+_synopsis() {
+    echo "${_synopsis}" | tail --lines=+2
+}
+
 _help() {
     echo "${_help}" | tail --lines=+2
+}
+
+_get_functions_dir() {
+    local functions_dir
+    if [[ -n "${funcfiletrace[1]}" ]]; then
+        functions_dir="${funcfiletrace[1]%:*}"
+        functions_dir="${functions_dir:A:h}"
+    else
+        functions_dir="${0:A:h}"
+    fi
+    echo "$functions_dir"
 }
 
 _extract_function_description() {
@@ -40,14 +61,7 @@ _extract_function_description() {
 }
 
 _list_function_files() {
-    # Use funcfiletrace to get the actual source file path when autoloaded
-    local functions_dir
-    if [[ -n "${funcfiletrace[1]}" ]]; then
-        functions_dir="${funcfiletrace[1]%:*}"
-        functions_dir="${functions_dir:A:h}"
-    else
-        functions_dir="${0:A:h}"
-    fi
+    local functions_dir="$1"
     
     if [[ ! -d "$functions_dir" ]]; then
         return 1
@@ -76,15 +90,18 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Main -------------------------------------------------------------------------
-# Get the functions directory path
-local functions_dir
-if [[ -n "${funcfiletrace[1]}" ]]; then
-    functions_dir="${funcfiletrace[1]%:*}"
-    functions_dir="${functions_dir:A:h}"
-else
-    functions_dir="${0:A:h}"
-fi
+[[ -n $_help_flag ]] && _help && return 0
 
-echo "User Functions (from ${functions_dir}):"
+local _functions_dir=$(_get_functions_dir)
+
+echo "User Functions (from ${_functions_dir}):"
 echo "========================================="
-_list_function_files | sort
+_list_function_files "$_functions_dir" | sort
+
+
+# Cleanup ----------------------------------------------------------------------
+unfunction _synopsis
+unfunction _help
+unfunction _get_functions_dir
+unfunction _extract_function_description
+unfunction _list_function_files

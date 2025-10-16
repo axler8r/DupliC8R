@@ -5,7 +5,7 @@
 [[ "$1" == "--help" ]] && echo "Usage: get-githublicenses" && return 0
 
 # Fetch and format license list
-curl -s https://api.github.com/licenses | \
-    jq -r '.[] | "\(.key)\t\(.name)"' | \
-    awk 'BEGIN{print "Key\tDescription"; print "------------\t---------------------------------------"} {printf "%s\t%s\n", $1, substr($0, index($0,$2))}' | \
-    column -t -s $'\t'
+curl -s https://api.github.com/licenses \
+    | jq -r '.[] | "\(.key)\t\(.name)"' \
+    | awk 'BEGIN{print "Key\tDescription"; print "------------\t---------------------------------------"} {printf "%s\t%s\n", $1, substr($0, index($0,$2))}' \
+    | column -t -s $'\t'
