@@ -2,7 +2,7 @@
 
 # get-latestkitty: Display latest Kitty terminal version and release date
 
-[[ "$1" == "--help" ]] && echo "Usage: get-latestkitty" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Fetch and display latest release info
 echo $(wget -qO- 'https://api.github.com/repos/kovidgoyal/kitty/releases/latest' \

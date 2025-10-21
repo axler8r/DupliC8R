@@ -2,7 +2,7 @@
 
 # start-dockerazcli: Start Azure CLI in a Docker container
 
-[[ "$1" == "--help" ]] && echo "Usage: start-dockerazcli <container-name>" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t} <container-name>" && return 0
 
 # Validate argument
 if [[ -z "$1" ]]; then

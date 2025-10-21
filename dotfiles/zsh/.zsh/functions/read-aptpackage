@@ -12,15 +12,15 @@ local _help="Description:
     Show the files in an apt package.
 
 Usage:
-    ${0} [opts] <package-name>
+    ${0:t} [opts] <package-name>
 
 Options:
     --help      Show this help message.
     --sync      Sync the apt-file database.
 
 Examples:
-    ${0} net-tools
-    ${0} --sync
+    ${0:t} net-tools
+    ${0:t} --sync
 
 Preconditions:
     apt-file must be installed.

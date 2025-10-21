@@ -2,7 +2,7 @@
 
 # get-githublicenses: List all available GitHub licenses
 
-[[ "$1" == "--help" ]] && echo "Usage: get-githublicenses" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Fetch and format license list
 curl -s https://api.github.com/licenses \

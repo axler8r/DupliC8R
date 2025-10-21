@@ -2,7 +2,7 @@
 
 # get-videoformat: Display video codec format
 
-[[ "$1" == "--help" ]] && echo "Usage: get-videoformat <file>" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t} <file>" && return 0
 
 # Validate argument
 if [[ $# -lt 1 ]]; then

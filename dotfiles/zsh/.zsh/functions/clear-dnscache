@@ -2,7 +2,7 @@
 
 # clear-dnscache: Flush DNS resolver caches
 
-[[ "$1" == "--help" ]] && echo "Usage: clear-dnscache" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Clear DNS caches
 sudo resolvectl flush-caches

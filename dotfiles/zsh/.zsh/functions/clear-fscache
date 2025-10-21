@@ -2,7 +2,7 @@
 
 # clear-fscache: Clear filesystem caches
 
-[[ "$1" == "--help" ]] && echo "Usage: clear-fscache" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Sync and drop caches
 sudo sync && echo 3 | sudo tee /proc/sys/vm/drop_caches

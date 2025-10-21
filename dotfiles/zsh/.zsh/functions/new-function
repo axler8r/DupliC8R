@@ -71,7 +71,7 @@ def generate_wrapper_template(name: str) -> str:
 
 # {name}: Brief description
 
-[[ "$1" == "--help" ]] && echo "Usage: {name} [args]" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${{0:t}} [args]" && return 0
 
 # Main logic here
 echo "Executing {func_name}"

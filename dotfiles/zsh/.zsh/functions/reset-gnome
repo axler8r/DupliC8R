@@ -2,7 +2,7 @@
 
 # reset-gnome: Restart GNOME Shell
 
-[[ "$1" == "--help" ]] && echo "Usage: reset-gnome" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Restart GNOME Shell and disown
 gnome-shell --replace && disown

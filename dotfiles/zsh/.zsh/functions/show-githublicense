@@ -2,7 +2,7 @@
 
 # show-githublicense: Display GitHub license text
 
-[[ "$1" == "--help" ]] && echo "Usage: show-githublicense [license-key]" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t} [license-key]" && return 0
 
 # Get license (default: mit)
 LICENSE=${1:-mit}

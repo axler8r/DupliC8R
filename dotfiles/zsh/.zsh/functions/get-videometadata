@@ -2,7 +2,7 @@
 
 # get-videometadata: Extract and display video file metadata
 
-[[ "$1" == "--help" ]] && echo "Usage: get-videometadata <video-file>" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t} <video-file>" && return 0
 
 # Extract metadata using ffprobe
 videofile=${1}

@@ -2,7 +2,7 @@
 
 # test-reboot: Check if system reboot is required
 
-[[ "$1" == "--help" ]] && echo "Usage: test-reboot" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Check reboot status
 [[ -f /var/run/reboot-required ]] && echo "Reboot required!" || echo "No reboot required."

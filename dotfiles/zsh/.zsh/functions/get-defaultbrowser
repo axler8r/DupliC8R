@@ -2,7 +2,7 @@
 
 # get-defaultbrowser: Display default browser for HTTP/HTTPS
 
-[[ "$1" == "--help" ]] && echo "Usage: get-defaultbrowser" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Query default browser handlers
 echo "HTTP:  " $(xdg-mime query default x-scheme-handler/http)

@@ -13,7 +13,7 @@ See also:
 "
 local _help="
 Usage:
-    ${0} [opts] [args]
+    ${0:t} [opts] [args]
 
 Description:
     Get the approved verb list of PowerShell.

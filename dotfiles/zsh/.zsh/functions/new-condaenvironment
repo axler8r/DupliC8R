@@ -9,7 +9,7 @@ if [[ $1 == "--dry-run" ]]; then
 fi
 
 synopsis() {
-    echo "Usage: create-condaenvironment [--dry-run]"
+    echo "Usage: ${0:t} [--dry-run]"
 }
 
 # _name=""

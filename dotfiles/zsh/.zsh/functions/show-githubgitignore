@@ -2,7 +2,7 @@
 
 # show-githubgitignore: Display GitHub gitignore template for a language
 
-[[ "$1" == "--help" ]] && echo "Usage: show-githubgitignore [language]" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t} [language]" && return 0
 
 # Get language gitignore (default: Python)
 LANGUAGE=${1:-Python}

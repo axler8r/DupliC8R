@@ -2,7 +2,7 @@
 
 # get-githubgitignores: List all available GitHub gitignore templates
 
-[[ "$1" == "--help" ]] && echo "Usage: get-githubgitignores" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Fetch and display gitignore templates
 curl -s -H "Accept: application/vnd.github+json" \

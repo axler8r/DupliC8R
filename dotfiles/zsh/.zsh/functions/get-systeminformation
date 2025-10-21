@@ -2,7 +2,7 @@
 
 # get-systeminformation: Display system information using fastfetch
 
-[[ "$1" == "--help" ]] && echo "Usage: get-systeminformation" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Check if fastfetch is installed
 if ! command -v fastfetch &> /dev/null; then

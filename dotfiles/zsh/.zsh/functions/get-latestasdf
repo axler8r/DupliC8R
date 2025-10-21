@@ -2,7 +2,7 @@
 
 # get-latestasdf: Display latest asdf version and release date
 
-[[ "$1" == "--help" ]] && echo "Usage: get-latestasdf" && return 0
+[[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
 # Fetch and display latest release info
 echo $(wget -qO- 'https://api.github.com/repos/asdf-vm/asdf/releases/latest' \

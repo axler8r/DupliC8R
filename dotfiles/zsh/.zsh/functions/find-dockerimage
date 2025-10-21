@@ -5,7 +5,7 @@
 # There must be at least one argument
 # If not, print usage and exit
 if [ $# -lt 1 ]; then
-  echo "Usage: $0 <search-term>"
+  echo "Usage: ${0:t} <search-term>"
   exit 1
 fi
 
