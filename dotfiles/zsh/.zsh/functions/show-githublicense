@@ -4,7 +4,6 @@
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t} [license-key]" && return 0
 
-# Get license (default: mit)
 LICENSE=${1:-mit}
 curl -s -H "Accept: application/vnd.github+json" \
     -H "X-GitHub-Api-Version: 2022-11-28" \

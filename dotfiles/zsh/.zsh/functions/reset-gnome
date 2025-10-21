@@ -4,5 +4,4 @@
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
-# Restart GNOME Shell and disown
 gnome-shell --replace && disown

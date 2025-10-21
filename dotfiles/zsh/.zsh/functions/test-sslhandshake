@@ -10,6 +10,5 @@ if [[ $# -lt 1 || -z "$1" ]]; then
     return 1
 fi
 
-# Test SSL connection
 local _site=$1
 openssl s_client -connect "${_site}":443 <<< "Q"

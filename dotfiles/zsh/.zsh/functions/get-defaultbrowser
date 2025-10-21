@@ -4,6 +4,5 @@
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
-# Query default browser handlers
 echo "HTTP:  " $(xdg-mime query default x-scheme-handler/http)
 echo "HTTPS: " $(xdg-mime query default x-scheme-handler/https)

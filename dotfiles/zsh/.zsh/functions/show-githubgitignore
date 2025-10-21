@@ -4,7 +4,6 @@
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t} [language]" && return 0
 
-# Get language gitignore (default: Python)
 LANGUAGE=${1:-Python}
 curl -s -H "Accept: application/vnd.github+json" \
   -H "X-GitHub-Api-Version: 2022-11-28" \

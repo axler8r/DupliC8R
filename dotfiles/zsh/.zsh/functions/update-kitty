@@ -4,6 +4,5 @@
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
-# Download and run installer script
 curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 
