@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# new-function: Generate zsh wrappers, functions, and scripts
+
 """
 Script: new-function
 Author: axler8r
