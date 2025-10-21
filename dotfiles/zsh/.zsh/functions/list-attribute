@@ -70,4 +70,3 @@ getfattr --dump "${_path}"
 # cleanup ----------------------------------------------------------------------
 unfunction _show_version
 unfunction _show_help
-

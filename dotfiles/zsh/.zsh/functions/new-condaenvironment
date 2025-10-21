@@ -67,4 +67,3 @@ create_conda_environment "$@"
 unset _dry_run
 unset _name
 unset _version
-

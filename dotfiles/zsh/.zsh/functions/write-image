@@ -27,4 +27,3 @@ if [[ -z ${_source} ]]; then
 fi
 
 burn_image
-

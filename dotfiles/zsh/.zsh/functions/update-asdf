@@ -10,4 +10,3 @@ do
     asdf set --home "${app}" latest
     echo
 done
-
