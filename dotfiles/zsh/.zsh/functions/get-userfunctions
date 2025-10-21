@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-# get-userfunctions: List all user functions following PowerShell naming conventions
+# get-userfunctions: List all user functions
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:

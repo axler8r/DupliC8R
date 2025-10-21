@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-# clear-dnscache: Flush DNS resolver caches
+# clear-dnscache: Clear the DNS cache
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 

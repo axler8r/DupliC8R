@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-# update-neovimplugs: Update Neovim plugins using vim-plug
+# update-neovimplugs: Update all Neovim plugins
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 

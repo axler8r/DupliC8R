@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-# get-latestkitty: Display latest Kitty terminal version and release date
+# get-latestkitty: Display latest kitty version
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 

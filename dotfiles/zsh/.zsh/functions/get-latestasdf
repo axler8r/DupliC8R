@@ -1,6 +1,6 @@
 #! /usr/bin/env zsh
 
-# get-latestasdf: Display latest asdf version and release date
+# get-latestasdf: Display latest asdf version
 
 [[ "$1" == "--help" ]] && echo "Usage: ${0:t}" && return 0
 
