@@ -87,10 +87,11 @@ def generate_function_template(name: str, description: Optional[str] = None) -> 
     
     return f'''#! /usr/bin/env zsh
 
+# {name}: {desc}
 
 # Variables --------------------------------------------------------------------
 local _synopsis="Synopsis:
-    ${{0:t}} [args] [opts]
+    ${{0:t}} [opts] [args]
 
 See also:
     ${{0:t}} --help
@@ -99,7 +100,7 @@ local _help="Description:
     {desc}
 
 Usage:
-    ${{0:t}} [args] [opts]
+    ${{0:t}} [opts] [args]
 
 Options:
     --help      Show this help message.
@@ -125,7 +126,7 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --help)     _help_flag=true ;;
         --opt1)     _opt1_flag=true ;;
-        *)          _arg=$1         ;;
+        *)          _args=$1        ;;
     esac
     shift
 done
@@ -133,7 +134,7 @@ done
 
 # Main -------------------------------------------------------------------------
 [[ -n $_help_flag ]] && _help && return 0
-[[ -z $_arg ]] && echo "Error: Missing required argument" && return 1
+[[ -z $_args ]] && echo "Error: Missing required argument" && return 1
 
 
 # Driver -----------------------------------------------------------------------
@@ -145,13 +146,14 @@ function {func_name}() {{
 }}
 
 
-{func_name} "${{_arg}}"
+{func_name} "${{_args}}"
 
 
 # Cleanup ----------------------------------------------------------------------
 unfunction _synopsis
 unfunction _help
 unfunction {func_name}
+
 '''
 
 
