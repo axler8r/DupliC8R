@@ -51,23 +51,19 @@ done
 function resolve_gitpathrepository() {
     if command -v git > /dev/null 2>&1
     then
-        local _pwd=$(pwd)
-        local _pwd_name=$(basename "${_pwd}")
-        if [[ "${_pwd_name}" == "GitHub" ]] {
-            foreach __AX_DIRECTORY in *(/)
-            do
-                pushd $__AX_DIRECTORY
-                git remote --verbose | grep fetch
+        foreach __AX_DIRECTORY in *(/)
+        do
+            pushd $__AX_DIRECTORY
+            if git rev-parse --git-dir > /dev/null 2>&1; then
+                git remote --verbose | grep "fetch"
                 pwd
-                popd
-            done \
-            | sed --expression="s/origin//" \
-            | sed --expression="s/ (fetch)//" \
-            | paste --delimiters=" " - - \
-            | column --table
-        } else {
-            printf "No repositories found in ${_pwd}\n"
-        }
+            fi
+            popd
+        done \
+        | sed --expression="s/origin//" \
+        | sed --expression="s/ (fetch)//" \
+        | paste --delimiters=" " - - \
+        | column --table
     else
         echo "git is not installed."
     fi

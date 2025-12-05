@@ -50,7 +50,13 @@ done
 # Driver -----------------------------------------------------------------------
 function update_dockerimage() {
     local _images=$(docker image list --format="{{.Repository}}:{{.Tag}}")
-    local _updateable=$(echo "${_images}" | sed --expression='/^vsc/d' | sed --expression='/^axler8r/d' | sed --expression='/\<none\>/d')
+    local _updateable=$(                         \
+        echo "${_images}"                        \
+            | sed --expression='/^vsc/d'         \
+            | sed --expression='/^axler8r/d'     \
+            | sed --expression='/\<none\>/d'     \
+            | sed --expression='/devcontainer/d' \
+    )
     echo "${_updateable}" | xargs -L1 docker pull
     printf "\n"
 }
