@@ -1,0 +1,133 @@
+%YAML 1.2
+---
+name: Nu
+file_extensions:
+  - nu
+scope: source.nu
+
+contexts:
+  main:
+    - include: comments
+    - include: strings
+    - include: numbers
+    - include: keywords
+    - include: operators
+    - include: variables
+    - include: functions
+    - include: pipelines
+
+  comments:
+    - match: '#'
+      scope: punctuation.definition.comment.nu
+      push:
+        - meta_scope: comment.line.number-sign.nu
+        - match: $
+          pop: true
+
+  strings:
+    - match: '"'
+      scope: punctuation.definition.string.begin.nu
+      push: double_quoted_string
+    - match: "'"
+      scope: punctuation.definition.string.begin.nu
+      push: single_quoted_string
+    - match: '\$"'
+      scope: punctuation.definition.string.begin.nu
+      push: interpolated_string
+    - match: "`"
+      scope: punctuation.definition.string.begin.nu
+      push: raw_string
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.nu
+    - match: '\\.'
+      scope: constant.character.escape.nu
+    - match: '"'
+      scope: punctuation.definition.string.end.nu
+      pop: true
+
+  single_quoted_string:
+    - meta_scope: string.quoted.single.nu
+    - match: "'"
+      scope: punctuation.definition.string.end.nu
+      pop: true
+
+  interpolated_string:
+    - meta_scope: string.quoted.double.interpolated.nu
+    - match: '\(([^)]+)\)'
+      scope: meta.interpolation.nu
+      captures:
+        1: source.nu.embedded
+    - match: '\\.'
+      scope: constant.character.escape.nu
+    - match: '"'
+      scope: punctuation.definition.string.end.nu
+      pop: true
+
+  raw_string:
+    - meta_scope: string.quoted.other.nu
+    - match: "`"
+      scope: punctuation.definition.string.end.nu
+      pop: true
+
+  numbers:
+    - match: '\b0x[0-9a-fA-F_]+\b'
+      scope: constant.numeric.hex.nu
+    - match: '\b0b[01_]+\b'
+      scope: constant.numeric.binary.nu
+    - match: '\b0o[0-7_]+\b'
+      scope: constant.numeric.octal.nu
+    - match: '\b[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?\b'
+      scope: constant.numeric.decimal.nu
+    - match: '\b([0-9]+)(ns|us|ms|sec|min|hr|day|wk|b|kb|mb|gb|tb|pb|eb|kib|mib|gib|tib|pib|eib)\b'
+      scope: constant.numeric.with-unit.nu
+
+  keywords:
+    - match: '\b(def|export|extern|use|module|overlay|hide|let|mut|const|source|alias)\b'
+      scope: keyword.declaration.nu
+    - match: '\b(if|else|match|for|loop|while|break|continue|return)\b'
+      scope: keyword.control.nu
+    - match: '\b(try|catch|error)\b'
+      scope: keyword.control.exception.nu
+    - match: '\b(in|not-in|and|or|not|xor)\b'
+      scope: keyword.operator.logical.nu
+    - match: '\b(true|false|null)\b'
+      scope: constant.language.nu
+    - match: '\b(do|describe|test|register)\b'
+      scope: keyword.other.nu
+
+  operators:
+    - match: '\|'
+      scope: keyword.operator.pipe.nu
+    - match: '==|!=|<|>|<=|>=|=~|!~'
+      scope: keyword.operator.comparison.nu
+    - match: '\+|-|\*|/|//|%|\*\*'
+      scope: keyword.operator.arithmetic.nu
+    - match: '='
+      scope: keyword.operator.assignment.nu
+    - match: '\.\.'
+      scope: keyword.operator.range.nu
+    - match: '->'
+      scope: keyword.operator.arrow.nu
+    - match: '\?'
+      scope: keyword.operator.optional.nu
+
+  variables:
+    - match: '\$[a-zA-Z_][a-zA-Z0-9_]*'
+      scope: variable.other.nu
+    - match: '\$in\b'
+      scope: variable.language.nu
+    - match: '\$env\b'
+      scope: variable.language.nu
+    - match: '\$nu\b'
+      scope: variable.language.nu
+
+  functions:
+    - match: '\b(def|def-env|export def)\s+([a-zA-Z_][a-zA-Z0-9_-]*)'
+      captures:
+        1: keyword.declaration.function.nu
+        2: entity.name.function.nu
+
+  pipelines:
+    - match: '\b(open|save|append|to|from|where|select|reject|get|update|insert|upsert|merge|split|join|enumerate|rename|each|par-each|reduce|filter|find|first|last|skip|take|sort|sort-by|reverse|uniq|group-by|flatten|wrap|default|transpose|move|drop|fill|roll|rotate|window|zip|all|any|empty|length|range|collect|into|str|math|random|path|date|format|encode|decode|hash|url|ansi|char|debug|input|print|echo|error make|table|grid|ls|cd|pwd|cp|mv|rm|mkdir|touch|which|help|version|sys|ps|kill|clear|sleep|exec|run-external)\b'
+      scope: support.function.builtin.nu

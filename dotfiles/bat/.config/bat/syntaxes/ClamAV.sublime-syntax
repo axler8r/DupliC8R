@@ -1,0 +1,39 @@
+%YAML 1.2
+---
+name: ClamAV Configuration
+file_extensions:
+  - clamd.conf
+  - freshclam.conf
+  - clamav-milter.conf
+scope: source.clamav
+
+contexts:
+  main:
+    - match: ^\s*(#).*$
+      scope: comment.line.number-sign.clamav
+      captures:
+        1: punctuation.definition.comment.clamav
+
+    - match: ^\s*([A-Za-z][A-Za-z0-9_]*)\s+
+      captures:
+        1: keyword.other.clamav
+      push: value
+
+  value:
+    - match: \b(true|false|yes|no)\b
+      scope: constant.language.boolean.clamav
+    
+    - match: \b([0-9]+[KMG]?)\b
+      scope: constant.numeric.clamav
+    
+    - match: '[A-Z_]+'
+      scope: constant.other.clamav
+    
+    - match: /[^\s]+
+      scope: string.unquoted.path.clamav
+    
+    - match: '[a-zA-Z0-9_\-\.]+'
+      scope: string.unquoted.clamav
+    
+    - match: $
+      pop: true
