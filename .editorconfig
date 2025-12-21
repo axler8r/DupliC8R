@@ -1,0 +1,55 @@
+# Top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Shell scripts
+[*.{sh,bash,zsh}]
+indent_style = space
+indent_size = 4
+
+# Python
+[*.py]
+indent_style = space
+indent_size = 4
+max_line_length = 88
+
+# YAML
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+
+# JSON
+[*.json]
+indent_style = space
+indent_size = 2
+
+# Markdown
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = 80
+
+# Vim script
+[*.vim]
+indent_style = space
+indent_size = 4
+
+# Makefiles require tabs
+[Makefile]
+indent_style = tab
+
+# Docker
+[Dockerfile*]
+indent_style = space
+indent_size = 4
+
+# Configuration files
+[*.{conf,cfg,ini,toml}]
+indent_style = space
+indent_size = 4
+
