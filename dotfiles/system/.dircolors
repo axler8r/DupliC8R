@@ -61,6 +61,7 @@ EXEC                  01;38;5;160 # Linux
 .bash                 00;38;5;166
 .csh                  00;38;5;166
 .fish                 00;38;5;166
+.nu                   00;38;5;166
 .ps1                  00;38;5;166
 .sh                   01;38;5;166
 .zsh                  01;38;5;166
@@ -178,3 +179,4 @@ EXEC                  01;38;5;160 # Linux
 .dircolors-bcyan      01;38;5;37
 .dircolors-bviolet    01;38;5;61
 .dircolors-bmagenta   01;38;5;125
+
