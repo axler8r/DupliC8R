@@ -1,6 +1,82 @@
 # Changelog
 
 
+## 6.0.0
+**2024-12-21**
+
+### BREAKING CHANGES
+> [!WARNING]
+> Major architectural changes - Migration from shell-based installer to Ansible playbooks
+
++ **BREAKING!!** Replace shell-based installer with Ansible playbooks
+    > Installation now uses `ansible/install.sh` instead of `bin/install`
+    > The legacy shell installer (`bin/install`) is deprecated
++ **BREAKING!!** Restructure dotfiles to use GNU Stow
+    > Dotfiles are now organized in category-specific directories
+    > Managed via Stow for clean symlink management
+
+### New & Updated Features
++ **Ansible Infrastructure**
+  + New Ansible-based installation system with roles architecture
+  + New `ansible/site.yml` playbook for orchestrating installation
+  + New `ansible/install.sh` wrapper script for simplified execution
+  + New role-based organization: packages, dotfiles, asdf, shell, development
+  + New inventory-based configuration system
+  + New feature toggle system for container/desktop environments
++ **Dotfiles Reorganization**
+  + Reorganize dotfiles into Stow-compatible structure
+  + New categorized directories: bat, dev, git, monitor, nvim, shell, system, terminal, tmux, zsh
+  + Add GNU Stow for dotfile symlink management
++ **Package Management**
+  + Add `apt-file` package
+  + Add `clamav` package
+  + Add `fdupes` package
+  + Add `mpv` package
+  + Add `net-tools` package
+  + Add `nvtop` package
+  + Add `python3-powerline` package
+  + Add `python3-powerline-gitstatus` package
+  + Add `stow` package for dotfile management
+  + Add `cheese` GUI package
+  + Update snap package list (blender, brave, chromium, gnome-boxes, inkscape, obsidian, shortwave, slack, slides)
++ **ASDF Updates**
+  + Update asdf to use binary installation method
+  + Add `choose` plugin
+  + Add `dive` plugin
+  + Add `eza` plugin (replaces exa)
+  + Add `uv` plugin
+  + Remove `pipx` plugin
++ **Testing Infrastructure**
+  + New `test/full-test.sh` comprehensive testing script
+  + New `test/quick-test.sh` simplified test runner
+  + Update test environment to Ubuntu 24.04
+  + Add Ansible playbook testing support
+  + Add interactive test container support
+  + Update test documentation with new scenarios
++ **Documentation**
+  + Update installation instructions for Ansible workflow
+  + Add Ansible configuration options documentation
+  + Add migration notice for legacy installer
+  + Update test documentation with new scripts
+
+### Deprecated & Retired Features
++ Deprecate shell-based install script (`bin/install`)
+    > Legacy installer remains available but will be removed in future release
++ Retire direct pip package installation in favor of asdf/uv
+
+### Refactor
++ Migrate installation logic from shell scripts to Ansible playbooks
++ Restructure dotfiles from flat structure to categorized Stow packages
++ Modularize installation into discrete Ansible roles
++ Separate package definitions into role variables
+
+### Stylistic & Idiomatic Updates
++ Apply Ansible best practices to playbook structure
++ Use YAML for configuration instead of shell variables
++ Implement idempotent installation tasks
++ Add proper error handling in Ansible tasks
+
+
 ## 5.0.0
 **2024-08-19**
 
@@ -296,3 +372,4 @@
 + New Spacemacs
 + New Git
 + New Solarized Color Theme
+
