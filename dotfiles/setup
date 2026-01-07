@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Check if stow is installed
+if ! command -v stow &> /dev/null; then
+    echo "Error: stow is not installed. Please install it first."
+    echo "On Ubuntu: sudo apt install stow"
+    exit 1
+fi
+
+# Get the directory where this script is located
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+echo "Setting up dotfiles from: ${DOTFILES_DIR}"
+echo "Target directory: ${HOME}"
+echo ""
+
+# Get all directories in the dotfiles directory
+for dir in "${DOTFILES_DIR}"/*/ ; do
+    if [ -d "${dir}" ]; then
+        package="$(basename "${dir}")"
+        echo "Stowing ${package}..."
+        stow --dir="${DOTFILES_DIR}" --target="${HOME}" "${package}"
+    fi
+done
+
+echo ""
+echo "✓ Dotfiles setup complete!"
+
